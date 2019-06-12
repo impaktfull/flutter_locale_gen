@@ -1,0 +1,1 @@
+# Example for the locale_gen
