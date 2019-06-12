@@ -6,8 +6,11 @@ Dart tool that will convert your default locale json to dart code.
 
 This repo contains an example how to use this package.
 
+based on a package I made at icapps for the icapps translations -> https://github.com/icapps/flutter-icapps-translations
+
 Packages used:
  - flutter_localizations
+ - shared_preferences
  - provider
  - kiwi
  - locale_gen
