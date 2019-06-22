@@ -12,7 +12,8 @@ class Params {
     projectName = doc['name'];
 
     if (projectName == null || projectName.isEmpty) {
-      throw Exception('Could not parse the pubspec.yaml, project name not found');
+      throw Exception(
+          'Could not parse the pubspec.yaml, project name not found');
     }
 
     final config = doc[localeGenYaml];
@@ -24,14 +25,16 @@ class Params {
 
     final YamlList yamlList = config['languages'];
     if (yamlList == null || yamlList.isEmpty) {
-      throw Exception("At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
+      throw Exception(
+          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$localeGenYaml\n'
           "  languages: ['en']");
     }
 
     languages = yamlList.map((item) => item.toString()).toList();
     if (languages == null || languages.isEmpty) {
-      throw Exception("At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
+      throw Exception(
+          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$localeGenYaml\n'
           "  languages: ['en']");
     }

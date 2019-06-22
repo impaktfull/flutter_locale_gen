@@ -1,4 +1,7 @@
 {
   "app_title": "Locale Gen NL",
-  "test": "Test in het Nederlands"
+  "test": "Test in het Nederlands",
+  "test_arg1": "Test argument %1$s",
+  "test_arg2": "Test argument %1$d",
+  "test_arg3": "Test argument %1$s %2$d"
 }

@@ -27,7 +27,9 @@ class HomeScreen extends StatelessWidget {
               onPressed: Provider.of<LocaleViewModel>(context).onSwitchToDutch,
             ),
             Container(height: 32),
-            Text(Localization.of(context).test)
+            Text(Localization.of(context).test),
+            Text(Localization.of(context).testArg1('string')),
+            Text(Localization.of(context).testArg2(1.0))
           ],
         ),
       ),

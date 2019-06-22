@@ -1,6 +1,6 @@
 name: locale_gen
 description: Dart tool that will convert your default locale json to dart code.
-version: 0.0.1
+version: 0.1.0
 author: Koen Van Looveren <vanlooverenkoen.dev@gmail.com>
 homepage: https://github.com/vanlooverenkoen/locale_gen
 

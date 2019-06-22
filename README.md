@@ -63,3 +63,38 @@ flutter packages pub run locale_gen
 ```
 pub run locale_gen
 ```
+
+### Arguments
+
+Arguments are supported as of 0.1.0
+
+You can pass a String or a num to as an argument.
+
+Formatting for String: %1$s
+Formatting for num: %1$d
+
+The number in between % and $ indicate the index of the argument. It is possible to place an argument in 1 language first but in another second:
+
+ex (Grammatically incorrect but it makes my point):
+
+```
+nl '%1$s, ik woon in $2%s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
+
+fr 'I live in $2%s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't knew that KOEN?
+```
+
+### Working on mac?
+
+add this to you .bash_profile
+
+```
+flutterlocalegen(){
+ flutter packages get && flutter packages pub run locale_gen
+}
+```
+
+now you can use the locale_gen with a single command.
+
+```
+flutterlocalegen
+```
