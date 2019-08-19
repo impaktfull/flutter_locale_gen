@@ -78,9 +78,9 @@ The number in between % and $ indicate the index of the argument. It is possible
 ex (Grammatically incorrect but it makes my point):
 
 ```
-nl '%1$s, ik woon in $2%s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
+nl '%1$s, ik woon in %2$s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
 
-fr 'I live in $2%s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't knew that KOEN?
+fr 'I live in %2$s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't knew that KOEN?
 ```
 
 ### Working on mac?
