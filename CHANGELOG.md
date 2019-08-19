@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.1] - 2019-08-19
+### Fixed
+-Fixed documentation about arguments
+
 ## [0.1.0] - 2019-06-22
 ### Added
 -Support for arguments
