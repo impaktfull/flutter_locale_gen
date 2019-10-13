@@ -14,9 +14,10 @@ Params params;
 
 Future<void> main(List<String> args) async {
   final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
-  if (!pubspecYaml.existsSync())
+  if (!pubspecYaml.existsSync()) {
     throw Exception(
         'This program should be run from the root of a flutter/dart project');
+  }
 
   await parsePubspec(pubspecYaml);
 
@@ -52,14 +53,17 @@ void createLocalizationFile(File defaultLocaleJson) {
     ..writeln(
         '//============================================================//')
     ..writeln('class Localization {')
-    ..writeln('  Map<dynamic, dynamic> _localisedValues;')
+    ..writeln('  Map<dynamic, dynamic> _localisedValues = Map();')
     ..writeln()
     ..writeln(
         '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization);')
     ..writeln('  ')
-    ..writeln('  static Future<Localization> load(Locale locale) async {')
+    ..writeln(
+        '  static Future<Localization> load(Locale locale, {bool isInTest = false}) async {')
     ..writeln('    final localizations = Localization();')
-    ..writeln("    print('Switching to \${locale.languageCode}');")
+    ..writeln('    if (isInTest) {')
+    ..writeln('      return localizations;')
+    ..writeln('    }')
     ..writeln(
         "    final jsonContent = await rootBundle.loadString('assets/locale/\${locale.languageCode}.json');")
     ..writeln(
@@ -140,11 +144,14 @@ void createLocalizationDelegateFile() {
     ..writeln()
     ..writeln('  Locale newLocale;')
     ..writeln('  Locale activeLocale;')
+    ..writeln('  bool isInTest;')
     ..writeln()
-    ..writeln('  LocalizationDelegate({this.newLocale}) {')
+    ..writeln(
+        '  LocalizationDelegate({this.newLocale, this.isInTest = false}) {')
     ..writeln('    if (newLocale != null) {')
     ..writeln('      activeLocale = newLocale;')
     ..writeln('    }')
+    ..writeln('    isInTest ??= false;')
     ..writeln('  }')
     ..writeln()
     ..writeln('  @override')
@@ -154,7 +161,7 @@ void createLocalizationDelegateFile() {
     ..writeln('  @override')
     ..writeln('  Future<Localization> load(Locale locale) async {')
     ..writeln('    activeLocale = newLocale ?? locale;')
-    ..writeln('    return Localization.load(activeLocale);')
+    ..writeln('    return Localization.load(activeLocale, isInTest: isInTest);')
     ..writeln('  }')
     ..writeln()
     ..writeln('  @override')

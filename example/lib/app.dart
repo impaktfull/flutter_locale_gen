@@ -12,19 +12,19 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<LocaleViewModel>(
       child: Consumer<LocaleViewModel>(
         builder: (context, value, child) => MaterialApp(
-              title: 'Locale Gen',
-              theme: ThemeData(
-                primarySwatch: Colors.red,
-              ),
-              localizationsDelegates: [
-                value.localeDelegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              locale: value.localeDelegate.activeLocale,
-              supportedLocales: LocalizationDelegate.supportedLocales,
-              home: HomeScreen(),
-            ),
+          title: 'Locale Gen',
+          theme: ThemeData(
+            primarySwatch: Colors.red,
+          ),
+          localizationsDelegates: [
+            value.localeDelegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          locale: value.localeDelegate.activeLocale,
+          supportedLocales: LocalizationDelegate.supportedLocales,
+          home: HomeScreen(),
+        ),
       ),
       builder: (context) => kiwi.Container().resolve()..init(),
     );

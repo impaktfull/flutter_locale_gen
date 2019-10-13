@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0] - 2019-10-13
+### Added
+-Test support
+### Fixed
+-Removed the unneeded log
+
 ## [0.1.1] - 2019-08-19
 ### Fixed
 -Fixed documentation about arguments
