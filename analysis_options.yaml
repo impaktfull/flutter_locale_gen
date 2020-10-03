@@ -5,7 +5,6 @@ analyzer:
     todo: ignore
     sdk_version_async_exported_from_core: ignore
   exclude:
-    - 'example/**'
     - '**.g.dart'
 
 linter:

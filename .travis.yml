@@ -1,35 +1,27 @@
-# Created with https://github.com/dart-lang/mono_repo
-language: dart
+os:
+  - linux
+addons:
+  apt:
+    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
+    sources:
+      - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
+    packages:
+      - libstdc++6
+      - fonts-droid-fallback
 
-# Custom configuration
 before_install:
   - chmod +x ./tools/travis.sh
 sudo: required
 
-jobs:
-  include:
-    - stage: analyze
-      name: "SDK: stable - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tools/travis.sh dartfmt
-      dart: stable
-    - stage: analyze
-      name: "SDK: stable - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tools/travis.sh dartanalyzer
-      dart: stable
-    - stage: unit_test
-      name: "SDK: stable - TASKS: pub run test"
-      script: ./tools/travis.sh test
-      dart: stable
+before_script:
+  - git clone https://github.com/flutter/flutter.git -b beta
+  - ./flutter/bin/flutter doctor
+script:
+  - ./tools/travis.sh
 
-stages:
-  - analyze
-  - unit_test
-
-# Only building master means that we don't run two builds for each pull request.
 branches:
   only:
     - master
-
 cache:
   directories:
-    - "$HOME/.pub-cache"
+    - $HOME/.pub-cache
