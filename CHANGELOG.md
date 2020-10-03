@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.4] - 2020-10-03
+### Fixed
+-Version bump packages
+
 ## [2.0.3] - 2020-10-03
 ### Added to repo
 -Added travis ci integration
