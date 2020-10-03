@@ -6,10 +6,6 @@ fi
 
 pub upgrade || exit $?
 
-cd example
-pub upgrade || exit $?
-cd ..
-
 EXIT_CODE=0
 
 while (( "$#" )); do
