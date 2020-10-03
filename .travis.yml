@@ -14,7 +14,7 @@ before_install:
 sudo: required
 
 before_script:
-  - git clone https://github.com/flutter/flutter.git
+  - git clone https://github.com/flutter/flutter.git -b stable
   - export PATH="$PATH":"$HOME/.pub-cache/bin"
   - ./flutter/bin/flutter doctor
 script:
