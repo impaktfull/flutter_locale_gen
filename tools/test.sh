@@ -2,4 +2,4 @@
 
 flutter test --coverage || exit -1;
 
-coveralls-lcov /coverage/lcov.info
+coveralls-lcov ../coverage/lcov.info
