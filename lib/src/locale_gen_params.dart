@@ -1,18 +1,25 @@
+import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
+import 'package:meta/meta.dart';
+
+final defaultOutputDir = join('lib', 'util', 'locale');
+final defaultAssetsDir = join('assets', 'locale');
 
 class LocaleGenParams {
+  final String programName;
+  String outputDir = defaultOutputDir;
+  String assetsDir = defaultAssetsDir;
 
   String projectName;
   String defaultLanguage;
   List<String> languages;
 
-  LocaleGenParams(String programName, pubspecContent) {
+  LocaleGenParams(this.programName, String pubspecContent) {
     final doc = loadYaml(pubspecContent);
     projectName = doc['name'];
 
     if (projectName == null || projectName.isEmpty) {
-      throw Exception(
-          'Could not parse the pubspec.yaml, project name not found');
+      throw Exception('Could not parse the pubspec.yaml, project name not found');
     }
 
     final config = doc[programName];
@@ -21,19 +28,21 @@ class LocaleGenParams {
       defaultLanguage = 'en';
       return;
     }
+    configure(config);
+  }
 
+  @mustCallSuper
+  void configure(YamlMap config) {
     final YamlList yamlList = config['languages'];
     if (yamlList == null || yamlList.isEmpty) {
-      throw Exception(
-          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
+      throw Exception("At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$programName\n'
           "  languages: ['en']");
     }
 
     languages = yamlList.map((item) => item.toString()).toList();
     if (languages == null || languages.isEmpty) {
-      throw Exception(
-          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
+      throw Exception("At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$programName\n'
           "  languages: ['en']");
     }
@@ -49,6 +58,14 @@ class LocaleGenParams {
 
     if (!languages.contains(defaultLanguage)) {
       throw Exception('default language is not included in the languages list');
+    }
+
+    outputDir ??= defaultOutputDir;
+
+    assetsDir = config['assets_path'];
+    assetsDir ??= defaultAssetsDir;
+    if (!assetsDir.endsWith('/')) {
+      assetsDir += '/';
     }
   }
 }

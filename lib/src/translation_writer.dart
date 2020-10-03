@@ -1,6 +1,6 @@
 import 'case_util.dart';
 
-class FileWriter {
+class TranslationWriter {
   static final formatRegex = RegExp(r'\%(\d*)\$([a-z])');
   static const REGEX_INDEX_GROUP_INDEX = 1;
   static const REGEX_TYPE_GROUP_INDEX = 2;

@@ -4,21 +4,20 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:meta/meta.dart';
 
-import 'params.dart';
-import 'translation_file_writer.dart';
+import 'locale_gen_params.dart';
+import 'translation_writer.dart';
 
 class LocaleGenWriter {
-  final String outputDir;
-  final String assetsDir;
-
   LocaleGenParams params;
 
   String get defaultLanguage => params?.defaultLanguage;
 
+  String get outputDir => params?.outputDir;
+
+  String get assetsDir => params?.assetsDir;
+
   LocaleGenWriter({
-    @required this.outputDir,
-    @required this.assetsDir,
-    String programName,
+    @required String programName,
   }) {
     final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
     if (!pubspecYaml.existsSync()) {
@@ -34,6 +33,7 @@ class LocaleGenWriter {
   void write(File file) {
     createLocalizationFile(file);
     createLocalizationDelegateFile();
+    print('Done!!!');
   }
 
   void createLocalizationFile(File defaultLocaleJson) {
@@ -87,11 +87,11 @@ class LocaleGenWriter {
       ..writeln();
     final content = defaultLocaleJson.readAsStringSync();
     final translations = json.decode(content);
-    translations.forEach((key, value) => FileWriter.buildTranslationFunction(sb, key, value));
+    translations.forEach((key, value) => TranslationWriter.buildTranslationFunction(sb, key, value));
     sb.writeln('}');
 
     // Write to file
-    final localizationFile = File(join(Directory.current.path, outputDir, 'localization.dart'));
+    final localizationFile = File(join(Directory.current.path, params.outputDir, 'localization.dart'));
     if (!localizationFile.existsSync()) {
       print('localization.dart does not exists');
       print('Creating localization.dart ...');
@@ -147,7 +147,7 @@ class LocaleGenWriter {
       ..writeln('}');
 
     // Write to file
-    final localizationDelegateFile = File(join(Directory.current.path, outputDir, 'localization_delegate.dart'));
+    final localizationDelegateFile = File(join(Directory.current.path, params.outputDir, 'localization_delegate.dart'));
     if (!localizationDelegateFile.existsSync()) {
       print('localization_delegate.dart does not exists');
       print('Creating localization_delegate.dart ...');
