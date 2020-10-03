@@ -20,7 +20,6 @@ jobs:
       name: "SDK: stable - TASKS: pub run test"
       script: ./tools/travis.sh test
       dart: stable
-    - stage: analyze
 
 stages:
   - analyze
