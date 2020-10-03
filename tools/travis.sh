@@ -1,13 +1,13 @@
 #!/bin/bash
 
-./flutter/bin/flutter packages get
-./flutter/bin/flutter pub global activate dart_style
+./flutter/bin/flutter packages get || EXIT_CODE=$?
+./flutter/bin/flutter pub global activate dart_style || EXIT_CODE=$?
 
 #echo "ANALYZE"
-#./flutter/bin/flutter analyze
+#./flutter/bin/flutter analyze || EXIT_CODE=$?
 
 echo "DART FORMAT CHECK"
-.pub-cache/bin/dartfmt -n --set-exit-if-changed .
+.pub-cache/bin/dartfmt -n --set-exit-if-changed . || EXIT_CODE=$?
 
 echo "TEST"
-./flutter/bin/flutter test
+./flutter/bin/flutter test || EXIT_CODE=$?
