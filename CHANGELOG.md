@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.2] - 2020-10-03
+### Fixed
+-Android embedding v2
+
 ## [2.0.1] - 2020-10-03
 ### Updated
 -Documentation updated 
