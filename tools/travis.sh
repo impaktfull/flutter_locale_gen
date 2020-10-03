@@ -9,7 +9,7 @@ echo $PATH
 #flutter analyze || exit -1;
 
 echo "DART FORMAT CHECK"
-dartfmt -n --set-exit-if-changed . || exit -1;
+./flutter/bin/flutter pub global run dart_style:format -n --set-exit-if-changed . || exit -1;
 
 echo "TEST"
 ./flutter/bin/flutter test || exit -1;
