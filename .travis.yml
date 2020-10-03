@@ -9,6 +9,9 @@ addons:
       - libstdc++6
       - fonts-droid-fallback
 
+before_install:
+  - chmod +x ./tool/test.sh
+
 sudo: required
 
 before_script:
@@ -22,14 +25,11 @@ before_script:
   - flutter pub global activate dart_style
   - flutter packages get || exit -1;
 
-after_success:
-  - coveralls-lcov coverage/lcov.info\
-
 jobs:
   include:
     - stage: quality
       name: "Tests"
-      script: flutter test --coverage || exit -1;
+      script: ./tools/test.sh
     - stage: quality
       name: "Analyze"
       script: flutter analyze || exit -1;
