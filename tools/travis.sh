@@ -7,7 +7,7 @@
 #./flutter/bin/flutter analyze
 
 echo "DART FORMAT CHECK"
-dartfmt -n --set-exit-if-changed .
+.pub-cache/bin/dartfmt -n --set-exit-if-changed .
 
 echo "TEST"
 ./flutter/bin/flutter test
