@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.1] - 2020-10-03
+### Updated
+-Documentation updated 
+
 ## [2.0.0] - 2020-10-03
 ### Refactor
 -Added support for the usage of this package in other once. Mainly because of icapps_translations
