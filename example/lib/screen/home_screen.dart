@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Localization.of(context).appTitle),
+        title: const Text('locale gen'),
       ),
       body: Center(
         child: Column(
@@ -31,7 +31,9 @@ class HomeScreen extends StatelessWidget {
             Container(height: 32),
             Text(Localization.of(context).test),
             Text(Localization.of(context).testArg1('string')),
-            Text(Localization.of(context).testArg2(1.0))
+            Text(Localization.of(context).testArg2(1.0)),
+            Text(Localization.of(context).testArg3('string', 1.0)),
+            Text(Localization.of(context).testArg4('string', 1.0)),
           ],
         ),
       ),

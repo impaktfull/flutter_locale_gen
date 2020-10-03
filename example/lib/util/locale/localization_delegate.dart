@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:locale_gen_example/util/locale/localization.dart';
 import 'package:flutter/material.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -20,13 +20,13 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   Locale newLocale;
   Locale activeLocale;
-  bool isInTest;
+  bool showLocalizationKeys;
 
-  LocalizationDelegate({this.newLocale, this.isInTest = false}) {
+  LocalizationDelegate({this.newLocale, this.showLocalizationKeys = false}) {
     if (newLocale != null) {
       activeLocale = newLocale;
     }
-    isInTest ??= false;
+    showLocalizationKeys ??= false;
   }
 
   @override
@@ -36,7 +36,8 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   @override
   Future<Localization> load(Locale locale) async {
     activeLocale = newLocale ?? locale;
-    return Localization.load(activeLocale, isInTest: isInTest);
+    return Localization.load(activeLocale,
+        showLocalizationKeys: showLocalizationKeys);
   }
 
   @override
