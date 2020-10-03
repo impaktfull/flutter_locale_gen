@@ -14,11 +14,12 @@ before_install:
 sudo: required
 
 before_script:
-  - git clone https://github.com/flutter/flutter.git -b stable
-  - export PATH="$PATH":"$HOME/flutter/bin"
-  - export PATH="$PATH":"$HOME/flutter/bin/cache/dart-sdk/bin"
-  - export PATH="$PATH":"$HOME/.pub-cache/bin"
-  - ./flutter/bin/flutter doctor
+  - git clone https://github.com/flutter/flutter.git -b stable ../flutter
+  - export PATH="$PATH":`pwd`/../flutter/bin
+  - export PATH="$PATH":`pwd`/../flutter/bin/cache/dart-sdk/bin
+  - flutter config --no-analytics
+  - flutter doctor
+  - export FLUTTER_SDK=`pwd`/../flutter
 script:
   - ./tools/travis.sh
 
