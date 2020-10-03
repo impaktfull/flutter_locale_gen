@@ -18,6 +18,7 @@ before_script:
   - flutter config --no-analytics
   - flutter doctor
   - export FLUTTER_SDK=`pwd`/../flutter
+  - flutter pub global activate dart_style
   - flutter packages get || exit -1;
 
 jobs:
