@@ -4,17 +4,7 @@ language: dart
 # Custom configuration
 before_install:
   - chmod +x ./tools/travis.sh
-  - sudo apt-get update
-  - sudo apt-get install ant
-  - echo $(ant -version)
 sudo: required
-
-before_script:
-  - git clone --depth 1 https://github.com/flutter/flutter.git ../flutter
-  - export PATH="$PATH":`pwd`/../flutter/bin:`pwd`/../flutter/bin/cache/dart-sdk/bin
-  - flutter config --no-analytics
-  - flutter doctor
-  - export FLUTTER_SDK=`pwd`/../flutter
 
 jobs:
   include:
