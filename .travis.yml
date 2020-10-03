@@ -29,7 +29,7 @@ jobs:
   include:
     - stage: quality
       name: "Tests"
-      script: flutter test || exit -1;
+      script: flutter test --coverage || exit -1;
     - stage: quality
       name: "Analyze"
       script: flutter analyze || exit -1;
