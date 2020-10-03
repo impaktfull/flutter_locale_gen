@@ -10,7 +10,7 @@ addons:
       - fonts-droid-fallback
 
 before_install:
-  - chmod +x ./tool/test.sh
+  - chmod +x ./tools/test.sh
 
 sudo: required
 
