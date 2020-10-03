@@ -9,8 +9,6 @@ addons:
       - libstdc++6
       - fonts-droid-fallback
 
-before_install:
-  - chmod +x ./tools/travis.sh
 sudo: required
 
 before_script:
@@ -25,11 +23,18 @@ before_script:
 jobs:
   include:
     - stage: test
+      name: "Tests"
       script: flutter test || exit -1;
-    - stage: analyze
+    - stage: quality
+      name: "Analyze"
       script: flutter analyze || exit -1;
-    - stage: format
+    - stage: quality
+      name: "Format"
       script: flutter pub global run dart_style:format -n --set-exit-if-changed . || exit -1;
+
+stages:
+  - test
+  - quality
 
 branches:
   only:
