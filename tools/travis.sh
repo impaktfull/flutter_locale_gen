@@ -5,6 +5,7 @@ if [ "$#" == "0" ]; then
 fi
 
 pub upgrade || exit $?
+flutter pub get  || exit $?
 
 EXIT_CODE=0
 
