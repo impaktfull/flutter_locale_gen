@@ -1,3 +1,6 @@
+import 'package:locale_gen/src/locale_gen_params.dart'; // ignore: unused_import
+import 'package:locale_gen/src/locale_gen_writer.dart'; // ignore: unused_import
+import 'package:locale_gen/src/case_util.dart'; // ignore: unused_import
 import 'package:locale_gen/src/translation_writer.dart';
 import 'package:test/test.dart';
 
