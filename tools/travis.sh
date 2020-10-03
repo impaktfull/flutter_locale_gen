@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ls -la
+echo $PATH
 
 ./flutter/bin/flutter packages get || exit -1;
 ./flutter/bin/flutter pub global activate dart_style || exit -1;
