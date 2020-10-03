@@ -20,8 +20,16 @@ before_script:
   - flutter config --no-analytics
   - flutter doctor
   - export FLUTTER_SDK=`pwd`/../flutter
-script:
-  - ./tools/travis.sh
+  - flutter packages get || exit -1;
+
+jobs:
+  include:
+    - stage: test
+      script: flutter test || exit -1;
+    - stage: analyze
+      script: flutter analyze || exit -1;
+    - stage: format
+      script: flutter pub global run dart_style:format -n --set-exit-if-changed . || exit -1;
 
 branches:
   only:
