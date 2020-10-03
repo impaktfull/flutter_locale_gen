@@ -22,7 +22,7 @@ before_script:
 
 jobs:
   include:
-    - stage: test
+    - stage: quality
       name: "Tests"
       script: flutter test || exit -1;
     - stage: quality
@@ -33,7 +33,6 @@ jobs:
       script: flutter pub global run dart_style:format -n --set-exit-if-changed . || exit -1;
 
 stages:
-  - test
   - quality
 
 branches:
