@@ -17,7 +17,8 @@ class TranslationWriter {
       return;
     }
     try {
-      final tmpSb = StringBuffer('  String ${CaseUtil.getCamelcase(key)}(');
+      final camelKey = CaseUtil.getCamelcase(key);
+      final tmpSb = StringBuffer('  String $camelKey(');
 
       final validMatcher = List<RegExpMatch>();
       allMatched.forEach((match) {
@@ -44,7 +45,7 @@ class TranslationWriter {
           tmpSb.write(', ');
         }
       });
-      tmpSb.write(") => _t('$key', args: [");
+      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: [');
       validMatcher.asMap().forEach((index, match) {
         if (index != 0) {
           tmpSb.write(', ');
@@ -68,12 +69,14 @@ class TranslationWriter {
       return 'num arg$index';
     }
     throw Exception(
-        'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
+        'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/icapps/flutter-icapps-translations/issues');
   }
 
   static void _buildDefaultFunction(StringBuffer sb, String key, String value) {
+    final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
-      ..writeln("  String get ${CaseUtil.getCamelcase(key)} => _t('$key');")
+      ..writeln(
+          '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
       ..writeln();
   }
 }

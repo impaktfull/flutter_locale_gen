@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0] - 2020-10-03
+### Refactor
+-Added support for the usage of this package in other once. Mainly because of icapps_translations
+### Added
+-Strict mode
+-Support for a multi module architecture 
+
+## [1.0.0] - 2020-03-28
+### Added
+-Localization keys support (better support for testing)
+### Breaking
+-isInTest => showLocalizationKeys
+ Behaviour is still the same.
+ 
 ## [0.2.0] - 2019-10-13
 ### Added
 -Test support
