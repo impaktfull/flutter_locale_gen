@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ./flutter/bin/flutter packages get
+./flutter/bin/flutter pub global activate dart_style
 
 #echo "ANALYZE"
 #./flutter/bin/flutter analyze
