@@ -3,6 +3,7 @@
 Dart tool that will convert your default locale json to dart code.
 
 [![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
+[![Build Status](https://travis-ci.org/vanlooverenkoen/locale_gen.svg?branch=master)](https://travis-ci.org/vanlooverenkoen/locale_gen)
 
 ## Example
 
