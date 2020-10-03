@@ -1,5 +1,12 @@
 #!/bin/bash
 
+./flutter/bin/flutter packages get
+
+cd example
+./flutter/bin/flutter packages get
+
+cd ..
+
 echo "ANALYZE"
 ./flutter/bin/flutter analyze
 
