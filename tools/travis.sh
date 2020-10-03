@@ -5,7 +5,10 @@ if [ "$#" == "0" ]; then
 fi
 
 pub upgrade || exit $?
-pub get  || exit $?
+
+cd example
+pub upgrade || exit $?
+cd ..
 
 EXIT_CODE=0
 
