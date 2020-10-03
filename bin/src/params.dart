@@ -1,13 +1,12 @@
 import 'package:yaml/yaml.dart';
 
-class Params {
-  static const localeGenYaml = 'locale_gen';
+class LocaleGenParams {
 
   String projectName;
   String defaultLanguage;
   List<String> languages;
 
-  Params(pubspecContent) {
+  LocaleGenParams(String programName, pubspecContent) {
     final doc = loadYaml(pubspecContent);
     projectName = doc['name'];
 
@@ -16,7 +15,7 @@ class Params {
           'Could not parse the pubspec.yaml, project name not found');
     }
 
-    final config = doc[localeGenYaml];
+    final config = doc[programName];
     if (config == null) {
       languages = ['en'];
       defaultLanguage = 'en';
@@ -27,7 +26,7 @@ class Params {
     if (yamlList == null || yamlList.isEmpty) {
       throw Exception(
           "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
-          '$localeGenYaml\n'
+          '$programName\n'
           "  languages: ['en']");
     }
 
@@ -35,7 +34,7 @@ class Params {
     if (languages == null || languages.isEmpty) {
       throw Exception(
           "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
-          '$localeGenYaml\n'
+          '$programName\n'
           "  languages: ['en']");
     }
 

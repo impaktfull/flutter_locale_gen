@@ -9,3 +9,7 @@
 **/packages
 **/pubspec.lock
 **/.packages
+**/.fvm/flutter_sdk
+example/.flutter-plugins
+**/.flutter-plugins-dependencies
+example/ios/Flutter/flutter_export_environment.sh

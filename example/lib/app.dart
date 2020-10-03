@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           home: HomeScreen(),
         ),
       ),
-      builder: (context) => kiwi.Container().resolve()..init(),
+      create: (context) => kiwi.Container().resolve()..init(),
     );
   }
 }
