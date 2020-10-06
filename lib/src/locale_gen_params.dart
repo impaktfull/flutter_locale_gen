@@ -6,11 +6,13 @@ import 'package:meta/meta.dart';
 
 final defaultOutputDir = join('lib', 'util', 'locale');
 final defaultAssetsDir = join('assets', 'locale');
+final defaultLocaleAssetsDir = join('assets', 'locale');
 
 class LocaleGenParams {
   final String programName;
   String outputDir = defaultOutputDir;
   String assetsDir = defaultAssetsDir;
+  String localeAssetsDir = defaultLocaleAssetsDir;
 
   String projectName;
   String defaultLanguage;
@@ -79,6 +81,11 @@ class LocaleGenParams {
     assetsDir ??= defaultAssetsDir;
     if (!assetsDir.endsWith('/')) {
       assetsDir += '/';
+    }
+    localeAssetsDir = config['locale_assets_path'];
+    localeAssetsDir ??= defaultLocaleAssetsDir;
+    if (!localeAssetsDir.endsWith('/')) {
+      localeAssetsDir += '/';
     }
   }
 }
