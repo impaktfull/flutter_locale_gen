@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.5] - 2020-10-06
+### Fixed
+-#24: error when using locale_asset_path in combination with the icapps_translations package
+
 ## [2.0.4] - 2020-10-03
 ### Fixed
 -Version bump packages
