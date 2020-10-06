@@ -12,7 +12,7 @@ class LocaleGenWriter {
 
   static void write(LocaleGenParams params) {
     final defaultTranslationFile = File(join(Directory.current.path,
-        params.assetsDir, '${params.defaultLanguage}.json'));
+        params.localeAssetsDir, '${params.defaultLanguage}.json'));
     if (!defaultTranslationFile.existsSync()) {
       throw Exception('${defaultTranslationFile.path} does not exists');
     }
