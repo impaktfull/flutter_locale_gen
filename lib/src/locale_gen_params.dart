@@ -13,6 +13,7 @@ class LocaleGenParams {
   String outputDir = defaultOutputDir;
   String assetsDir = defaultAssetsDir;
   String localeAssetsDir = defaultLocaleAssetsDir;
+  bool nullSafe = false;
 
   String projectName;
   String defaultLanguage;
@@ -87,5 +88,7 @@ class LocaleGenParams {
     if (!localeAssetsDir.endsWith('/')) {
       localeAssetsDir += '/';
     }
+
+    nullSafe = config['nullsafety'] == true;
   }
 }
