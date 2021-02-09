@@ -24,30 +24,31 @@ dev-dependencies:
 ### Add config to pubspec
 
 Add your locale folder to the assets to make use all your translations are loaded.
-```
+```yaml
 flutter:
   assets:
     - assets/locale/
 ```
 
 Add the local_gen config to generate your dart code from json files
-```
+```yaml
 locale_gen:
   default_language: 'nl'
   languages: ['en', 'nl']
-  locale_assets_path: 'assets/locale/' //This is the location where your json files should be saved.
-  assets_path: 'assets/locale/' //This is the location where your json files are located in your flutter app.
+  locale_assets_path: 'assets/locale/' #This is the location where your json files should be saved.
+  assets_path: 'assets/locale/' #This is the location where your json files are located in your flutter app.
+  nullsafety: true #Generate nullsafety compatible code. Defaults to false
 ```
 
 ### Run package with Flutter
 
-```
+```shell
 flutter packages pub run locale_gen
 ```
 
 ### Run package with Dart
 
-```
+```shell
 pub run locale_gen
 ```
 
@@ -74,7 +75,7 @@ fr 'I live in %2$s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't
 
 add this to you .bash_profile
 
-```
+```shell
 flutterlocalegen(){
  flutter packages get && flutter packages pub run locale_gen
 }
@@ -82,7 +83,7 @@ flutterlocalegen(){
 
 now you can use the locale_gen with a single command.
 
-```
+```shell
 flutterlocalegen
 ```
 
