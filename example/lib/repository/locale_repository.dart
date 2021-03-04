@@ -3,10 +3,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleRepository {
   static const STORE_LOCALE = 'locale';
+  static LocaleRepository? _instance;
 
-  LocaleRepository();
+  LocaleRepository._();
 
-  Future<void> setCustomLocale(Locale locale) async {
+  factory LocaleRepository() => _instance ??= LocaleRepository._();
+
+  Future<void> setCustomLocale(Locale? locale) async {
     final prefs = await SharedPreferences.getInstance();
     if (locale == null) {
       print('Reset custom locale. Use system language');
@@ -17,7 +20,7 @@ class LocaleRepository {
   }
 
   //can be null
-  Future<Locale> getCustomLocale() async {
+  Future<Locale?> getCustomLocale() async {
     final prefs = await SharedPreferences.getInstance();
     final localeCode = prefs.getString(STORE_LOCALE);
     if (localeCode == null || localeCode.isEmpty) return null;

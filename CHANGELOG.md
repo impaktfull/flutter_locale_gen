@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.0] - 2021-03-07
+### Added
+-#32 Nullsafety implementation. Support for flutter 2.0 & dart 2.12.0
+### Removed
+-#32 nullsafe flag is removed because from this version we are targeting 2.12 which will use nullsafety by default
+
 ## [2.1.0] - 2021-02-09
 ###
 -Added option to generate null safety compatible code 

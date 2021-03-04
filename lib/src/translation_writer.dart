@@ -6,13 +6,13 @@ class TranslationWriter {
   static const REGEX_TYPE_GROUP_INDEX = 2;
 
   static void buildTranslationFunction(
-      StringBuffer sb, String key, String value) {
+      StringBuffer sb, String key, String? value) {
     if (value == null || value.isEmpty) {
       _buildDefaultFunction(sb, key, value);
       return;
     }
     final allMatched = formatRegex.allMatches(value);
-    if (allMatched == null || allMatched.isEmpty) {
+    if (allMatched.isEmpty) {
       _buildDefaultFunction(sb, key, value);
       return;
     }
@@ -20,7 +20,7 @@ class TranslationWriter {
       final camelKey = CaseUtil.getCamelcase(key);
       final tmpSb = StringBuffer('  String $camelKey(');
 
-      final validMatcher = List<RegExpMatch>();
+      final validMatcher = <RegExpMatch>[];
       allMatched.forEach((match) {
         final sameTypeMatch = validMatcher.where((validMatch) =>
             validMatch.group(REGEX_INDEX_GROUP_INDEX) ==
@@ -72,7 +72,7 @@ class TranslationWriter {
         'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/icapps/flutter-icapps-translations/issues');
   }
 
-  static void _buildDefaultFunction(StringBuffer sb, String key, String value) {
+  static void _buildDefaultFunction(StringBuffer sb, String key, String? value) {
     final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(
