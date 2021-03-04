@@ -72,7 +72,8 @@ class TranslationWriter {
         'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/icapps/flutter-icapps-translations/issues');
   }
 
-  static void _buildDefaultFunction(StringBuffer sb, String key, String? value) {
+  static void _buildDefaultFunction(
+      StringBuffer sb, String key, String? value) {
     final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(

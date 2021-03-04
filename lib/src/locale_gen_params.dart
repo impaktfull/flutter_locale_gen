@@ -21,7 +21,8 @@ class LocaleGenParams {
   LocaleGenParams(this.programName) {
     final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
     if (!pubspecYaml.existsSync()) {
-      throw Exception('This program should be run from the root of a flutter/dart project');
+      throw Exception(
+          'This program should be run from the root of a flutter/dart project');
     }
 
     final pubspecContent = pubspecYaml.readAsStringSync();
@@ -30,7 +31,8 @@ class LocaleGenParams {
     final projectName = doc['name'];
 
     if (projectName == null || projectName.isEmpty) {
-      throw Exception('Could not parse the pubspec.yaml, project name not found');
+      throw Exception(
+          'Could not parse the pubspec.yaml, project name not found');
     }
 
     this.projectName = projectName;
@@ -47,14 +49,16 @@ class LocaleGenParams {
   void configure(YamlMap config) {
     final YamlList? yamlList = config['languages'];
     if (yamlList == null || yamlList.isEmpty) {
-      throw Exception("At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
+      throw Exception(
+          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$programName\n'
           "  languages: ['en']");
     }
 
     final languages = yamlList.map((item) => item.toString()).toList();
     if (languages.isEmpty) {
-      throw Exception("At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
+      throw Exception(
+          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$programName\n'
           "  languages: ['en']");
     }

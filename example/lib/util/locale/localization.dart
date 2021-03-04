@@ -10,16 +10,20 @@ import 'package:locale_gen_example/util/locale/localization_keys.dart';
 class Localization {
   Map<String, dynamic> _localisedValues = Map();
 
-  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+  static Localization of(BuildContext context) =>
+      Localizations.of<Localization>(context, Localization)!;
 
-  static Future<Localization> load(Locale locale, {bool showLocalizationKeys = false}) async {
+  static Future<Localization> load(Locale locale,
+      {bool showLocalizationKeys = false}) async {
     final localizations = Localization();
     if (showLocalizationKeys) {
       return localizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json');
+    final jsonContent = await rootBundle
+        .loadString('assets/locale/${locale.languageCode}.json');
     // ignore: avoid_as
-    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    localizations._localisedValues =
+        json.decode(jsonContent) as Map<String, dynamic>;
     return localizations;
   }
 
@@ -29,7 +33,9 @@ class Localization {
       var value = _localisedValues[key] as String;
       if (value == null) return '$key';
       if (args == null || args.isEmpty) return value;
-      args.asMap().forEach((index, arg) => value = _replaceWith(value, arg, index + 1));
+      args
+          .asMap()
+          .forEach((index, arg) => value = _replaceWith(value, arg, index + 1));
       return value;
     } catch (e) {
       return '⚠$key⚠';
@@ -52,10 +58,12 @@ class Localization {
 
   String testArg2(num arg1) => _t(LocalizationKeys.testArg2, args: [arg1]);
 
-  String testArg3(String arg1, num arg2) => _t(LocalizationKeys.testArg3, args: [arg1, arg2]);
+  String testArg3(String arg1, num arg2) =>
+      _t(LocalizationKeys.testArg3, args: [arg1, arg2]);
 
-  String testArg4(String arg1, num arg2) => _t(LocalizationKeys.testArg4, args: [arg1, arg2]);
+  String testArg4(String arg1, num arg2) =>
+      _t(LocalizationKeys.testArg4, args: [arg1, arg2]);
 
-  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? []);
-
+  String getTranslation(String key, {List<dynamic>? args}) =>
+      _t(key, args: args ?? []);
 }

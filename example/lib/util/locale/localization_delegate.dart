@@ -29,16 +29,17 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale locale) => supportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      supportedLanguages.contains(locale.languageCode);
 
   @override
   Future<Localization> load(Locale locale) async {
     final newActiveLocale = newLocale ?? locale;
     activeLocale = newActiveLocale;
-    return Localization.load(newActiveLocale, showLocalizationKeys: showLocalizationKeys);
+    return Localization.load(newActiveLocale,
+        showLocalizationKeys: showLocalizationKeys);
   }
 
   @override
   bool shouldReload(LocalizationsDelegate<Localization> old) => true;
-
 }
