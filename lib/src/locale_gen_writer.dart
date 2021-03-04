@@ -58,8 +58,6 @@ class LocaleGenWriter {
 
   static void _createLocalizationFile(
       LocaleGenParams params, Map<String, dynamic> translations) {
-    final nullableInfix = params.nullSafe ? '?' : '';
-    final forceNonNullPostfix = params.nullSafe ? '!' : '';
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
       ..writeln()
@@ -77,7 +75,7 @@ class LocaleGenWriter {
       ..writeln('  Map<String, dynamic> _localisedValues = Map();')
       ..writeln()
       ..writeln(
-          '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)$forceNonNullPostfix;')
+          '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
       ..writeln()
       ..writeln(
           '  static Future<Localization> load(Locale locale, {bool showLocalizationKeys = false}) async {')
@@ -93,7 +91,7 @@ class LocaleGenWriter {
       ..writeln('    return localizations;')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  String _t(String key, {List<dynamic>$nullableInfix args}) {')
+      ..writeln('  String _t(String key, {List<dynamic>? args}) {')
       ..writeln('    try {')
       ..writeln('      // ignore: avoid_as')
       ..writeln('      var value = _localisedValues[key] as String;')
@@ -121,7 +119,7 @@ class LocaleGenWriter {
         TranslationWriter.buildTranslationFunction(sb, key, value));
     sb
       ..writeln(
-          '  String getTranslation(String key, {List<dynamic>$nullableInfix args}) => _t(key, args: args ?? []);')
+          '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? []);')
       ..writeln()
       ..writeln('}');
 
@@ -137,8 +135,6 @@ class LocaleGenWriter {
   }
 
   static void _createLocalizationDelegateFile(LocaleGenParams params) {
-    final nullableFieldInfix = params.nullSafe ? '?' : '';
-
     final sb = StringBuffer()
       ..writeln("import 'dart:async';")
       ..writeln()
@@ -166,19 +162,15 @@ class LocaleGenWriter {
     sb
       ..writeln('  ];')
       ..writeln()
-      ..writeln('  Locale$nullableFieldInfix newLocale;')
-      ..writeln('  Locale$nullableFieldInfix activeLocale;')
+      ..writeln('  Locale? newLocale;')
+      ..writeln('  Locale? activeLocale;')
       ..writeln('  bool showLocalizationKeys;')
       ..writeln()
       ..writeln(
           '  LocalizationDelegate({this.newLocale, this.showLocalizationKeys = false}) {')
       ..writeln('    if (newLocale != null) {')
       ..writeln('      activeLocale = newLocale;')
-      ..writeln('    }');
-    if (!params.nullSafe) {
-      sb.writeln('    showLocalizationKeys ??= false;');
-    }
-    sb
+      ..writeln('    }')
       ..writeln('  }')
       ..writeln()
       ..writeln('  @override')

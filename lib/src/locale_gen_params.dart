@@ -10,14 +10,13 @@ final defaultLocaleAssetsDir = join('assets', 'locale');
 
 class LocaleGenParams {
   final String programName;
-  String outputDir = defaultOutputDir;
+  String? outputDir = defaultOutputDir;
   String assetsDir = defaultAssetsDir;
   String localeAssetsDir = defaultLocaleAssetsDir;
-  bool nullSafe = false;
 
-  String projectName;
-  String defaultLanguage;
-  List<String> languages;
+  late String projectName;
+  late String defaultLanguage;
+  late List<String> languages;
 
   LocaleGenParams(this.programName) {
     final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
@@ -29,13 +28,14 @@ class LocaleGenParams {
     final pubspecContent = pubspecYaml.readAsStringSync();
 
     final doc = loadYaml(pubspecContent);
-    projectName = doc['name'];
+    final projectName = doc['name'];
 
     if (projectName == null || projectName.isEmpty) {
       throw Exception(
           'Could not parse the pubspec.yaml, project name not found');
     }
 
+    this.projectName = projectName;
     final config = doc[programName];
     if (config == null) {
       languages = ['en'];
@@ -47,7 +47,7 @@ class LocaleGenParams {
 
   @mustCallSuper
   void configure(YamlMap config) {
-    final YamlList yamlList = config['languages'];
+    final YamlList? yamlList = config['languages'];
     if (yamlList == null || yamlList.isEmpty) {
       throw Exception(
           "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
@@ -55,15 +55,15 @@ class LocaleGenParams {
           "  languages: ['en']");
     }
 
-    languages = yamlList.map((item) => item.toString()).toList();
-    if (languages == null || languages.isEmpty) {
+    final languages = yamlList.map((item) => item.toString()).toList();
+    if (languages.isEmpty) {
       throw Exception(
           "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
           '$programName\n'
           "  languages: ['en']");
     }
 
-    defaultLanguage = config['default_language'];
+    var defaultLanguage = config['default_language'];
     if (defaultLanguage == null) {
       if (languages.contains('en')) {
         defaultLanguage = 'en';
@@ -78,17 +78,20 @@ class LocaleGenParams {
 
     outputDir ??= defaultOutputDir;
 
-    assetsDir = config['assets_path'];
+    var assetsDir = config['assets_path'];
     assetsDir ??= defaultAssetsDir;
     if (!assetsDir.endsWith('/')) {
       assetsDir += '/';
     }
-    localeAssetsDir = config['locale_assets_path'];
+    var localeAssetsDir = config['locale_assets_path'];
     localeAssetsDir ??= defaultLocaleAssetsDir;
     if (!localeAssetsDir.endsWith('/')) {
       localeAssetsDir += '/';
     }
 
-    nullSafe = config['nullsafety'] == true;
+    this.localeAssetsDir = localeAssetsDir;
+    this.assetsDir = assetsDir;
+    this.languages = languages;
+    this.defaultLanguage = defaultLanguage;
   }
 }

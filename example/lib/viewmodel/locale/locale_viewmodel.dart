@@ -32,7 +32,7 @@ class LocaleViewModel with ChangeNotifier {
     await _onUpdateLocaleClicked(null);
   }
 
-  Future<void> _onUpdateLocaleClicked(Locale locale) async {
+  Future<void> _onUpdateLocaleClicked(Locale? locale) async {
     await _localeRepository.setCustomLocale(locale);
     localeDelegate = LocalizationDelegate(newLocale: locale);
     notifyListeners();

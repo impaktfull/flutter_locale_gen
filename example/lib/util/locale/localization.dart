@@ -11,7 +11,7 @@ class Localization {
   Map<String, dynamic> _localisedValues = Map();
 
   static Localization of(BuildContext context) =>
-      Localizations.of<Localization>(context, Localization);
+      Localizations.of<Localization>(context, Localization)!;
 
   static Future<Localization> load(Locale locale,
       {bool showLocalizationKeys = false}) async {
@@ -27,7 +27,7 @@ class Localization {
     return localizations;
   }
 
-  String _t(String key, {List<dynamic> args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       // ignore: avoid_as
       var value = _localisedValues[key] as String;
@@ -64,6 +64,6 @@ class Localization {
   String testArg4(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg4, args: [arg1, arg2]);
 
-  String getTranslation(String key, {List<dynamic> args}) =>
-      _t(key, args: args ?? List());
+  String getTranslation(String key, {List<dynamic>? args}) =>
+      _t(key, args: args ?? []);
 }

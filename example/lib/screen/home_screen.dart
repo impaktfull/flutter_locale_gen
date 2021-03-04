@@ -14,17 +14,17 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FlatButton(
+            MaterialButton(
               child: const Text('System Language (Not translated)'),
               onPressed: Provider.of<LocaleViewModel>(context)
                   .onSwitchToSystemLanguage,
             ),
-            FlatButton(
+            MaterialButton(
               child: const Text('English (Not translated)'),
               onPressed:
                   Provider.of<LocaleViewModel>(context).onSwitchToEnglish,
             ),
-            FlatButton(
+            MaterialButton(
               child: const Text('Nederlands (Not translated)'),
               onPressed: Provider.of<LocaleViewModel>(context).onSwitchToDutch,
             ),
