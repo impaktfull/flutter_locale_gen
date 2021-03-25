@@ -21,22 +21,20 @@ class Localization {
     }
     final jsonContent = await rootBundle
         .loadString('assets/locale/${locale.languageCode}.json');
-    // ignore: avoid_as
     localizations._localisedValues =
-        json.decode(jsonContent) as Map<String, dynamic>;
+        json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
     try {
-      // ignore: avoid_as
-      var value = _localisedValues[key] as String;
+      final value = _localisedValues[key] as String?; // ignore: avoid_as
       if (value == null) return '$key';
       if (args == null || args.isEmpty) return value;
-      args
-          .asMap()
-          .forEach((index, arg) => value = _replaceWith(value, arg, index + 1));
-      return value;
+      var newValue = value;
+      args.asMap().forEach(
+          (index, arg) => newValue = _replaceWith(newValue, arg, index + 1));
+      return newValue;
     } catch (e) {
       return '⚠$key⚠';
     }

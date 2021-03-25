@@ -85,21 +85,21 @@ class LocaleGenWriter {
       ..writeln('    }')
       ..writeln(
           "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.languageCode}.json');")
-      ..writeln('    // ignore: avoid_as')
       ..writeln(
-          '    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;')
+          '    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as')
       ..writeln('    return localizations;')
       ..writeln('  }')
       ..writeln()
       ..writeln('  String _t(String key, {List<dynamic>? args}) {')
       ..writeln('    try {')
-      ..writeln('      // ignore: avoid_as')
-      ..writeln('      var value = _localisedValues[key] as String;')
+      ..writeln(
+          '      final value = _localisedValues[key] as String?; // ignore: avoid_as')
       ..writeln("      if (value == null) return '\$key';")
       ..writeln('      if (args == null || args.isEmpty) return value;')
+      ..writeln('      var newValue = value;')
       ..writeln(
-          '      args.asMap().forEach((index, arg) => value = _replaceWith(value, arg, index + 1));')
-      ..writeln('      return value;')
+          '      args.asMap().forEach((index, arg) => newValue = _replaceWith(newValue, arg, index + 1));')
+      ..writeln('      return newValue;')
       ..writeln('    } catch (e) {')
       ..writeln("      return '⚠\$key⚠';")
       ..writeln('    }')
@@ -147,20 +147,36 @@ class LocaleGenWriter {
       ..writeln('//THIS FILE IS AUTO GENERATED. DO NOT EDIT//')
       ..writeln(
           '//============================================================//')
+      ..writeln()
+      ..writeln('typedef LocaleFilter = bool Function(String languageCode);')
+      ..writeln()
       ..writeln(
           'class LocalizationDelegate extends LocalizationsDelegate<Localization> {')
+      ..writeln('    static LocaleFilter? localeFilter;')
       ..writeln(
           "  static const defaultLocale = Locale('${params.defaultLanguage}');")
-      ..writeln('  static const supportedLanguages = [');
+      ..writeln('  static const _supportedLanguages = [');
     params.languages.forEach((language) => sb.writeln("    '$language',"));
     sb
       ..writeln('  ];')
       ..writeln()
-      ..writeln('  static const supportedLocales = [');
+      ..writeln('  static const _supportedLocales = [');
     params.languages
         .forEach((language) => sb.writeln("    Locale('$language'),"));
     sb
       ..writeln('  ];')
+      ..writeln()
+      ..writeln('  static List<String> get supportedLanguages {')
+      ..writeln('    if (localeFilter == null) return _supportedLanguages;')
+      ..writeln(
+          '    return _supportedLanguages.where((element) => localeFilter?.call(element) ?? true).toList();')
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  static List<Locale> get supportedLocales {')
+      ..writeln('    if (localeFilter == null) return _supportedLocales;')
+      ..writeln(
+          '    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();')
+      ..writeln('  }')
       ..writeln()
       ..writeln('  Locale? newLocale;')
       ..writeln('  Locale? activeLocale;')
@@ -188,7 +204,6 @@ class LocaleGenWriter {
       ..writeln('  @override')
       ..writeln(
           '  bool shouldReload(LocalizationsDelegate<Localization> old) => true;')
-      ..writeln()
       ..writeln('}');
 
     // Write to file

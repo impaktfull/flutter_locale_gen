@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.0] - 2021-03-25
+### Added
+-#34 Support for skipping a locale at runtime. example: only use dutch in alpha but not in beta & production
+
 ## [3.0.0] - 2021-03-07
 ### Added
 -#32 Nullsafety implementation. Support for flutter 2.0 & dart 2.12.0

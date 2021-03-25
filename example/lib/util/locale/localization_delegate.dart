@@ -6,17 +6,35 @@ import 'package:locale_gen_example/util/locale/localization.dart';
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
 class LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  static LocaleFilter? localeFilter;
   static const defaultLocale = Locale('en');
-  static const supportedLanguages = [
+  static const _supportedLanguages = [
     'en',
     'nl',
   ];
 
-  static const supportedLocales = [
+  static const _supportedLocales = [
     Locale('en'),
     Locale('nl'),
   ];
+
+  static List<String> get supportedLanguages {
+    if (localeFilter == null) return _supportedLanguages;
+    return _supportedLanguages
+        .where((element) => localeFilter?.call(element) ?? true)
+        .toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales
+        .where((element) => localeFilter?.call(element.languageCode) ?? true)
+        .toList();
+  }
 
   Locale? newLocale;
   Locale? activeLocale;
