@@ -1,5 +1,5 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:locale_gen/src/translation_writer.dart';
-import 'package:test/test.dart';
 
 void main() {
   group('Tests without arguments', () {
