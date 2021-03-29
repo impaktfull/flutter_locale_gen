@@ -50,15 +50,40 @@ class Localization {
     return value;
   }
 
+  /// Translations:
+  ///
+  /// en:  **'Testing in English'**
+  ///
+  /// nl:  **'Test in het Nederlands'**
   String get test => _t(LocalizationKeys.test);
 
+  /// Translations:
+  ///
+  /// en:  **'Testing argument %1$s'**
+  ///
+  /// nl:  **'Test argument %1$s'**
   String testArg1(String arg1) => _t(LocalizationKeys.testArg1, args: [arg1]);
 
+  /// Translations:
+  ///
+  /// en:  **'Testing argument %1$d'**
+  ///
+  /// nl:  **'Test argument %1$d'**
   String testArg2(num arg1) => _t(LocalizationKeys.testArg2, args: [arg1]);
 
+  /// Translations:
+  ///
+  /// en:  **'Testing argument %1$s %2$d'**
+  ///
+  /// nl:  **'Test argument %1$s %2$d'**
   String testArg3(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg3, args: [arg1, arg2]);
 
+  /// Translations:
+  ///
+  /// en:  **'Testing argument %1$s %2$d %1$s'**
+  ///
+  /// nl:  **'Test argument %1$s %2$d %1$s'**
   String testArg4(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg4, args: [arg1, arg2]);
 

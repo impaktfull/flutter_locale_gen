@@ -8,12 +8,12 @@ class TranslationWriter {
   static void buildTranslationFunction(
       StringBuffer sb, String key, String? value) {
     if (value == null || value.isEmpty) {
-      _buildDefaultFunction(sb, key, value);
+      _buildDefaultFunction(sb, key);
       return;
     }
     final allMatched = formatRegex.allMatches(value);
     if (allMatched.isEmpty) {
-      _buildDefaultFunction(sb, key, value);
+      _buildDefaultFunction(sb, key);
       return;
     }
     try {
@@ -56,7 +56,7 @@ class TranslationWriter {
       sb.write(tmpSb.toString());
     } on Exception catch (e) {
       print(e);
-      _buildDefaultFunction(sb, key, value);
+      _buildDefaultFunction(sb, key);
     }
   }
 
@@ -72,12 +72,26 @@ class TranslationWriter {
         'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/icapps/flutter-icapps-translations/issues');
   }
 
-  static void _buildDefaultFunction(
-      StringBuffer sb, String key, String? value) {
+  static void _buildDefaultFunction(StringBuffer sb, String key) {
     final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(
           '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
       ..writeln();
+  }
+
+  static void buildDocumentation(StringBuffer sb, String key,
+      Map<String, Map<String, dynamic>> translations) {
+    sb.writeln('  /// Translations:');
+    translations.forEach((language, values) {
+      final langugeFormatted = '$language:'.padRight(4, ' ');
+      final value = values[key];
+      sb.writeln('  ///');
+      if (value == null) {
+        sb.writeln("  /// $langugeFormatted **''**");
+      } else {
+        sb.writeln("  /// $langugeFormatted **'$value'**");
+      }
+    });
   }
 }
