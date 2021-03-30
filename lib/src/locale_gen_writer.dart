@@ -59,7 +59,8 @@ class LocaleGenWriter {
       ..writeln('class LocalizationKeys {')
       ..writeln();
     defaultTranslations.forEach((key, value) {
-      TranslationWriter.buildDocumentation(sb, key, allTranslations);
+      TranslationWriter.buildDocumentation(
+          sb, key, allTranslations, params.docLanguages);
       final correctKey = CaseUtil.getCamelcase(key);
       sb..writeln('  static const $correctKey = \'$key\';')..writeln();
     });
@@ -138,7 +139,8 @@ class LocaleGenWriter {
       ..writeln('  }')
       ..writeln();
     defaultTranslations.forEach((key, value) {
-      TranslationWriter.buildDocumentation(sb, key, allTranslations);
+      TranslationWriter.buildDocumentation(
+          sb, key, allTranslations, params.docLanguages);
       TranslationWriter.buildTranslationFunction(sb, key, value);
     });
     sb

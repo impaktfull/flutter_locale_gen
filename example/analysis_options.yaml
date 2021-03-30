@@ -6,7 +6,6 @@ analyzer:
     sdk_version_async_exported_from_core: ignore
   exclude:
     - '**.g.dart'
-    - 'lib/util/locale/**'
 
 linter:
   rules:

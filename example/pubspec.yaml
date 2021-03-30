@@ -27,3 +27,4 @@ locale_gen:
   languages: ['en','nl']
 #  locale_assets_path: 'assets/localization'
 #  assets_path: 'assets/localization'
+#  doc_languages: ['en']
