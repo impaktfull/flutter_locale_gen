@@ -45,7 +45,7 @@ class TranslationWriter {
           tmpSb.write(', ');
         }
       });
-      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: [');
+      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: <dynamic>[');
       validMatcher.asMap().forEach((index, match) {
         if (index != 0) {
           tmpSb.write(', ');

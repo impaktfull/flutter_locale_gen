@@ -95,7 +95,8 @@ class LocaleGenWriter {
       ..writeln(
           '//============================================================//')
       ..writeln('class Localization {')
-      ..writeln('  Map<String, dynamic> _localisedValues = Map();')
+      ..writeln(
+          '  Map<String, dynamic> _localisedValues = <String, dynamic>{};')
       ..writeln()
       ..writeln(
           '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
@@ -121,14 +122,15 @@ class LocaleGenWriter {
       ..writeln('      if (args == null || args.isEmpty) return value;')
       ..writeln('      var newValue = value;')
       ..writeln(
-          '      args.asMap().forEach((index, arg) => newValue = _replaceWith(newValue, arg, index + 1));')
+          '      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1)); // ignore: avoid_annotating_with_dynamic')
       ..writeln('      return newValue;')
       ..writeln('    } catch (e) {')
       ..writeln("      return '⚠\$key⚠';")
       ..writeln('    }')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  String _replaceWith(String value, arg, argIndex) {')
+      ..writeln(
+          '  String _replaceWith(String value, Object? arg, int argIndex) {')
       ..writeln('    if (arg == null) return value;')
       ..writeln('    if (arg is String) {')
       ..writeln("      return value.replaceAll('%\$argIndex\\\$s', arg);")
@@ -145,7 +147,7 @@ class LocaleGenWriter {
     });
     sb
       ..writeln(
-          '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? []);')
+          '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
       ..writeln()
       ..writeln('}');
 
@@ -178,7 +180,7 @@ class LocaleGenWriter {
       ..writeln()
       ..writeln(
           'class LocalizationDelegate extends LocalizationsDelegate<Localization> {')
-      ..writeln('    static LocaleFilter? localeFilter;')
+      ..writeln('  static LocaleFilter? localeFilter;')
       ..writeln(
           "  static const defaultLocale = Locale('${params.defaultLanguage}');")
       ..writeln('  static const _supportedLanguages = [');
