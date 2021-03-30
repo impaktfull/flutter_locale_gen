@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0] - 2021-03-30
+### Added
+-#42 Migrated strict mode code
+-#42 Generate strict mode code
+-#36 Added support generating documentation so you can see translations in your IDE
+-#37 Added config option to configure which languages should be used for generating documentation code
+
 ## [3.1.0] - 2021-03-25
 ### Added
 -#34 Support for skipping a locale at runtime. example: only use dutch in alpha but not in beta & production
