@@ -80,18 +80,22 @@ class TranslationWriter {
       ..writeln();
   }
 
-  static void buildDocumentation(StringBuffer sb, String key,
-      Map<String, Map<String, dynamic>> translations) {
+  static void buildDocumentation(
+      StringBuffer sb,
+      String key,
+      Map<String, Map<String, dynamic>> translations,
+      List<String> includedLanguages) {
+    if (includedLanguages.isEmpty) return;
+
     sb.writeln('  /// Translations:');
-    translations.forEach((language, values) {
-      final langugeFormatted = '$language:'.padRight(4, ' ');
+    includedLanguages.forEach((language) {
+      final values = translations[language];
+      if (values == null) return;
+      final languageFormatted = '$language:'.padRight(4, ' ');
       final value = values[key];
-      sb.writeln('  ///');
-      if (value == null) {
-        sb.writeln("  /// $langugeFormatted **''**");
-      } else {
-        sb.writeln("  /// $langugeFormatted **'$value'**");
-      }
+      sb
+        ..writeln('  ///')
+        ..writeln("  /// $languageFormatted **'${value ?? ''}'**");
     });
   }
 }

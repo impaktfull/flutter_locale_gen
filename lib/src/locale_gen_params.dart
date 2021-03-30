@@ -17,8 +17,9 @@ class LocaleGenParams {
   late String projectName;
   late String defaultLanguage;
   late List<String> languages;
+  late List<String> docLanguages;
 
-  LocaleGenParams(this.programName) {
+  factory LocaleGenParams(String programName) {
     final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
     if (!pubspecYaml.existsSync()) {
       throw Exception(
@@ -26,7 +27,10 @@ class LocaleGenParams {
     }
 
     final pubspecContent = pubspecYaml.readAsStringSync();
+    return LocaleGenParams.fromYamlString(programName, pubspecContent);
+  }
 
+  LocaleGenParams.fromYamlString(this.programName, String pubspecContent) {
     final doc = loadYaml(pubspecContent);
     final projectName = doc['name'];
 
@@ -40,6 +44,7 @@ class LocaleGenParams {
     if (config == null) {
       languages = ['en'];
       defaultLanguage = 'en';
+      docLanguages = languages;
       return;
     }
     configure(config);
@@ -55,12 +60,13 @@ class LocaleGenParams {
           "  languages: ['en']");
     }
 
-    final languages = yamlList.map((item) => item.toString()).toList();
-    if (languages.isEmpty) {
-      throw Exception(
-          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
-          '$programName\n'
-          "  languages: ['en']");
+    final languages =
+        yamlList.map((item) => item.toString()).toList(growable: false);
+
+    final YamlList? docLanguageList = config['doc_languages'];
+    List<String>? docLanguages;
+    if (docLanguageList != null) {
+      docLanguages = docLanguageList.map((item) => item.toString()).toList();
     }
 
     var defaultLanguage = config['default_language'];
@@ -93,5 +99,13 @@ class LocaleGenParams {
     this.assetsDir = assetsDir;
     this.languages = languages;
     this.defaultLanguage = defaultLanguage;
+    this.docLanguages = docLanguages ?? languages;
+
+    final different =
+        this.docLanguages.where((language) => !languages.contains(language));
+    if (different.isNotEmpty) {
+      throw Exception(
+          '$different is defined in doc_languages but they are not found in the supported languages');
+    }
   }
 }

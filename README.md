@@ -37,7 +37,7 @@ locale_gen:
   languages: ['en', 'nl']
   locale_assets_path: 'assets/locale/' #This is the location where your json files should be saved.
   assets_path: 'assets/locale/' #This is the location where your json files are located in your flutter app.
-  nullsafety: true #Generate nullsafety compatible code. Defaults to false
+  doc_languages: ['en'] #Only generate docs for the given languages. Defaults to all languages. An empty list will skip doc generation
 ```
 
 ### Run package with Flutter

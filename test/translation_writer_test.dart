@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:locale_gen/src/translation_writer.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('buildTranslationFunction', () {
@@ -181,9 +181,14 @@ void main() {
     group('Tests without languages', () {
       test('Test null translations', () {
         final sb = StringBuffer();
-        TranslationWriter.buildDocumentation(sb, 'app_title', {});
+        TranslationWriter.buildDocumentation(sb, 'app_title', {}, ['en']);
         expect(sb.toString(), equals('''  /// Translations:
 '''));
+      });
+      test('Test without doc languages', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildDocumentation(sb, 'app_title', {}, []);
+        expect(sb.toString().length, 0);
       });
       test('Test with translations', () {
         final sb = StringBuffer();
@@ -191,10 +196,49 @@ void main() {
           'nl': {'app_title': 'Hallo'},
           'en': {'app_title': 'Hello'},
           'fr': {'app_title': 'Bonjour'},
-        });
+        }, [
+          'nl',
+          'en',
+          'fr'
+        ]);
         expect(sb.toString(), equals('''  /// Translations:
   ///
   /// nl:  **'Hallo'**
+  ///
+  /// en:  **'Hello'**
+  ///
+  /// fr:  **'Bonjour'**
+'''));
+      });
+      test('Test with translations sub-set', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildDocumentation(sb, 'app_title', {
+          'nl': {'app_title': 'Hallo'},
+          'en': {'app_title': 'Hello'},
+          'fr': {'app_title': 'Bonjour'},
+        }, [
+          'en',
+          'fr'
+        ]);
+        expect(sb.toString(), equals('''  /// Translations:
+  ///
+  /// en:  **'Hello'**
+  ///
+  /// fr:  **'Bonjour'**
+'''));
+      });
+      test('Test with translations sub-set unknown', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildDocumentation(sb, 'app_title', {
+          'nl': {'app_title': 'Hallo'},
+          'en': {'app_title': 'Hello'},
+          'fr': {'app_title': 'Bonjour'},
+        }, [
+          'en',
+          'fr',
+          'de'
+        ]);
+        expect(sb.toString(), equals('''  /// Translations:
   ///
   /// en:  **'Hello'**
   ///
