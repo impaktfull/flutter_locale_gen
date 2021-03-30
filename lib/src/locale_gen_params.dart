@@ -60,13 +60,8 @@ class LocaleGenParams {
           "  languages: ['en']");
     }
 
-    final languages = yamlList.map((item) => item.toString()).toList();
-    if (languages.isEmpty) {
-      throw Exception(
-          "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
-          '$programName\n'
-          "  languages: ['en']");
-    }
+    final languages =
+        yamlList.map((item) => item.toString()).toList(growable: false);
 
     final YamlList? docLanguageList = config['doc_languages'];
     List<String>? docLanguages;

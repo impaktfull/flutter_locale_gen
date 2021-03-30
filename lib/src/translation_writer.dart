@@ -90,16 +90,12 @@ class TranslationWriter {
     sb.writeln('  /// Translations:');
     includedLanguages.forEach((language) {
       final values = translations[language];
-      if (values != null) {
-        final languageFormatted = '$language:'.padRight(4, ' ');
-        final value = values[key];
-        sb.writeln('  ///');
-        if (value == null) {
-          sb.writeln("  /// $languageFormatted **''**");
-        } else {
-          sb.writeln("  /// $languageFormatted **'$value'**");
-        }
-      }
+      if (values == null) return;
+      final languageFormatted = '$language:'.padRight(4, ' ');
+      final value = values[key];
+      sb
+        ..writeln('  ///')
+        ..writeln("  /// $languageFormatted **'${value ?? ''}'**");
     });
   }
 }
