@@ -33,8 +33,8 @@ class Localization {
       if (args == null || args.isEmpty) return value;
       var newValue = value;
       // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(
-          newValue, arg, index + 1));
+      args.asMap().forEach((index, dynamic arg) =>
+          newValue = _replaceWith(newValue, arg, index + 1));
       return newValue;
     } catch (e) {
       return '⚠$key⚠';
