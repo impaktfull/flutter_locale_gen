@@ -93,9 +93,10 @@ class TranslationWriter {
       if (values == null) return;
       final languageFormatted = '$language:'.padRight(4, ' ');
       final value = values[key];
+      final formattedNewLines = value?.toString().replaceAll('\n', '\\n');
       sb
         ..writeln('  ///')
-        ..writeln("  /// $languageFormatted **'${value ?? ''}'**");
+        ..writeln("  /// $languageFormatted **'${formattedNewLines ?? ''}'**");
     });
   }
 }

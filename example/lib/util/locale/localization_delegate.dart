@@ -24,16 +24,12 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   static List<String> get supportedLanguages {
     if (localeFilter == null) return _supportedLanguages;
-    return _supportedLanguages
-        .where((element) => localeFilter?.call(element) ?? true)
-        .toList();
+    return _supportedLanguages.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
   static List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales
-        .where((element) => localeFilter?.call(element.languageCode) ?? true)
-        .toList();
+    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();
   }
 
   Locale? newLocale;
@@ -47,15 +43,13 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      supportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.languageCode);
 
   @override
   Future<Localization> load(Locale locale) async {
     final newActiveLocale = newLocale ?? locale;
     activeLocale = newActiveLocale;
-    return Localization.load(newActiveLocale,
-        showLocalizationKeys: showLocalizationKeys);
+    return Localization.load(newActiveLocale, showLocalizationKeys: showLocalizationKeys);
   }
 
   @override
