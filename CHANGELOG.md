@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.1] - 2021-03-30
+### Fixed
+- #43 Newline documentation issue
+
 ## [3.2.0] - 2021-03-30
 ### Added
 - #42 Migrated strict mode code

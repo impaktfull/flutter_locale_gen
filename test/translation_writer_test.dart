@@ -245,6 +245,38 @@ void main() {
   /// fr:  **'Bonjour'**
 '''));
       });
+      test('Test with translations with multi lines with \n', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildDocumentation(sb, 'app_title', {
+          'nl': {'app_title': 'Hallo\nAlles Goed'},
+          'en': {'app_title': 'Hi There\nEverything alright'},
+        }, [
+          'nl',
+          'en',
+        ]);
+        expect(sb.toString(), equals('''  /// Translations:
+  ///
+  /// nl:  **'Hallo\\nAlles Goed'**
+  ///
+  /// en:  **'Hi There\\nEverything alright'**
+'''));
+      });
+      test('Test with translations with double multi lines with \n', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildDocumentation(sb, 'app_title', {
+          'nl': {'app_title': 'Hallo\n\nAlles goed'},
+          'en': {'app_title': 'Hi There\n\nEverything alright'},
+        }, [
+          'nl',
+          'en',
+        ]);
+        expect(sb.toString(), equals('''  /// Translations:
+  ///
+  /// nl:  **'Hallo\\n\\nAlles goed'**
+  ///
+  /// en:  **'Hi There\\n\\nEverything alright'**
+'''));
+      });
     });
   });
 }

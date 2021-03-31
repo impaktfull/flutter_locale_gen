@@ -90,6 +90,14 @@ class Localization {
   String testArg4(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
+  /// Translations:
+  ///
+  /// en:  **'Testing\nargument\n\n%1$s %2$d %1$s'**
+  ///
+  /// nl:  **'Test\nargument\n\n%1$s %2$d %1$s'**
+  String testNewLine(String arg1, num arg2) =>
+      _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
+
   String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
 }
