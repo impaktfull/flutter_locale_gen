@@ -2,7 +2,6 @@
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
-
   /// Translations:
   ///
   /// en:  **'Testing in English'**
@@ -44,5 +43,4 @@ class LocalizationKeys {
   ///
   /// nl:  **'Test\nargument\n\n%1$s %2$d %1$s'**
   static const testNewLine = 'test_new_line';
-
 }
