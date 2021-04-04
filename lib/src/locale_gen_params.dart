@@ -10,8 +10,8 @@ final defaultLocaleAssetsDir = join('assets', 'locale');
 
 class LocaleGenParams {
   final String programName;
-  String? outputDir = defaultOutputDir;
-  String assetsDir = defaultAssetsDir;
+  String? outputDir = '$defaultOutputDir/';
+  String assetsDir = '$defaultAssetsDir/';
   String localeAssetsDir = defaultLocaleAssetsDir;
 
   late String projectName;
@@ -96,7 +96,7 @@ class LocaleGenParams {
     }
 
     this.localeAssetsDir = localeAssetsDir;
-    this.assetsDir = assetsDir;
+    assetsDir = assetsDir;
     this.languages = languages;
     this.defaultLanguage = defaultLanguage;
     this.docLanguages = docLanguages ?? languages;
