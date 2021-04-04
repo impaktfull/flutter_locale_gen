@@ -96,7 +96,7 @@ class LocaleGenParams {
     }
 
     this.localeAssetsDir = localeAssetsDir;
-    assetsDir = assetsDir;
+    this.assetsDir = assetsDir;
     this.languages = languages;
     this.defaultLanguage = defaultLanguage;
     this.docLanguages = docLanguages ?? languages;
