@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0] - 2021-04-07
+### Added
+- #48 useCaching configuration for fetching the json translation files
+
+### Fixed
+- #46 default path variables (asset dir, local asset dir, output dir)
+
 ## [3.2.1] - 2021-03-30
 ### Fixed
 - #43 Newline documentation issue
