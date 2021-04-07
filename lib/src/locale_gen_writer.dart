@@ -102,13 +102,13 @@ class LocaleGenWriter {
           '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
       ..writeln()
       ..writeln(
-          '  static Future<Localization> load(Locale locale, {bool showLocalizationKeys = false}) async {')
+          '  static Future<Localization> load(Locale locale, {bool showLocalizationKeys = false, bool useCaching = true}) async {')
       ..writeln('    final localizations = Localization();')
       ..writeln('    if (showLocalizationKeys) {')
       ..writeln('      return localizations;')
       ..writeln('    }')
       ..writeln(
-          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.languageCode}.json');")
+          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.languageCode}.json', cache: useCaching);")
       ..writeln(
           '    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as')
       ..writeln('    return localizations;')
@@ -167,6 +167,7 @@ class LocaleGenWriter {
     final sb = StringBuffer()
       ..writeln("import 'dart:async';")
       ..writeln()
+      ..writeln("import 'package:flutter/foundation.dart';")
       ..writeln("import 'package:flutter/material.dart';")
       ..writeln(
           "import 'package:${params.projectName}/util/locale/localization.dart';")
@@ -209,10 +210,11 @@ class LocaleGenWriter {
       ..writeln()
       ..writeln('  Locale? newLocale;')
       ..writeln('  Locale? activeLocale;')
+      ..writeln('  final bool useCaching;')
       ..writeln('  bool showLocalizationKeys;')
       ..writeln()
       ..writeln(
-          '  LocalizationDelegate({this.newLocale, this.showLocalizationKeys = false}) {')
+          '  LocalizationDelegate({this.newLocale, this.showLocalizationKeys = false, this.useCaching = !kDebugMode}) {')
       ..writeln('    if (newLocale != null) {')
       ..writeln('      activeLocale = newLocale;')
       ..writeln('    }')
@@ -227,7 +229,7 @@ class LocaleGenWriter {
       ..writeln('    final newActiveLocale = newLocale ?? locale;')
       ..writeln('    activeLocale = newActiveLocale;')
       ..writeln(
-          '    return Localization.load(newActiveLocale, showLocalizationKeys: showLocalizationKeys);')
+          '    return Localization.load(newActiveLocale, showLocalizationKeys: showLocalizationKeys, useCaching: useCaching);')
       ..writeln('  }')
       ..writeln()
       ..writeln('  @override')
