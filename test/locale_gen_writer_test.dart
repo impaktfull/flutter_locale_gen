@@ -4,7 +4,8 @@ import 'package:test/test.dart';
 void main() {
   group('LocaleGen writer', () {
     test('Test nl translations', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -15,7 +16,8 @@ locale_gen:
       expect(translations.values.length, 7);
     });
     test('Test en translations', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -26,7 +28,8 @@ locale_gen:
       expect(translations.values.length, 6);
     });
     test('Test en translations with incorrect path', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale-does-not-exists
@@ -38,7 +41,10 @@ locale_gen:
         error = e.toString();
       }
       expect(error, isNotNull);
-      expect(error!.contains('locale_gen/test/assets/locale-does-not-exists/en.json does not exists'), true);
+      expect(
+          error!.contains(
+              'locale_gen/test/assets/locale-does-not-exists/en.json does not exists'),
+          true);
     });
   });
 }
