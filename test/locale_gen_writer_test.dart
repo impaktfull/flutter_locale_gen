@@ -1,0 +1,31 @@
+import 'package:locale_gen/locale_gen.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('LocaleGen writer', () {
+    test('Test nl translations', () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  languages: ['en','nl']
+  locale_assets_path: test/assets/locale
+''');
+      final translations = LocaleGenWriter.getTranslations(params, 'nl');
+      expect(translations.length, 7);
+      expect(translations.keys.length, 7);
+      expect(translations.values.length, 7);
+    });
+    test('Test en translations', () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  languages: ['en','nl']
+  locale_assets_path: test/assets/locale
+''');
+      final translations = LocaleGenWriter.getTranslations(params, 'en');
+      expect(translations.length, 6);
+      expect(translations.keys.length, 6);
+      expect(translations.values.length, 6);
+    });
+  });
+}
