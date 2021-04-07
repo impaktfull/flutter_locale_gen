@@ -14,13 +14,14 @@ class Localization {
       Localizations.of<Localization>(context, Localization)!;
 
   static Future<Localization> load(Locale locale,
-      {bool showLocalizationKeys = false}) async {
+      {bool showLocalizationKeys = false, bool useCaching = true}) async {
     final localizations = Localization();
     if (showLocalizationKeys) {
       return localizations;
     }
-    final jsonContent = await rootBundle
-        .loadString('assets/locale/${locale.languageCode}.json');
+    final jsonContent = await rootBundle.loadString(
+        'assets/locale/${locale.languageCode}.json',
+        cache: useCaching);
     localizations._localisedValues =
         json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
