@@ -10,9 +10,9 @@ final defaultLocaleAssetsDir = join('assets', 'locale');
 
 class LocaleGenParams {
   final String programName;
-  String? outputDir = defaultOutputDir;
-  String assetsDir = defaultAssetsDir;
-  String localeAssetsDir = defaultLocaleAssetsDir;
+  String? outputDir = '$defaultOutputDir/';
+  String assetsDir = '$defaultAssetsDir/';
+  String localeAssetsDir = '$defaultLocaleAssetsDir/';
 
   late String projectName;
   late String defaultLanguage;
