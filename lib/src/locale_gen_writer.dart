@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:intl/locale.dart';
 import 'package:locale_gen/src/case_util.dart';
 import 'package:path/path.dart';
 
@@ -84,6 +85,7 @@ class LocaleGenWriter {
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
       ..writeln()
+      ..writeln("import 'package:intl/locale.dart';")
       ..writeln("import 'package:flutter/services.dart';")
       ..writeln("import 'package:flutter/widgets.dart';")
       ..writeln(
@@ -186,13 +188,13 @@ class LocaleGenWriter {
       ..writeln(
           "  static const defaultLocale = Locale('${params.defaultLanguage}');")
       ..writeln('  static const _supportedLanguages = [');
-    params.languages.forEach((language) => sb.writeln("    '$language',"));
+    params.languages.forEach((language) => sb.writeln(_parseSupportedLanguage(language)));
     sb
       ..writeln('  ];')
       ..writeln()
       ..writeln('  static const _supportedLocales = [');
     params.languages
-        .forEach((language) => sb.writeln("    Locale('$language'),"));
+        .forEach((language) => sb.writeln(_parseSupportedLocale(language)));
     sb
       ..writeln('  ];')
       ..writeln()
@@ -246,5 +248,27 @@ class LocaleGenWriter {
       localizationDelegateFile.createSync(recursive: true);
     }
     localizationDelegateFile.writeAsStringSync(sb.toString());
+  }
+
+  static String _parseSupportedLanguage(String language) {
+    try {
+      final locale = Locale.tryParse(language);
+      final languageCode = locale?.languageCode;
+      return "    '$languageCode',";
+    } catch (_) {
+      return "    '$language',";
+    }
+  }
+
+  static String _parseSupportedLocale(String language) {
+    try {
+      final locale = Locale.tryParse(language);
+      final languageCode = locale?.languageCode;
+      final scriptCode = locale?.scriptCode;
+      final countryCode = locale?.countryCode;
+        return "    Locale.fromSubtags(languageCode: ${languageCode != null ? "'$languageCode'" : null}, scriptCode: ${scriptCode != null ? "'$scriptCode'" : null}, countryCode: ${countryCode != null ? "'$countryCode'" : null}),";
+    } catch (_) {
+      return "    Locale('$language'),";
+    }
   }
 }

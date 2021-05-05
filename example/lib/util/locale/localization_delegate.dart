@@ -16,25 +16,25 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   static const _supportedLanguages = [
     'en',
     'nl',
+    'zh',
+    'fi',
   ];
 
   static const _supportedLocales = [
-    Locale('en'),
-    Locale('nl'),
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+    Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),
   ];
 
   static List<String> get supportedLanguages {
     if (localeFilter == null) return _supportedLanguages;
-    return _supportedLanguages
-        .where((element) => localeFilter?.call(element) ?? true)
-        .toList();
+    return _supportedLanguages.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
   static List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales
-        .where((element) => localeFilter?.call(element.languageCode) ?? true)
-        .toList();
+    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();
   }
 
   Locale? newLocale;
@@ -42,25 +42,20 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   final bool useCaching;
   bool showLocalizationKeys;
 
-  LocalizationDelegate(
-      {this.newLocale,
-      this.showLocalizationKeys = false,
-      this.useCaching = !kDebugMode}) {
+  LocalizationDelegate({this.newLocale, this.showLocalizationKeys = false, this.useCaching = !kDebugMode}) {
     if (newLocale != null) {
       activeLocale = newLocale;
     }
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      supportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.languageCode);
 
   @override
   Future<Localization> load(Locale locale) async {
     final newActiveLocale = newLocale ?? locale;
     activeLocale = newActiveLocale;
-    return Localization.load(newActiveLocale,
-        showLocalizationKeys: showLocalizationKeys, useCaching: useCaching);
+    return Localization.load(newActiveLocale, showLocalizationKeys: showLocalizationKeys, useCaching: useCaching);
   }
 
   @override
