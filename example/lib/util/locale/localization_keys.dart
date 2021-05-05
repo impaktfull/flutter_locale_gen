@@ -2,7 +2,6 @@
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
-
   /// Translations:
   ///
   /// en:  **'Testing in English'**
@@ -68,5 +67,4 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s'**
   static const testNewLine = 'test_new_line';
-
 }

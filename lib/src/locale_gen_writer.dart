@@ -188,7 +188,8 @@ class LocaleGenWriter {
       ..writeln(
           "  static const defaultLocale = Locale('${params.defaultLanguage}');")
       ..writeln('  static const _supportedLanguages = [');
-    params.languages.forEach((language) => sb.writeln(_parseSupportedLanguage(language)));
+    params.languages
+        .forEach((language) => sb.writeln(_parseSupportedLanguage(language)));
     sb
       ..writeln('  ];')
       ..writeln()
@@ -266,7 +267,7 @@ class LocaleGenWriter {
       final languageCode = locale?.languageCode;
       final scriptCode = locale?.scriptCode;
       final countryCode = locale?.countryCode;
-        return "    Locale.fromSubtags(languageCode: ${languageCode != null ? "'$languageCode'" : null}, scriptCode: ${scriptCode != null ? "'$scriptCode'" : null}, countryCode: ${countryCode != null ? "'$countryCode'" : null}),";
+      return "    Locale.fromSubtags(languageCode: ${languageCode != null ? "'$languageCode'" : null}, scriptCode: ${scriptCode != null ? "'$scriptCode'" : null}, countryCode: ${countryCode != null ? "'$countryCode'" : null}),";
     } catch (_) {
       return "    Locale('$language'),";
     }
