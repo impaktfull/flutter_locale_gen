@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:intl/locale.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';

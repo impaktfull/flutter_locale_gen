@@ -85,7 +85,6 @@ class LocaleGenWriter {
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
       ..writeln()
-      ..writeln("import 'package:intl/locale.dart';")
       ..writeln("import 'package:flutter/services.dart';")
       ..writeln("import 'package:flutter/widgets.dart';")
       ..writeln(
