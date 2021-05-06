@@ -16,11 +16,16 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   static const _supportedLanguages = [
     'en',
     'nl',
+    'zh',
+    'fi',
   ];
 
   static const _supportedLocales = [
-    Locale('en'),
-    Locale('nl'),
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(
+        languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+    Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),
   ];
 
   static List<String> get supportedLanguages {

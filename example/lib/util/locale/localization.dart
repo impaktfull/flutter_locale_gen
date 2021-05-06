@@ -57,6 +57,10 @@ class Localization {
   /// en:  **'Testing in English'**
   ///
   /// nl:  **'Test in het Nederlands'**
+  ///
+  /// zh-Hans-CN: **'视频的灯光脚本'**
+  ///
+  /// fi-FI: **'Näet lisää napauttamalla kuvakkeita'**
   String get test => _t(LocalizationKeys.test);
 
   /// Translations:
@@ -64,6 +68,10 @@ class Localization {
   /// en:  **'Testing argument %1$s'**
   ///
   /// nl:  **'Test argument %1$s'**
+  ///
+  /// zh-Hans-CN: **'频的 %1$s'**
+  ///
+  /// fi-FI: **'Lisää napauttamalla %1$s'**
   String testArg1(String arg1) =>
       _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
 
@@ -72,6 +80,10 @@ class Localization {
   /// en:  **'Testing argument %1$d'**
   ///
   /// nl:  **'Test argument %1$d'**
+  ///
+  /// zh-Hans-CN: **'频的 %1$d'**
+  ///
+  /// fi-FI: **'Lisää napauttamalla %1$d'**
   String testArg2(num arg1) =>
       _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
@@ -80,6 +92,10 @@ class Localization {
   /// en:  **'Testing argument %1$s %2$d'**
   ///
   /// nl:  **'Test argument %1$s %2$d'**
+  ///
+  /// zh-Hans-CN: **'频的 %1$s %2$d'**
+  ///
+  /// fi-FI: **'Lisää napauttamalla %1$s %2$d'**
   String testArg3(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
@@ -88,6 +104,10 @@ class Localization {
   /// en:  **'Testing argument %1$s %2$d %1$s'**
   ///
   /// nl:  **'Test argument %1$s %2$d %1$s'**
+  ///
+  /// zh-Hans-CN: **'频的 %1$s %2$d %1$s'**
+  ///
+  /// fi-FI: **'Lisää napauttamalla %1$s %2$d %1$s'**
   String testArg4(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
@@ -96,6 +116,10 @@ class Localization {
   /// en:  **'Testing\nargument\n\n%1$s %2$d %1$s'**
   ///
   /// nl:  **'Test\nargument\n\n%1$s %2$d %1$s'**
+  ///
+  /// zh-Hans-CN: **'频\n的\n\n%1$s %2$d %1$s'**
+  ///
+  /// fi-FI: **'Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s'**
   String testNewLine(String arg1, num arg2) =>
       _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 

@@ -1,0 +1,8 @@
+{
+  "test": "视频的灯光脚本",
+  "test_arg1": "频的 %1$s",
+  "test_arg2": "频的 %1$d",
+  "test_arg3": "频的 %1$s %2$d",
+  "test_arg4": "频的 %1$s %2$d %1$s",
+  "test_new_line": "频\n的\n\n%1$s %2$d %1$s"
+}
