@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.4.0] - 2021-05-06
+### Added
+- #45 suport for country codes & languages
+
 ## [3.3.0] - 2021-04-07
 ### Added
 - #48 useCaching configuration for fetching the json translation files
