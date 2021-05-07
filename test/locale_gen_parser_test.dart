@@ -19,4 +19,21 @@ void main() {
           "    Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),");
     });
   });
+  group('LocaleGen parseDefaultLanguageLocale', () {
+    test('parses nl locale', () {
+      final result = LocaleGenParser.parseDefaultLanguageLocale('nl');
+      expect(result,
+          "  static const defaultLocale = Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null);");
+    });
+    test('parses zh-Hans-CN locale', () {
+      final result = LocaleGenParser.parseDefaultLanguageLocale('zh-Hans-CN');
+      expect(result,
+          "  static const defaultLocale = Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN');");
+    });
+    test('parses fi-FI locale', () {
+      final result = LocaleGenParser.parseDefaultLanguageLocale('fi-FI');
+      expect(result,
+          "  static const defaultLocale = Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI');");
+    });
+  });
 }
