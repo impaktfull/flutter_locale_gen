@@ -184,7 +184,8 @@ class LocaleGenWriter {
       ..writeln(
           'class LocalizationDelegate extends LocalizationsDelegate<Localization> {')
       ..writeln('  static LocaleFilter? localeFilter;')
-      ..writeln(LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
+      ..writeln(
+          LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
       ..writeln()
       ..writeln('  static const _supportedLocales = [');
     params.languages.forEach((language) =>
@@ -193,7 +194,8 @@ class LocaleGenWriter {
       ..writeln('  ];')
       ..writeln()
       ..writeln('  static List<String> get supportedLanguages {')
-      ..writeln('    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);')
+      ..writeln(
+          '    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);')
       ..writeln('    if (localeFilter == null) return supportedLanguageTags;')
       ..writeln(
           '    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();')
