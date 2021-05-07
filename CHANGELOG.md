@@ -1,8 +1,13 @@
 # Changelog
 
+## [3.4.1] - 2021-05-07
+### Fixed
+- the default language generation
+- the supported language list generation
+
 ## [3.4.0] - 2021-05-06
 ### Added
-- #45 suport for country codes & languages
+- #45 support for country codes & languages
 
 ## [3.3.0] - 2021-04-07
 ### Added
