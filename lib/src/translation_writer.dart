@@ -52,7 +52,9 @@ class TranslationWriter {
         }
         tmpSb.write('arg${match.group(REGEX_INDEX_GROUP_INDEX)}');
       });
-      tmpSb..writeln(']);')..writeln();
+      tmpSb
+        ..writeln(']);')
+        ..writeln();
       sb.write(tmpSb.toString());
     } on Exception catch (e) {
       print(e);

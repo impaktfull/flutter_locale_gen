@@ -13,9 +13,15 @@ class Localization {
   static Localization of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization)!;
 
+  /// The locale is used to get the correct json locale.
+  /// It can later be used to check what the locale is that was used to load this Localization instance.
+  final Locale locale;
+
+  Localization({required this.locale});
+
   static Future<Localization> load(Locale locale,
       {bool showLocalizationKeys = false, bool useCaching = true}) async {
-    final localizations = Localization();
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
       return localizations;
     }
