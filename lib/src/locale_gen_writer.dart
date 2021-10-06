@@ -63,7 +63,9 @@ class LocaleGenWriter {
       TranslationWriter.buildDocumentation(
           sb, key, allTranslations, params.docLanguages);
       final correctKey = CaseUtil.getCamelcase(key);
-      sb..writeln('  static const $correctKey = \'$key\';')..writeln();
+      sb
+        ..writeln('  static const $correctKey = \'$key\';')
+        ..writeln();
     });
     sb.writeln('}');
 
@@ -102,9 +104,16 @@ class LocaleGenWriter {
       ..writeln(
           '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
       ..writeln()
+      ..writeln('  /// The locale is used to get the correct json locale.')
+      ..writeln(
+          '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
+      ..writeln('  final Locale locale;')
+      ..writeln()
+      ..writeln('  Localization({required this.locale});')
+      ..writeln()
       ..writeln(
           '  static Future<Localization> load(Locale locale, {bool showLocalizationKeys = false, bool useCaching = true}) async {')
-      ..writeln('    final localizations = Localization();')
+      ..writeln('    final localizations = Localization(locale: locale);')
       ..writeln('    if (showLocalizationKeys) {')
       ..writeln('      return localizations;')
       ..writeln('    }')

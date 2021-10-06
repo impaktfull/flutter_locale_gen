@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.5.0] - 2021-10-06
+### Added
+- locale that was used to initialize your Localization is now also included in `localization.dart`
+
 ## [3.4.1] - 2021-05-07
 ### Fixed
 - the default language generation
