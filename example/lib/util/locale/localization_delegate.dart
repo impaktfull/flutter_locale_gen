@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 
