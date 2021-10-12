@@ -140,7 +140,7 @@ class LocaleGenWriter {
       ..writeln('    try {')
       ..writeln(
           '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
-      ..writeln("      if (value == null) return '\$key';")
+      ..writeln('      if (value == null) return key;')
       ..writeln('      if (args == null || args.isEmpty) return value;')
       ..writeln('      var newValue = value;')
       ..writeln('      // ignore: avoid_annotating_with_dynamic')
