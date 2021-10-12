@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.0] - 2021-10-12
+### Added
+- Option to override the localizations. Pass a `LocalizationOverrideManager` to the `LocalizationDelegate`.
+  Refreshing & managing the cached localizations should be done by the developer.
+
 ## [3.5.0] - 2021-10-06
 ### Added
 - locale that was used to initialize your Localization is now also included in `localization.dart`

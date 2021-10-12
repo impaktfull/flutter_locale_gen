@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class Localization {
-  Map<String, dynamic> _localisedValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   static Localization of(BuildContext context) =>
       Localizations.of<Localization>(context, Localization)!;
@@ -19,11 +21,20 @@ class Localization {
 
   Localization({required this.locale});
 
-  static Future<Localization> load(Locale locale,
-      {bool showLocalizationKeys = false, bool useCaching = true}) async {
+  static Future<Localization> load(
+    Locale locale, {
+    LocalizationOverrides? localizationOverrides,
+    bool showLocalizationKeys = false,
+    bool useCaching = true,
+  }) async {
     final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
       return localizations;
+    }
+    if (localizationOverrides != null) {
+      final overrideLocalizations =
+          await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
     final jsonContent = await rootBundle.loadString(
         'assets/locale/${locale.languageCode}.json',
@@ -35,7 +46,8 @@ class Localization {
 
   String _t(String key, {List<dynamic>? args}) {
     try {
-      final value = _localisedValues[key] as String?; // ignore: avoid_as
+      final value =
+          (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return '$key';
       if (args == null || args.isEmpty) return value;
       var newValue = value;

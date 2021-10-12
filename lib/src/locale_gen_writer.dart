@@ -32,6 +32,7 @@ class LocaleGenWriter {
     _createLocalizationKeysFile(params, defaultTranslations, allTranslations);
     _createLocalizationFile(params, defaultTranslations, allTranslations);
     _createLocalizationDelegateFile(params);
+    _createLocalizationOverrides(params);
     print('Done!!!');
   }
 
@@ -91,6 +92,8 @@ class LocaleGenWriter {
       ..writeln("import 'package:flutter/widgets.dart';")
       ..writeln(
           "import 'package:${params.projectName}/util/locale/localization_keys.dart';")
+      ..writeln(
+          "import 'package:${params.projectName}/util/locale/localization_overrides.dart';")
       ..writeln()
       ..writeln(
           '//============================================================//')
@@ -98,8 +101,8 @@ class LocaleGenWriter {
       ..writeln(
           '//============================================================//')
       ..writeln('class Localization {')
-      ..writeln(
-          '  Map<String, dynamic> _localisedValues = <String, dynamic>{};')
+      ..writeln('  var _localisedValues = <String, dynamic>{};')
+      ..writeln('  var _localisedOverrideValues = <String, dynamic>{};')
       ..writeln()
       ..writeln(
           '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
@@ -111,11 +114,20 @@ class LocaleGenWriter {
       ..writeln()
       ..writeln('  Localization({required this.locale});')
       ..writeln()
-      ..writeln(
-          '  static Future<Localization> load(Locale locale, {bool showLocalizationKeys = false, bool useCaching = true}) async {')
+      ..writeln('  static Future<Localization> load(Locale locale, {')
+      ..writeln('    LocalizationOverrides? localizationOverrides,')
+      ..writeln('    bool showLocalizationKeys = false,')
+      ..writeln('    bool useCaching = true,')
+      ..writeln('    }) async {')
       ..writeln('    final localizations = Localization(locale: locale);')
       ..writeln('    if (showLocalizationKeys) {')
       ..writeln('      return localizations;')
+      ..writeln('    }')
+      ..writeln('    if (localizationOverrides != null) {')
+      ..writeln(
+          '      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);')
+      ..writeln(
+          '      localizations._localisedOverrideValues = overrideLocalizations;')
       ..writeln('    }')
       ..writeln(
           "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.languageCode}.json', cache: useCaching);")
@@ -127,7 +139,7 @@ class LocaleGenWriter {
       ..writeln('  String _t(String key, {List<dynamic>? args}) {')
       ..writeln('    try {')
       ..writeln(
-          '      final value = _localisedValues[key] as String?; // ignore: avoid_as')
+          '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
       ..writeln("      if (value == null) return '\$key';")
       ..writeln('      if (args == null || args.isEmpty) return value;')
       ..writeln('      var newValue = value;')
@@ -178,9 +190,11 @@ class LocaleGenWriter {
       ..writeln("import 'dart:async';")
       ..writeln()
       ..writeln("import 'package:flutter/foundation.dart';")
-      ..writeln("import 'package:flutter/material.dart';")
+      ..writeln("import 'package:flutter/widgets.dart';")
       ..writeln(
           "import 'package:${params.projectName}/util/locale/localization.dart';")
+      ..writeln(
+          "import 'package:${params.projectName}/util/locale/localization_overrides.dart';")
       ..writeln()
       ..writeln(
           '//============================================================//')
@@ -216,13 +230,18 @@ class LocaleGenWriter {
           '    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();')
       ..writeln('  }')
       ..writeln()
+      ..writeln('  LocalizationOverrides? localizationOverrides;')
       ..writeln('  Locale? newLocale;')
       ..writeln('  Locale? activeLocale;')
       ..writeln('  final bool useCaching;')
       ..writeln('  bool showLocalizationKeys;')
       ..writeln()
-      ..writeln(
-          '  LocalizationDelegate({this.newLocale, this.showLocalizationKeys = false, this.useCaching = !kDebugMode}) {')
+      ..writeln('  LocalizationDelegate({')
+      ..writeln('    this.newLocale,')
+      ..writeln('    this.localizationOverrides,')
+      ..writeln('    this.showLocalizationKeys = false,')
+      ..writeln('    this.useCaching = !kDebugMode,')
+      ..writeln('  }) {')
       ..writeln('    if (newLocale != null) {')
       ..writeln('      activeLocale = newLocale;')
       ..writeln('    }')
@@ -236,8 +255,12 @@ class LocaleGenWriter {
       ..writeln('  Future<Localization> load(Locale locale) async {')
       ..writeln('    final newActiveLocale = newLocale ?? locale;')
       ..writeln('    activeLocale = newActiveLocale;')
-      ..writeln(
-          '    return Localization.load(newActiveLocale, showLocalizationKeys: showLocalizationKeys, useCaching: useCaching);')
+      ..writeln('    return Localization.load(')
+      ..writeln('      newActiveLocale,')
+      ..writeln('      localizationOverrides: localizationOverrides,')
+      ..writeln('      showLocalizationKeys: showLocalizationKeys,')
+      ..writeln('      useCaching: useCaching,')
+      ..writeln('    );')
       ..writeln('  }')
       ..writeln()
       ..writeln('  @override')
@@ -254,5 +277,32 @@ class LocaleGenWriter {
       localizationDelegateFile.createSync(recursive: true);
     }
     localizationDelegateFile.writeAsStringSync(sb.toString());
+  }
+
+  static void _createLocalizationOverrides(LocaleGenParams params) {
+    final sb = StringBuffer()
+      ..writeln("import 'package:flutter/widgets.dart';")
+      ..writeln()
+      ..writeln(
+          '//============================================================//')
+      ..writeln('//THIS FILE IS AUTO GENERATED. DO NOT EDIT//')
+      ..writeln(
+          '//============================================================//')
+      ..writeln('abstract class LocalizationOverrides {')
+      ..writeln('  Future<void> refreshOverrideLocalizations();')
+      ..writeln()
+      ..writeln(
+          '  Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale);')
+      ..writeln('}');
+
+    // Write to file
+    final localizationOverridesFile = File(join(Directory.current.path,
+        params.outputDir, 'localization_overrides.dart'));
+    if (!localizationOverridesFile.existsSync()) {
+      print('localization_overrides.dart does not exists');
+      print('Creating localization_overrides.dart ...');
+      localizationOverridesFile.createSync(recursive: true);
+    }
+    localizationOverridesFile.writeAsStringSync(sb.toString());
   }
 }
