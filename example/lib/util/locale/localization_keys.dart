@@ -15,57 +15,57 @@ class LocalizationKeys {
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$s'**
+  /// en:  **'Testing argument [arg1 string]'**
   ///
-  /// nl:  **'Test argument %1$s'**
+  /// nl:  **'Test argument [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$s'**
+  /// zh-Hans-CN: **'频的 [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$s'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string]'**
   static const testArg1 = 'test_arg1';
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$d'**
+  /// en:  **'Testing argument [arg1 number]'**
   ///
-  /// nl:  **'Test argument %1$d'**
+  /// nl:  **'Test argument [arg1 number]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$d'**
+  /// zh-Hans-CN: **'频的 [arg1 number]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$d'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 number]'**
   static const testArg2 = 'test_arg2';
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$s %2$d'**
+  /// en:  **'Testing argument [arg1 string] [arg2 number]'**
   ///
-  /// nl:  **'Test argument %1$s %2$d'**
+  /// nl:  **'Test argument [arg1 string] [arg2 number]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$s %2$d'**
+  /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$s %2$d'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number]'**
   static const testArg3 = 'test_arg3';
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$s %2$d %1$s'**
+  /// en:  **'Testing argument [arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// nl:  **'Test argument %1$s %2$d %1$s'**
+  /// nl:  **'Test argument [arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$s %2$d %1$s'**
+  /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$s %2$d %1$s'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number] [arg1 string]'**
   static const testArg4 = 'test_arg4';
 
   /// Translations:
   ///
-  /// en:  **'Testing\nargument\n\n%1$s %2$d %1$s'**
+  /// en:  **'Testing\nargument\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// nl:  **'Test\nargument\n\n%1$s %2$d %1$s'**
+  /// nl:  **'Test\nargument\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频\n的\n\n%1$s %2$d %1$s'**
+  /// zh-Hans-CN: **'频\n的\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s'**
+  /// fi-FI: **'Lisää\nLisää napauttamalla\n\n[arg1 string] [arg2 number] [arg1 string]'**
   static const testNewLine = 'test_new_line';
 
   /// Translations:
