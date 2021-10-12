@@ -67,4 +67,15 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s'**
   static const testNewLine = 'test_new_line';
+
+  /// Translations:
+  ///
+  /// en:  **'Carriage\r\nReturn'**
+  ///
+  /// nl:  **'Carriage\r\nReturn'**
+  ///
+  /// zh-Hans-CN: **'Carriage\r\nReturn'**
+  ///
+  /// fi-FI: **'Carriage\r\nReturn'**
+  static const testNewLineCarriageReturn = 'test_new_line_carriage_return';
 }

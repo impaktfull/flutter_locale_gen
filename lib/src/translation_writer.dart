@@ -95,7 +95,8 @@ class TranslationWriter {
       if (values == null) return;
       final languageFormatted = '$language:'.padRight(4, ' ');
       final value = values[key];
-      final formattedNewLines = value?.toString().replaceAll('\n', '\\n');
+      final formattedNewLines =
+          value?.toString().replaceAll('\n', '\\n').replaceAll('\r', '\\r');
       sb
         ..writeln('  ///')
         ..writeln("  /// $languageFormatted **'${formattedNewLines ?? ''}'**");

@@ -1,6 +1,8 @@
 # Changelog
 
 ## [3.6.0] - 2021-10-12
+### Fixed
+- #53: Issue where a carriage return `\r` would generate invalid documentation
 ### Added
 - Option to override the localizations. Pass a `LocalizationOverrideManager` to the `LocalizationDelegate`.
   Refreshing & managing the cached localizations should be done by the developer.
