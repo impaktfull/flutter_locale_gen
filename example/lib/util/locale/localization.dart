@@ -48,7 +48,7 @@ class Localization {
     try {
       final value =
           (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return '$key';
+      if (value == null) return key;
       if (args == null || args.isEmpty) return value;
       var newValue = value;
       // ignore: avoid_annotating_with_dynamic
