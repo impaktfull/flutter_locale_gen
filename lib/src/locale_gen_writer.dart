@@ -144,8 +144,7 @@ class LocaleGenWriter {
       ..writeln(
           "      if (value == null && overrideValue == null) return '\$key';")
       ..writeln('      if (args == null || args.isEmpty) {')
-      ..writeln('        if (overrideValue != null) return overrideValue;')
-      ..writeln('        return value!;')
+      ..writeln('        return overrideValue ?? value!;')
       ..writeln('      }')
       ..writeln('      if (overrideValue != null) {')
       ..writeln('        return _mapArgs(overrideValue, args: args);')

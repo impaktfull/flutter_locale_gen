@@ -50,8 +50,7 @@ class Localization {
       final overrideValue = _localisedOverrideValues[key] as String?;
       if (value == null && overrideValue == null) return '$key';
       if (args == null || args.isEmpty) {
-        if (overrideValue != null) return overrideValue;
-        return value!;
+        return overrideValue ?? value!;
       }
       if (overrideValue != null) {
         return _mapArgs(overrideValue, args: args);
@@ -65,8 +64,8 @@ class Localization {
   String _mapArgs(String value, {required List<dynamic> args}) {
     var newValue = value;
     // ignore: avoid_annotating_with_dynamic
-    args.asMap().forEach((index, dynamic arg) =>
-        newValue = _replaceWith(newValue, arg, index + 1));
+    args.asMap().forEach(
+        (index, dynamic arg) => newValue = _replaceWith(value, arg, index + 1));
     return newValue;
   }
 
