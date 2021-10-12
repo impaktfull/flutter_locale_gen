@@ -83,61 +83,61 @@ class Localization {
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$s'**
+  /// en:  **'Testing argument [arg1 string]'**
   ///
-  /// nl:  **'Test argument %1$s'**
+  /// nl:  **'Test argument [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$s'**
+  /// zh-Hans-CN: **'频的 [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$s'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string]'**
   String testArg1(String arg1) =>
       _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$d'**
+  /// en:  **'Testing argument [arg1 number]'**
   ///
-  /// nl:  **'Test argument %1$d'**
+  /// nl:  **'Test argument [arg1 number]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$d'**
+  /// zh-Hans-CN: **'频的 [arg1 number]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$d'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 number]'**
   String testArg2(num arg1) =>
       _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$s %2$d'**
+  /// en:  **'Testing argument [arg1 string] [arg2 number]'**
   ///
-  /// nl:  **'Test argument %1$s %2$d'**
+  /// nl:  **'Test argument [arg1 string] [arg2 number]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$s %2$d'**
+  /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$s %2$d'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number]'**
   String testArg3(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
-  /// en:  **'Testing argument %1$s %2$d %1$s'**
+  /// en:  **'Testing argument [arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// nl:  **'Test argument %1$s %2$d %1$s'**
+  /// nl:  **'Test argument [arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频的 %1$s %2$d %1$s'**
+  /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla %1$s %2$d %1$s'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number] [arg1 string]'**
   String testArg4(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
-  /// en:  **'Testing\nargument\n\n%1$s %2$d %1$s'**
+  /// en:  **'Testing\nargument\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// nl:  **'Test\nargument\n\n%1$s %2$d %1$s'**
+  /// nl:  **'Test\nargument\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频\n的\n\n%1$s %2$d %1$s'**
+  /// zh-Hans-CN: **'频\n的\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s'**
+  /// fi-FI: **'Lisää\nLisää napauttamalla\n\n[arg1 string] [arg2 number] [arg1 string]'**
   String testNewLine(String arg1, num arg2) =>
       _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 

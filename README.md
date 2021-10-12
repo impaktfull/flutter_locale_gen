@@ -95,4 +95,6 @@ Packages used:
  - shared_preferences
  - provider
  - kiwi
+
+## Other packges based on locale_gen
  - icapps_translations

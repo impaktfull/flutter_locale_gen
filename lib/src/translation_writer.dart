@@ -71,7 +71,7 @@ class TranslationWriter {
       return 'num arg$index';
     }
     throw Exception(
-        'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/icapps/flutter-icapps-translations/issues');
+        'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
   }
 
   static void _buildDefaultFunction(StringBuffer sb, String key) {
@@ -95,11 +95,29 @@ class TranslationWriter {
       if (values == null) return;
       final languageFormatted = '$language:'.padRight(4, ' ');
       final value = values[key];
-      final formattedNewLines =
+      var formattedNewLines =
           value?.toString().replaceAll('\n', '\\n').replaceAll('\r', '\\r');
+      formattedNewLines = replaceArgumentDocumentation(formattedNewLines);
       sb
         ..writeln('  ///')
         ..writeln("  /// $languageFormatted **'${formattedNewLines ?? ''}'**");
     });
+  }
+
+  static String? replaceArgumentDocumentation(String? value) {
+    if (value == null) return null;
+    var newValue = value;
+    formatRegex.allMatches(newValue).forEach((match) {
+      final index = match.group(REGEX_INDEX_GROUP_INDEX);
+      final type = match.group(REGEX_TYPE_GROUP_INDEX);
+      if (type == 's') {
+        newValue = newValue.replaceAll('%$index\$$type', '[arg$index string]');
+      } else if (type == 'd') {
+        newValue = newValue.replaceAll('%$index\$$type', '[arg$index number]');
+      } else {}
+      throw Exception(
+          'Unsupported argument type for $type. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
+    });
+    return newValue;
   }
 }

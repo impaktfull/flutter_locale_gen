@@ -277,6 +277,23 @@ void main() {
   /// en:  **'Hi There\\n\\nEverything alright'**
 '''));
       });
+
+      test('Test with translations with double multi lines with \r', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildDocumentation(sb, 'app_title', {
+          'nl': {'app_title': 'Hallo\r\rAlles goed'},
+          'en': {'app_title': 'Hi There\r\rEverything alright'},
+        }, [
+          'nl',
+          'en',
+        ]);
+        expect(sb.toString(), equals('''  /// Translations:
+  ///
+  /// nl:  **'Hallo\\r\\rAlles goed'**
+  ///
+  /// en:  **'Hi There\\r\\rEverything alright'**
+'''));
+      });
     });
   });
 }
