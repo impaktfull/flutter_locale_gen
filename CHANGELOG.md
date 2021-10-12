@@ -1,5 +1,8 @@
 # Changelog
 
+## [3.6.1] - 2021-10-12
+- Issue where an exception was thrown even when it was not needed.
+
 ## [3.6.0] - 2021-10-12
 ### Fixed
 - #53: Issue where a carriage return `\r` would generate invalid documentation
