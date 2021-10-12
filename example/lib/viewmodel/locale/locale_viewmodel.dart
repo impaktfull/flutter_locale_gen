@@ -1,23 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:locale_gen_example/repository/locale_repository.dart';
+import 'package:locale_gen_example/util/locale/custom_localization_override_manager.dart';
 import 'package:locale_gen_example/util/locale/localization_delegate.dart';
 
 class LocaleViewModel with ChangeNotifier {
   final LocaleRepository _localeRepository;
-  var localeDelegate = LocalizationDelegate();
+  var customLocalizationOverrideManager = CustomLocalizationOverrideManager();
+  late var localeDelegate = LocalizationDelegate(
+    localizationOverrideManager: customLocalizationOverrideManager,
+  );
 
   LocaleViewModel(this._localeRepository);
 
   void init() {
     initLocale();
+    refreshOverrideLocalizations();
   }
 
   Future<void> initLocale() async {
     final locale = await _localeRepository.getCustomLocale();
     if (locale != null) {
-      localeDelegate = LocalizationDelegate(newLocale: locale);
+      localeDelegate = LocalizationDelegate(
+        newLocale: locale,
+        localizationOverrideManager: customLocalizationOverrideManager,
+      );
       notifyListeners();
     }
+  }
+
+  Future<void> refreshOverrideLocalizations() async {
+    await customLocalizationOverrideManager.refreshOverrideLocalizations();
+    await initLocale();
   }
 
   Future<void> onSwitchToDutch() async {
@@ -34,7 +47,10 @@ class LocaleViewModel with ChangeNotifier {
 
   Future<void> _onUpdateLocaleClicked(Locale? locale) async {
     await _localeRepository.setCustomLocale(locale);
-    localeDelegate = LocalizationDelegate(newLocale: locale);
+    localeDelegate = LocalizationDelegate(
+      newLocale: locale,
+      localizationOverrideManager: customLocalizationOverrideManager,
+    );
     notifyListeners();
   }
 }

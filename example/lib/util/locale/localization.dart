@@ -3,15 +3,16 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
+import 'package:locale_gen_example/util/locale/localization_override_manager.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class Localization {
-  Map<String, dynamic> _localisedValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
-  static Localization of(BuildContext context) =>
-      Localizations.of<Localization>(context, Localization)!;
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
@@ -19,33 +20,48 @@ class Localization {
 
   Localization({required this.locale});
 
-  static Future<Localization> load(Locale locale,
-      {bool showLocalizationKeys = false, bool useCaching = true}) async {
+  static Future<Localization> load(
+    Locale locale, {
+    LocalizationOverrideManager? localizationOverrideManager,
+    bool showLocalizationKeys = false,
+    bool useCaching = true,
+  }) async {
     final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
       return localizations;
     }
-    final jsonContent = await rootBundle.loadString(
-        'assets/locale/${locale.languageCode}.json',
-        cache: useCaching);
-    localizations._localisedValues =
-        json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
+    if (localizationOverrideManager != null) {
+      final overrideLocalizations = await localizationOverrideManager.getCachedLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
+    }
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
     try {
-      final value = _localisedValues[key] as String?; // ignore: avoid_as
-      if (value == null) return '$key';
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) =>
-          newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      final value = _localisedValues[key] as String?;
+      final overrideValue = _localisedOverrideValues[key] as String?;
+      if (value == null && overrideValue == null) return '$key';
+      if (args == null || args.isEmpty) {
+        if (overrideValue != null) return overrideValue;
+        return value!;
+      }
+      if (overrideValue != null) {
+        return _mapArgs(overrideValue, args: args);
+      }
+      return _mapArgs(value!, args: args);
     } catch (e) {
       return '⚠$key⚠';
     }
+  }
+
+  String _mapArgs(String value, {required List<dynamic> args}) {
+    var newValue = value;
+    // ignore: avoid_annotating_with_dynamic
+    args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
+    return newValue;
   }
 
   String _replaceWith(String value, Object? arg, int argIndex) {
@@ -78,8 +94,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 %1$s'**
   ///
   /// fi-FI: **'Lisää napauttamalla %1$s'**
-  String testArg1(String arg1) =>
-      _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
+  String testArg1(String arg1) => _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
 
   /// Translations:
   ///
@@ -90,8 +105,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 %1$d'**
   ///
   /// fi-FI: **'Lisää napauttamalla %1$d'**
-  String testArg2(num arg1) =>
-      _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
+  String testArg2(num arg1) => _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
   /// Translations:
   ///
@@ -102,8 +116,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 %1$s %2$d'**
   ///
   /// fi-FI: **'Lisää napauttamalla %1$s %2$d'**
-  String testArg3(String arg1, num arg2) =>
-      _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
+  String testArg3(String arg1, num arg2) => _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
@@ -114,8 +127,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 %1$s %2$d %1$s'**
   ///
   /// fi-FI: **'Lisää napauttamalla %1$s %2$d %1$s'**
-  String testArg4(String arg1, num arg2) =>
-      _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
+  String testArg4(String arg1, num arg2) => _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
@@ -126,9 +138,7 @@ class Localization {
   /// zh-Hans-CN: **'频\n的\n\n%1$s %2$d %1$s'**
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s'**
-  String testNewLine(String arg1, num arg2) =>
-      _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
+  String testNewLine(String arg1, num arg2) => _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 
-  String getTranslation(String key, {List<dynamic>? args}) =>
-      _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 }

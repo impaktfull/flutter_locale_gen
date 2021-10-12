@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:locale_gen_example/util/locale/localization.dart';
+import 'package:locale_gen_example/util/locale/localization_override_manager.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -39,15 +40,18 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
         .toList();
   }
 
+  LocalizationOverrideManager? localizationOverrideManager;
   Locale? newLocale;
   Locale? activeLocale;
   final bool useCaching;
   bool showLocalizationKeys;
 
-  LocalizationDelegate(
-      {this.newLocale,
-      this.showLocalizationKeys = false,
-      this.useCaching = !kDebugMode}) {
+  LocalizationDelegate({
+    this.newLocale,
+    this.localizationOverrideManager,
+    this.showLocalizationKeys = false,
+    this.useCaching = !kDebugMode,
+  }) {
     if (newLocale != null) {
       activeLocale = newLocale;
     }
@@ -61,8 +65,12 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   Future<Localization> load(Locale locale) async {
     final newActiveLocale = newLocale ?? locale;
     activeLocale = newActiveLocale;
-    return Localization.load(newActiveLocale,
-        showLocalizationKeys: showLocalizationKeys, useCaching: useCaching);
+    return Localization.load(
+      newActiveLocale,
+      localizationOverrideManager: localizationOverrideManager,
+      showLocalizationKeys: showLocalizationKeys,
+      useCaching: useCaching,
+    );
   }
 
   @override
