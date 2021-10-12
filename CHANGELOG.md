@@ -3,7 +3,7 @@
 ## [3.6.0] - 2021-10-12
 ### Fixed
 - #53: Issue where a carriage return `\r` would generate invalid documentation
-- #52: Unsnesessary string interpolation for '$key' in `localization.dart`
+- #52: Unnecessary string interpolation for '$key' in `localization.dart`
 ### Added
 - #39: Better generated documentation for arguments
 - Option to override the localizations. Pass a `LocalizationOverrideManager` to the `LocalizationDelegate`.
