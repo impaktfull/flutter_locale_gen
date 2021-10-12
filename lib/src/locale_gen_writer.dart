@@ -189,6 +189,7 @@ class LocaleGenWriter {
     final sb = StringBuffer()
       ..writeln("import 'dart:async';")
       ..writeln()
+      ..writeln("import 'package:flutter/foundation.dart';")
       ..writeln("import 'package:flutter/widgets.dart';")
       ..writeln(
           "import 'package:${params.projectName}/util/locale/localization.dart';")
