@@ -6,7 +6,7 @@
 - #52: Unnecessary string interpolation for '$key' in `localization.dart`
 ### Added
 - #39: Better generated documentation for arguments
-- #56: Option to override the localizations. Pass a `LocalizationOverrideManager` to the `LocalizationDelegate`.
+- #56: Option to override the localizations. Pass a `LocalizationOverrides` to the `LocalizationDelegate`.
   Refreshing & managing the cached localizations should be done by the developer.
 
 ## [3.5.0] - 2021-10-06
