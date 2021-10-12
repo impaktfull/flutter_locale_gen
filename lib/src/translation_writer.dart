@@ -114,8 +114,7 @@ class TranslationWriter {
         newValue = newValue.replaceAll('%$index\$$type', '[arg$index string]');
       } else if (type == 'd') {
         newValue = newValue.replaceAll('%$index\$$type', '[arg$index number]');
-      } else {
-      }
+      } else {}
       throw Exception(
           'Unsupported argument type for $type. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
     });
