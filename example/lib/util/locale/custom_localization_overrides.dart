@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:locale_gen_example/util/locale/localization_override_manager.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 
-class CustomLocalizationOverrideManager extends LocalizationOverrideManager {
+class CustomLocalizationOverrideManager extends LocalizationOverrides {
   var _translations = <Locale, Map<String, dynamic>>{};
 
   @override
@@ -20,7 +20,7 @@ class CustomLocalizationOverrideManager extends LocalizationOverrideManager {
   }
 
   @override
-  Future<Map<String, dynamic>> getCachedLocalizations(Locale locale) async {
+  Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale) async {
     return _translations[locale] ?? <String, dynamic>{};
   }
 }

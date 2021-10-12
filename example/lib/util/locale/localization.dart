@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
-import 'package:locale_gen_example/util/locale/localization_override_manager.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -23,7 +23,7 @@ class Localization {
 
   static Future<Localization> load(
     Locale locale, {
-    LocalizationOverrideManager? localizationOverrideManager,
+    LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
   }) async {
@@ -31,9 +31,9 @@ class Localization {
     if (showLocalizationKeys) {
       return localizations;
     }
-    if (localizationOverrideManager != null) {
+    if (localizationOverrides != null) {
       final overrideLocalizations =
-          await localizationOverrideManager.getCachedLocalizations(locale);
+          await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
     final jsonContent = await rootBundle.loadString(
@@ -46,27 +46,18 @@ class Localization {
 
   String _t(String key, {List<dynamic>? args}) {
     try {
-      final value = _localisedValues[key] as String?;
-      final overrideValue = _localisedOverrideValues[key] as String?;
-      if (value == null && overrideValue == null) return '$key';
-      if (args == null || args.isEmpty) {
-        return overrideValue ?? value!;
-      }
-      if (overrideValue != null) {
-        return _mapArgs(overrideValue, args: args);
-      }
-      return _mapArgs(value!, args: args);
+      final value =
+          (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
+      if (value == null) return '$key';
+      if (args == null || args.isEmpty) return value;
+      var newValue = value;
+      // ignore: avoid_annotating_with_dynamic
+      args.asMap().forEach((index, dynamic arg) =>
+          newValue = _replaceWith(newValue, arg, index + 1));
+      return newValue;
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  String _mapArgs(String value, {required List<dynamic> args}) {
-    var newValue = value;
-    // ignore: avoid_annotating_with_dynamic
-    args.asMap().forEach(
-        (index, dynamic arg) => newValue = _replaceWith(value, arg, index + 1));
-    return newValue;
   }
 
   String _replaceWith(String value, Object? arg, int argIndex) {

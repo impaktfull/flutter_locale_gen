@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:locale_gen_example/repository/locale_repository.dart';
-import 'package:locale_gen_example/util/locale/custom_localization_override_manager.dart';
+import 'package:locale_gen_example/util/locale/custom_localization_overrides.dart';
 import 'package:locale_gen_example/util/locale/localization_delegate.dart';
 
 class LocaleViewModel with ChangeNotifier {
   final LocaleRepository _localeRepository;
-  var customLocalizationOverrideManager = CustomLocalizationOverrideManager();
+  var customLocalizationOverrides = CustomLocalizationOverrideManager();
   late var localeDelegate = LocalizationDelegate(
-    localizationOverrideManager: customLocalizationOverrideManager,
+    localizationOverrides: customLocalizationOverrides,
   );
 
   LocaleViewModel(this._localeRepository);
@@ -22,14 +22,14 @@ class LocaleViewModel with ChangeNotifier {
     if (locale != null) {
       localeDelegate = LocalizationDelegate(
         newLocale: locale,
-        localizationOverrideManager: customLocalizationOverrideManager,
+        localizationOverrides: customLocalizationOverrides,
       );
       notifyListeners();
     }
   }
 
   Future<void> refreshOverrideLocalizations() async {
-    await customLocalizationOverrideManager.refreshOverrideLocalizations();
+    await customLocalizationOverrides.refreshOverrideLocalizations();
     await initLocale();
   }
 
@@ -49,7 +49,7 @@ class LocaleViewModel with ChangeNotifier {
     await _localeRepository.setCustomLocale(locale);
     localeDelegate = LocalizationDelegate(
       newLocale: locale,
-      localizationOverrideManager: customLocalizationOverrideManager,
+      localizationOverrides: customLocalizationOverrides,
     );
     notifyListeners();
   }

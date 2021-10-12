@@ -3,8 +3,8 @@ import 'package:flutter/widgets.dart';
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
-abstract class LocalizationOverrideManager {
+abstract class LocalizationOverrides {
   Future<void> refreshOverrideLocalizations();
 
-  Future<Map<String, dynamic>> getCachedLocalizations(Locale locale);
+  Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale);
 }
