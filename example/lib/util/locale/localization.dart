@@ -141,6 +141,18 @@ class Localization {
   String testNewLine(String arg1, num arg2) =>
       _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 
+  /// Translations:
+  ///
+  /// en:  **'Carriage\r\nReturn'**
+  ///
+  /// nl:  **'Carriage\r\nReturn'**
+  ///
+  /// zh-Hans-CN: **'Carriage\r\nReturn'**
+  ///
+  /// fi-FI: **'Carriage\r\nReturn'**
+  String get testNewLineCarriageReturn =>
+      _t(LocalizationKeys.testNewLineCarriageReturn);
+
   String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
 }
