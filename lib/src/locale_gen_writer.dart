@@ -87,13 +87,16 @@ class LocaleGenWriter {
       Map<String, Map<String, dynamic>> allTranslations) {
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
-      ..writeln()
-      ..writeln("import 'package:flutter/services.dart';")
-      ..writeln("import 'package:flutter/widgets.dart';")
-      ..writeln(
-          "import 'package:${params.projectName}/util/locale/localization_keys.dart';")
-      ..writeln(
-          "import 'package:${params.projectName}/util/locale/localization_overrides.dart';")
+      ..writeln();
+    [
+      "import 'package:flutter/services.dart';",
+      "import 'package:flutter/widgets.dart';",
+      "import 'package:${params.projectName}/util/locale/localization_keys.dart';",
+      "import 'package:${params.projectName}/util/locale/localization_overrides.dart';",
+    ]
+      ..sort((i1, i2) => i1.compareTo(i2))
+      ..forEach(sb.writeln);
+    sb
       ..writeln()
       ..writeln(
           '//============================================================//')
