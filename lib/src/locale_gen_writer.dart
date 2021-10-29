@@ -191,13 +191,16 @@ class LocaleGenWriter {
   static void _createLocalizationDelegateFile(LocaleGenParams params) {
     final sb = StringBuffer()
       ..writeln("import 'dart:async';")
-      ..writeln()
-      ..writeln("import 'package:flutter/foundation.dart';")
-      ..writeln("import 'package:flutter/widgets.dart';")
-      ..writeln(
-          "import 'package:${params.projectName}/util/locale/localization.dart';")
-      ..writeln(
-          "import 'package:${params.projectName}/util/locale/localization_overrides.dart';")
+      ..writeln();
+    [
+      "import 'package:flutter/services.dart';",
+      "import 'package:flutter/widgets.dart';",
+      "import 'package:${params.projectName}/util/locale/localization.dart';",
+      "import 'package:${params.projectName}/util/locale/localization_overrides.dart';",
+    ]
+      ..sort((i1, i2) => i1.compareTo(i2))
+      ..forEach(sb.writeln);
+    sb
       ..writeln()
       ..writeln(
           '//============================================================//')
