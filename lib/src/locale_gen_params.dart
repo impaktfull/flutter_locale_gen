@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
-import 'package:meta/meta.dart';
 
 final defaultOutputDir = join('lib', 'util', 'locale');
 final defaultAssetsDir = join('assets', 'locale');

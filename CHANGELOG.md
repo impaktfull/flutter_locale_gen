@@ -1,4 +1,6 @@
 # Changelog
+## [3.7.0] - 2021-11-02
+- Added better import sorting (alphabetic) so the analyzer won't break everytime
 
 ## [3.6.1] - 2021-10-12
 - Issue where an exception was thrown even when it was not needed.
