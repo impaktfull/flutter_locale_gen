@@ -1,7 +1,7 @@
 # Changelog
 ## [4.0.0] - 2021-11-12
 Breaking
-- Flutter 2.14.0 is minimum Flutter version
+- Dart 2.14.0 is minimum dart version
 - Fixed an issue where `kDebugMode` moved to another import
 
 ## [3.7.0] - 2021-11-02
