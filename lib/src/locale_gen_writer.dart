@@ -193,7 +193,7 @@ class LocaleGenWriter {
       ..writeln("import 'dart:async';")
       ..writeln();
     [
-      "import 'package:flutter/services.dart';",
+      "import 'package:flutter/foundation.dart';",
       "import 'package:flutter/widgets.dart';",
       "import 'package:${params.projectName}/util/locale/localization.dart';",
       "import 'package:${params.projectName}/util/locale/localization_overrides.dart';",

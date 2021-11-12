@@ -1,4 +1,9 @@
 # Changelog
+## [4.0.0] - 2021-11-12
+Breaking
+- Dart 2.14.0 is minimum dart version
+- Fixed an issue where `kDebugMode` moved to another import
+
 ## [3.7.0] - 2021-11-02
 - Added better import sorting (alphabetic) so the analyzer won't break everytime
 
