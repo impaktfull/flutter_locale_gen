@@ -10,7 +10,7 @@ final defaultLocaleAssetsDir = join('assets', 'locale');
 
 class LocaleGenParams {
   final String programName;
-  String? outputDir = '$defaultOutputDir/';
+  String outputDir = '$defaultOutputDir/';
   String assetsDir = '$defaultAssetsDir/';
   String localeAssetsDir = '$defaultLocaleAssetsDir/';
 
@@ -86,6 +86,9 @@ class LocaleGenParams {
     outputDir ??= defaultOutputDir;
     if (!outputDir.endsWith('/')) {
       outputDir += '/';
+    }
+    if (!outputDir.startsWith('lib/')) {
+      throw ArgumentError('output_path should always start with lib');
     }
 
     var assetsDir = config['assets_path'];

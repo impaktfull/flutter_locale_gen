@@ -85,14 +85,15 @@ class LocaleGenWriter {
       LocaleGenParams params,
       Map<String, dynamic> defaultTranslations,
       Map<String, Map<String, dynamic>> allTranslations) {
+    final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
       ..writeln();
     [
       "import 'package:flutter/services.dart';",
       "import 'package:flutter/widgets.dart';",
-      "import 'package:${params.projectName}/util/locale/localization_keys.dart';",
-      "import 'package:${params.projectName}/util/locale/localization_overrides.dart';",
+      "import 'package:${params.projectName}/${importPath}localization_keys.dart';",
+      "import 'package:${params.projectName}/${importPath}localization_overrides.dart';",
     ]
       ..sort((i1, i2) => i1.compareTo(i2))
       ..forEach(sb.writeln);
@@ -189,14 +190,15 @@ class LocaleGenWriter {
   }
 
   static void _createLocalizationDelegateFile(LocaleGenParams params) {
+    final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:async';")
       ..writeln();
     [
       "import 'package:flutter/foundation.dart';",
       "import 'package:flutter/widgets.dart';",
-      "import 'package:${params.projectName}/util/locale/localization.dart';",
-      "import 'package:${params.projectName}/util/locale/localization_overrides.dart';",
+      "import 'package:${params.projectName}/${importPath}localization.dart';",
+      "import 'package:${params.projectName}/${importPath}localization_overrides.dart';",
     ]
       ..sort((i1, i2) => i1.compareTo(i2))
       ..forEach(sb.writeln);
