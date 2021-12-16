@@ -73,6 +73,11 @@ void main() {
                     'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  default_language: \'fr\'')
                 .localeAssetsDir,
             'assets/locale/');
+        expect(
+            LocaleGenParams.fromYamlString('locale_gen',
+                    'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  default_language: \'fr\'')
+                .outputDir,
+            'lib/util/locale/');
       });
       test('Test set asset path', () {
         expect(
@@ -85,6 +90,11 @@ void main() {
                     'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  locale_assets_path: \'assets/mylocale\'')
                 .localeAssetsDir,
             'assets/mylocale/');
+        expect(
+            LocaleGenParams.fromYamlString('locale_gen',
+                    'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  output_path: \'lib/util/mylocale\'')
+                .outputDir,
+            'lib/util/mylocale/');
       });
       test('Test default doc languages', () {
         expect(
