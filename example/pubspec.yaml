@@ -27,4 +27,5 @@ locale_gen:
   languages: ['en','nl', 'zh-Hans-CN', 'fi-FI']
 #  locale_assets_path: 'assets/localization'
 #  assets_path: 'assets/localization'
+#  output_path: 'lib/util/translations'
 #  doc_languages: ['en']
