@@ -1,4 +1,8 @@
 # Changelog
+## [4.1.0] - 2021-11-12
+### Added
+- Support for using an other directory instead of `lib/util/locale` for write all the files
+
 ## [4.0.0] - 2021-11-12
 Breaking
 - Dart 2.14.0 is minimum dart version

@@ -82,7 +82,11 @@ class LocaleGenParams {
       throw Exception('default language is not included in the languages list');
     }
 
+    var outputDir = config['output_path'];
     outputDir ??= defaultOutputDir;
+    if (!outputDir.endsWith('/')) {
+      outputDir += '/';
+    }
 
     var assetsDir = config['assets_path'];
     assetsDir ??= defaultAssetsDir;
@@ -96,6 +100,7 @@ class LocaleGenParams {
     }
 
     this.localeAssetsDir = localeAssetsDir;
+    this.outputDir = outputDir;
     this.assetsDir = assetsDir;
     this.languages = languages;
     this.defaultLanguage = defaultLanguage;
