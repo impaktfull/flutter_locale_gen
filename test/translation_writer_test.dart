@@ -296,4 +296,48 @@ void main() {
       });
     });
   });
+
+  group('replaceArgumentDocumentation', () {
+    test('Test replaceArgumentDocumentation with empty string', () {
+      final result = TranslationWriter.replaceArgumentDocumentation('');
+      expect(result, '');
+    });
+    test('Test replaceArgumentDocumentation with null', () {
+      final result = TranslationWriter.replaceArgumentDocumentation(null);
+      expect(result, null);
+    });
+    test('Test replaceArgumentDocumentation with null', () {
+      final result = TranslationWriter.replaceArgumentDocumentation(null);
+      expect(result, null);
+    });
+    test('Test replaceArgumentDocumentation with %1\$s', () {
+      final result =
+          TranslationWriter.replaceArgumentDocumentation('Simple test %1\$s');
+      expect(result, 'Simple test [arg1 string]');
+    });
+    test('Test replaceArgumentDocumentation with 2 %1\$s', () {
+      final result = TranslationWriter.replaceArgumentDocumentation(
+          'Double test: %1\$s %1\$s');
+      expect(result, 'Double test: [arg1 string] [arg1 string]');
+    });
+    test('Test replaceArgumentDocumentation with %1\$d', () {
+      final result =
+          TranslationWriter.replaceArgumentDocumentation('Test with %1\$d');
+      expect(result, 'Test with [arg1 number]');
+    });
+    test('Test replaceArgumentDocumentation with 2 %1\$d', () {
+      final result = TranslationWriter.replaceArgumentDocumentation(
+          'Another test with %1\$d and %1\$d');
+      expect(result, 'Another test with [arg1 number] and [arg1 number]');
+    });
+    test('Test replaceArgumentDocumentation with %1\$x', () {
+      expect(
+          () => TranslationWriter.replaceArgumentDocumentation(
+              'Another test with %1\$x and %1\$x'),
+          throwsA(predicate((e) =>
+              e is Exception &&
+              e.toString() ==
+                  'Exception: Unsupported argument type for x. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues')));
+    });
+  });
 }

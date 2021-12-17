@@ -4,6 +4,7 @@
 - Output path should also be used for the correct imports
 ### Added
 - Extra error handling for the output_path. (output_path should always start with `lib/`)
+- Extra unit tests & refactored some code to have smaller tests
 
 ## [4.1.0] - 2021-12-16
 ### Added
