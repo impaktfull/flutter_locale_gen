@@ -96,6 +96,12 @@ void main() {
                 .outputDir,
             'lib/util/mylocale/');
       });
+      test('Test set asset path error handling', () {
+        expect(
+            () => LocaleGenParams.fromYamlString('locale_gen',
+                'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  output_path: \'util/mylocale\''),
+            throwsArgumentError);
+      });
       test('Test default doc languages', () {
         expect(
             LocaleGenParams.fromYamlString('locale_gen',

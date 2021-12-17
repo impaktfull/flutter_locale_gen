@@ -18,6 +18,12 @@ void main() {
       expect(result,
           "    Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),");
     });
+    test('parses non existing locale', () {
+      final result = LocaleGenParser.parseSupportedLocale(
+          ' flijasdf saodfip3e 45768sdfafasof helloworldhi');
+      expect(result,
+          "    Locale(' flijasdf saodfip3e 45768sdfafasof helloworldhi'),");
+    });
   });
   group('LocaleGen parseDefaultLanguageLocale', () {
     test('parses nl locale', () {
@@ -34,6 +40,12 @@ void main() {
       final result = LocaleGenParser.parseDefaultLanguageLocale('fi-FI');
       expect(result,
           "  static const defaultLocale = Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI');");
+    });
+    test('parses non existing locale', () {
+      final result = LocaleGenParser.parseDefaultLanguageLocale(
+          ' flijasdf saodfip3e 45768sdfafasof helloworldhi');
+      expect(result,
+          "  static const defaultLocale = Locale(' flijasdf saodfip3e 45768sdfafasof helloworldhi');");
     });
   });
 }

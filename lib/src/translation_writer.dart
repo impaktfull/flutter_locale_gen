@@ -5,6 +5,8 @@ class TranslationWriter {
   static const REGEX_INDEX_GROUP_INDEX = 1;
   static const REGEX_TYPE_GROUP_INDEX = 2;
 
+  const TranslationWriter._();
+
   static void buildTranslationFunction(
       StringBuffer sb, String key, String? value) {
     if (value == null || value.isEmpty) {
@@ -107,7 +109,8 @@ class TranslationWriter {
   static String? replaceArgumentDocumentation(String? value) {
     if (value == null) return null;
     var newValue = value;
-    formatRegex.allMatches(newValue).forEach((match) {
+    final allMatches = formatRegex.allMatches(newValue);
+    for (final match in allMatches) {
       final index = match.group(REGEX_INDEX_GROUP_INDEX);
       final type = match.group(REGEX_TYPE_GROUP_INDEX);
       if (type == 's') {
@@ -118,7 +121,7 @@ class TranslationWriter {
         throw Exception(
             'Unsupported argument type for $type. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
       }
-    });
+    }
     return newValue;
   }
 }

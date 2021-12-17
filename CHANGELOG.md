@@ -1,5 +1,12 @@
 # Changelog
-## [4.1.0] - 2021-11-12
+## [4.1.1] - 2021-12-16
+### Fixed
+- Output path should also be used for the correct imports
+### Added
+- Extra error handling for the output_path. (output_path should always start with `lib/`)
+- Extra unit tests & refactored some code to have smaller tests
+
+## [4.1.0] - 2021-12-16
 ### Added
 - Support for using an other directory instead of `lib/util/locale` for write all the files
 
