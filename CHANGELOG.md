@@ -1,4 +1,8 @@
 # Changelog
+## [4.1.2] - 2022-01-01
+### Fixed
+- changed language code to `toLanguageTag()`
+
 ## [4.1.1] - 2021-12-16
 ### Fixed
 - Output path should also be used for the correct imports

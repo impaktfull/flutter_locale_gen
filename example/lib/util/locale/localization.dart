@@ -37,7 +37,7 @@ class Localization {
       localizations._localisedOverrideValues = overrideLocalizations;
     }
     final jsonContent = await rootBundle.loadString(
-        'assets/locale/${locale.languageCode}.json',
+        'assets/locale/${locale.toLanguageTag()}.json',
         cache: useCaching);
     localizations._localisedValues =
         json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as

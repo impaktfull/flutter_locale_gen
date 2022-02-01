@@ -226,7 +226,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
     localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
@@ -304,7 +304,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
     localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
@@ -394,7 +394,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
     localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
@@ -493,7 +493,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
     localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
@@ -593,7 +593,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
     localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
@@ -695,7 +695,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${locale.languageCode}.json', cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
     localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
     return localizations;
   }
@@ -777,7 +777,7 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   static List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
   LocalizationOverrides? localizationOverrides;
@@ -798,7 +798,7 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale locale) => supportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
 
   @override
   Future<Localization> load(Locale locale) async {
@@ -856,7 +856,7 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 
   static List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
   LocalizationOverrides? localizationOverrides;
@@ -877,7 +877,7 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale locale) => supportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
 
   @override
   Future<Localization> load(Locale locale) async {

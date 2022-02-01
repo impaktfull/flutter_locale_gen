@@ -30,6 +30,15 @@ class HomeScreen extends StatelessWidget {
               child: const Text('Nederlands (Not translated)'),
               onPressed: Provider.of<LocaleViewModel>(context).onSwitchToDutch,
             ),
+            MaterialButton(
+              child: const Text('fi-FI (Not translated)'),
+              onPressed: Provider.of<LocaleViewModel>(context).onSwitchToFiFi,
+            ),
+            MaterialButton(
+              child: const Text('zh-Hans-CN (Not translated)'),
+              onPressed:
+                  Provider.of<LocaleViewModel>(context).onSwitchToZHHansCN,
+            ),
             Container(height: 32),
             Text(Localization.of(context).test),
             Text(Localization.of(context).testArg1('string')),

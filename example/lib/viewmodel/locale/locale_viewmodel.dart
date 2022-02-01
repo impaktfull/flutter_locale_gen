@@ -41,6 +41,14 @@ class LocaleViewModel with ChangeNotifier {
     await _onUpdateLocaleClicked(const Locale('en'));
   }
 
+  Future<void> onSwitchToZHHansCN() async {
+    await _onUpdateLocaleClicked(const Locale('zh', 'Hans-CN'));
+  }
+
+  Future<void> onSwitchToFiFi() async {
+    await _onUpdateLocaleClicked(const Locale('fi', 'FI'));
+  }
+
   Future<void> onSwitchToSystemLanguage() async {
     await _onUpdateLocaleClicked(null);
   }

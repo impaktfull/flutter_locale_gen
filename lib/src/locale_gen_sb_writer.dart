@@ -84,7 +84,7 @@ class LocaleGenSbWriter {
           '      localizations._localisedOverrideValues = overrideLocalizations;')
       ..writeln('    }')
       ..writeln(
-          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.languageCode}.json', cache: useCaching);")
+          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.toLanguageTag()}.json', cache: useCaching);")
       ..writeln(
           '    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as')
       ..writeln('    return localizations;')
@@ -176,7 +176,7 @@ class LocaleGenSbWriter {
       ..writeln('  static List<Locale> get supportedLocales {')
       ..writeln('    if (localeFilter == null) return _supportedLocales;')
       ..writeln(
-          '    return _supportedLocales.where((element) => localeFilter?.call(element.languageCode) ?? true).toList();')
+          '    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();')
       ..writeln('  }')
       ..writeln()
       ..writeln('  LocalizationOverrides? localizationOverrides;')
@@ -198,7 +198,7 @@ class LocaleGenSbWriter {
       ..writeln()
       ..writeln('  @override')
       ..writeln(
-          '  bool isSupported(Locale locale) => supportedLanguages.contains(locale.languageCode);')
+          '  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());')
       ..writeln()
       ..writeln('  @override')
       ..writeln('  Future<Localization> load(Locale locale) async {')
