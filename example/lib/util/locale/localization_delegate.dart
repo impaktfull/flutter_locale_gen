@@ -13,31 +13,24 @@ typedef LocaleFilter = bool Function(String languageCode);
 
 class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   static LocaleFilter? localeFilter;
-  static const defaultLocale = Locale.fromSubtags(
-      languageCode: 'en', scriptCode: null, countryCode: null);
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
   static const _supportedLocales = [
     Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(
-        languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
     Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),
   ];
 
   static List<String> get supportedLanguages {
-    final supportedLanguageTags =
-        _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags
-        .where((element) => localeFilter?.call(element) ?? true)
-        .toList();
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
   static List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales
-        .where((element) => localeFilter?.call(element.languageCode) ?? true)
-        .toList();
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
   LocalizationOverrides? localizationOverrides;
@@ -58,8 +51,7 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      supportedLanguages.contains(locale.languageCode);
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
 
   @override
   Future<Localization> load(Locale locale) async {

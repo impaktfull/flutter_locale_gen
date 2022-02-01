@@ -2,6 +2,7 @@
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
+
   /// Translations:
   ///
   /// en:  **'Testing in English'**
@@ -78,4 +79,5 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'Carriage\r\nReturn'**
   static const testNewLineCarriageReturn = 'test_new_line_carriage_return';
+
 }
