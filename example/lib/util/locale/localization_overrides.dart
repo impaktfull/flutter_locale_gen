@@ -7,4 +7,6 @@ abstract class LocalizationOverrides {
   Future<void> refreshOverrideLocalizations();
 
   Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale);
+
+  String swapKey(String key);
 }

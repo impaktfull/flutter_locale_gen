@@ -65,15 +65,18 @@ class LocaleGenSbWriter {
       ..writeln(
           '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
       ..writeln('  final Locale locale;')
+      ..writeln('  final LocalizationOverrides? localizationOverrides;')
       ..writeln()
-      ..writeln('  Localization({required this.locale});')
+      ..writeln(
+          '  Localization({required this.locale, this.localizationOverrides});')
       ..writeln()
       ..writeln('  static Future<Localization> load(Locale locale, {')
       ..writeln('    LocalizationOverrides? localizationOverrides,')
       ..writeln('    bool showLocalizationKeys = false,')
       ..writeln('    bool useCaching = true,')
       ..writeln('    }) async {')
-      ..writeln('    final localizations = Localization(locale: locale);')
+      ..writeln(
+          '    final localizations = Localization(locale: locale, localizationOverrides: localizationOverrides);')
       ..writeln('    if (showLocalizationKeys) {')
       ..writeln('      return localizations;')
       ..writeln('    }')
@@ -93,8 +96,10 @@ class LocaleGenSbWriter {
       ..writeln('  String _t(String key, {List<dynamic>? args}) {')
       ..writeln('    try {')
       ..writeln(
-          '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
-      ..writeln('      if (value == null) return key;')
+          '      final newKey = localizationOverrides?.swapKey(key) ?? key;')
+      ..writeln(
+          '      final value = (_localisedOverrideValues[newKey] ?? _localisedValues[newKey]) as String?;')
+      ..writeln('      if (value == null) return newKey;')
       ..writeln('      if (args == null || args.isEmpty) return value;')
       ..writeln('      var newValue = value;')
       ..writeln('      // ignore: avoid_annotating_with_dynamic')
@@ -233,6 +238,8 @@ class LocaleGenSbWriter {
       ..writeln()
       ..writeln(
           '  Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale);')
+      ..writeln()
+      ..writeln('  String swapKey(String key);')
       ..writeln('}');
     return sb.toString();
   }

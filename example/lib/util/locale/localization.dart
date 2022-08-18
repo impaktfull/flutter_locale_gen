@@ -18,8 +18,9 @@ class Localization {
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
   final Locale locale;
+  final LocalizationOverrides? localizationOverrides;
 
-  Localization({required this.locale});
+  Localization({required this.locale, this.localizationOverrides});
 
   static Future<Localization> load(
     Locale locale, {
@@ -27,7 +28,8 @@ class Localization {
     bool showLocalizationKeys = false,
     bool useCaching = true,
   }) async {
-    final localizations = Localization(locale: locale);
+    final localizations = Localization(
+        locale: locale, localizationOverrides: localizationOverrides);
     if (showLocalizationKeys) {
       return localizations;
     }
@@ -46,9 +48,10 @@ class Localization {
 
   String _t(String key, {List<dynamic>? args}) {
     try {
-      final value =
-          (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
+      final newKey = localizationOverrides?.swapKey(key) ?? key;
+      final value = (_localisedOverrideValues[newKey] ??
+          _localisedValues[newKey]) as String?;
+      if (value == null) return newKey;
       if (args == null || args.isEmpty) return value;
       var newValue = value;
       // ignore: avoid_annotating_with_dynamic

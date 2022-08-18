@@ -23,4 +23,10 @@ class CustomLocalizationOverrideManager extends LocalizationOverrides {
   Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale) async {
     return _translations[locale] ?? <String, dynamic>{};
   }
+
+  @override
+  String swapKey(String key) {
+    print('Swapping $key');
+    return key;
+  }
 }

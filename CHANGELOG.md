@@ -1,4 +1,9 @@
 # Changelog
+## [5.0.0] - 2022-08-18
+### Added (Breaking)
+- Option to swap key with another key.
+    (This can be usefull when working with a shared codebase where you want key `x` to be key `y` in the other codebase, without creating new screens)
+
 ## [4.1.2] - 2022-01-01
 ### Fixed
 - changed language code to `toLanguageTag()`
