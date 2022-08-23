@@ -1,4 +1,5 @@
 import 'package:locale_gen/src/case_util.dart';
+import 'package:locale_gen/src/extensions/list_extensions.dart';
 import 'package:locale_gen/src/locale_gen_parser.dart';
 
 import 'locale_gen_params.dart';
@@ -160,8 +161,9 @@ class LocaleGenSbWriter {
           LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
       ..writeln()
       ..writeln('  static const _supportedLocales = [');
-    params.languages.forEach((language) =>
-        sb.writeln(LocaleGenParser.parseSupportedLocale(language)));
+    params.languages.moveToFirstIndex(params.defaultLanguage).forEach(
+        (language) =>
+            sb.writeln(LocaleGenParser.parseSupportedLocale(language)));
     sb
       ..writeln('  ];')
       ..writeln()

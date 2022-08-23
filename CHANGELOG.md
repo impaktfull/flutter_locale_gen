@@ -1,4 +1,8 @@
 # Changelog
+## [5.0.0] - 2022-08-23
+### Fixed
+- Sorting of the default language in the supported languages
+
 ## [4.1.2] - 2022-01-01
 ### Fixed
 - changed language code to `toLanguageTag()`
