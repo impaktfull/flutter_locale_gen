@@ -817,7 +817,8 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 }
 ''');
     });
-    test('Test createLocalizationDelegateFile with unsorted default language', () {
+    test('Test createLocalizationDelegateFile with unsorted default language',
+        () {
       final params = LocaleGenParams.fromYamlString(
           'locale_gen', '''name: locale_gen_example
 locale_gen:
@@ -895,7 +896,9 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 }
 ''');
     });
-    test('Test createLocalizationDelegateFile with sorted default language but use nl as default', () {
+    test(
+        'Test createLocalizationDelegateFile with sorted default language but use nl as default',
+        () {
       final params = LocaleGenParams.fromYamlString(
           'locale_gen', '''name: locale_gen_example
 locale_gen:
@@ -974,7 +977,9 @@ class LocalizationDelegate extends LocalizationsDelegate<Localization> {
 }
 ''');
     });
-    test('Test createLocalizationDelegateFile with unsorted default language but use nl as default', () {
+    test(
+        'Test createLocalizationDelegateFile with unsorted default language but use nl as default',
+        () {
       final params = LocaleGenParams.fromYamlString(
           'locale_gen', '''name: locale_gen_example
 locale_gen:
