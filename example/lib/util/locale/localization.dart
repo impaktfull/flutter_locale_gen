@@ -21,39 +21,32 @@ class Localization {
   /// It can later be used to check what the locale is that was used to load this Localization instance.
   static Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(
-      languageCode: 'en', scriptCode: null, countryCode: null);
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
   static const _supportedLocales = [
     Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(
-        languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+    Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
     Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),
   ];
 
   static List<String> get supportedLanguages {
-    final supportedLanguageTags =
-        _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags
-        .where((element) => localeFilter?.call(element) ?? true)
-        .toList();
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
   static List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales
-        .where((element) => localeFilter?.call(element.toLanguageTag()) ?? true)
-        .toList();
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
   static Future<void> load({
-    Locale? locale,
+    Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
-  }) async {
+    }) async {
     final currentLocale = locale ?? defaultLocale;
     Localization.locale = currentLocale;
     if (showLocalizationKeys) {
@@ -62,26 +55,21 @@ class Localization {
       return;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations =
-          await localizationOverrides.getOverriddenLocalizations(currentLocale);
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString(
-        'assets/locale/${currentLocale.toLanguageTag()}.json',
-        cache: useCaching);
+    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
   static String _t(String key, {List<dynamic>? args}) {
     try {
-      final value =
-          (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
+      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
       var newValue = value;
       // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) =>
-          newValue = _replaceWith(newValue, arg, index + 1));
+      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
       return newValue;
     } catch (e) {
       return '⚠$key⚠';
@@ -118,8 +106,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string]'**
-  static String testArg1(String arg1) =>
-      _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
+  static String testArg1(String arg1) => _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
 
   /// Translations:
   ///
@@ -130,8 +117,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 number]'**
-  static String testArg2(num arg1) =>
-      _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
+  static String testArg2(num arg1) => _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
   /// Translations:
   ///
@@ -142,8 +128,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number]'**
-  static String testArg3(String arg1, num arg2) =>
-      _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
+  static String testArg3(String arg1, num arg2) => _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
@@ -154,8 +139,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number] [arg1 string]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number] [arg1 string]'**
-  static String testArg4(String arg1, num arg2) =>
-      _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
+  static String testArg4(String arg1, num arg2) => _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
@@ -166,8 +150,7 @@ class Localization {
   /// zh-Hans-CN: **'频\n的\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n[arg1 string] [arg2 number] [arg1 string]'**
-  static String testNewLine(String arg1, num arg2) =>
-      _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
+  static String testNewLine(String arg1, num arg2) => _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
@@ -178,9 +161,8 @@ class Localization {
   /// zh-Hans-CN: **'Carriage\r\nReturn'**
   ///
   /// fi-FI: **'Carriage\r\nReturn'**
-  static String get testNewLineCarriageReturn =>
-      _t(LocalizationKeys.testNewLineCarriageReturn);
+  static String get testNewLineCarriageReturn => _t(LocalizationKeys.testNewLineCarriageReturn);
 
-  static String getTranslation(String key, {List<dynamic>? args}) =>
-      _t(key, args: args ?? <dynamic>[]);
+  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+
 }

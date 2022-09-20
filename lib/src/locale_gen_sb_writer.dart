@@ -63,6 +63,7 @@ class LocaleGenSbWriter {
       ..writeln()
       ..writeln('  static var _localisedValues = <String, dynamic>{};')
       ..writeln('  static var _localisedOverrideValues = <String, dynamic>{};')
+      ..writeln()
       ..writeln('  /// The locale is used to get the correct json locale.')
       ..writeln(
           '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
