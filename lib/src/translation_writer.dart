@@ -69,7 +69,7 @@ class TranslationWriter {
 
     final indexToReplacement = Map.fromEntries(entries);
 
-    _buildParameterizedFunction(sb, key, value, indexToReplacement);
+    _buildParameterizedFunction(sb, key, value, indexToReplacement, '_t');
   }
 
   static void _buildNormalParameterized(StringBuffer sb, String key,
@@ -79,11 +79,12 @@ class TranslationWriter {
         MapEntry(index++, match.group(NORMAL_REGEX_TYPE_GROUP_INDEX)!));
     final indexToReplacement = Map.fromEntries(entries);
 
-    _buildParameterizedFunction(sb, key, value, indexToReplacement);
+    _buildParameterizedFunction(
+        sb, key, value, indexToReplacement, '_nonPositionalT');
   }
 
   static void _buildParameterizedFunction(StringBuffer sb, String key,
-      String? value, Map<int, String> indexToReplacement) {
+      String? value, Map<int, String> indexToReplacement, String functionName) {
     try {
       final camelKey = CaseUtil.getCamelcase(key);
       final tmpSb = StringBuffer('  String $camelKey(');
@@ -96,7 +97,8 @@ class TranslationWriter {
           tmpSb.write(', ');
         }
       });
-      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: <dynamic>[');
+      tmpSb.write(
+          ') => $functionName(LocalizationKeys.$camelKey, args: <dynamic>[');
       iterationIndex = 0;
       indexToReplacement.forEach((index, match) {
         if (iterationIndex++ != 0) {

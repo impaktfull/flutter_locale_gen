@@ -81,7 +81,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  String appTitle(String arg1, String arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  String appTitle(String arg1, String arg2) => _nonPositionalT(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
 
       test(
@@ -93,7 +93,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  String appTitle(String arg1, num arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  String appTitle(String arg1, num arg2) => _nonPositionalT(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
     });
 
