@@ -1,9 +1,11 @@
 import 'case_util.dart';
 
 class TranslationWriter {
-  static final formatRegex = RegExp(r'\%(\d*)\$([a-z])');
+  static final positionalFormatRegex = RegExp(r'\%(\d*)\$([sd])');
+  static final normalFormatRegex = RegExp(r'\%([sd])');
   static const REGEX_INDEX_GROUP_INDEX = 1;
   static const REGEX_TYPE_GROUP_INDEX = 2;
+  static const NORMAL_REGEX_TYPE_GROUP_INDEX = 1;
 
   const TranslationWriter._();
 
@@ -13,46 +15,94 @@ class TranslationWriter {
       _buildDefaultFunction(sb, key);
       return;
     }
-    final allMatched = formatRegex.allMatches(value);
-    if (allMatched.isEmpty) {
+    final allPositionalMatched = positionalFormatRegex.allMatches(value);
+    final allNormalMatched = normalFormatRegex.allMatches(value);
+    if (allPositionalMatched.isEmpty && allNormalMatched.isEmpty) {
       _buildDefaultFunction(sb, key);
       return;
     }
+    if (allPositionalMatched.isNotEmpty && allNormalMatched.isNotEmpty) {
+      print(Exception(
+          'The translation for key "$key" contains both positional and normal format parameters'));
+      _buildDefaultFunction(sb, key);
+      return;
+    }
+
+    try {
+      if (allPositionalMatched.isNotEmpty) {
+        _buildPositionalParameterized(sb, key, value, allPositionalMatched);
+      } else {
+        _buildNormalParameterized(sb, key, value, allNormalMatched);
+      }
+    } on Exception catch (e) {
+      print(e);
+      _buildDefaultFunction(sb, key);
+    }
+  }
+
+  static void _buildPositionalParameterized(StringBuffer sb, String key,
+      String? value, Iterable<RegExpMatch> matches) {
+    // Validate
+    final validMatcher = <RegExpMatch>[];
+    matches.forEach((match) {
+      final sameTypeMatch = validMatcher.where((validMatch) =>
+          validMatch.group(REGEX_INDEX_GROUP_INDEX) ==
+          match.group(REGEX_INDEX_GROUP_INDEX));
+      if (sameTypeMatch.isNotEmpty &&
+          sameTypeMatch.first.group(REGEX_TYPE_GROUP_INDEX) !=
+              match.group(REGEX_TYPE_GROUP_INDEX)) {
+        throw Exception(
+            '$key contains a value with more than 1 argument with the same index but different type');
+      }
+      if (validMatcher
+          .where((validMatch) => validMatch.group(0) == match.group(0))
+          .isEmpty) {
+        validMatcher.add(match);
+      }
+    });
+    final entries = validMatcher
+        .map((match) => MapEntry(
+            int.parse(match.group(REGEX_INDEX_GROUP_INDEX)!),
+            match.group(REGEX_TYPE_GROUP_INDEX)!))
+        .toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    final indexToReplacement = Map.fromEntries(entries);
+
+    _buildParameterizedFunction(sb, key, value, indexToReplacement);
+  }
+
+  static void _buildNormalParameterized(StringBuffer sb, String key,
+      String? value, Iterable<RegExpMatch> matches) {
+    var index = 1;
+    final entries = matches.map((match) =>
+        MapEntry(index++, match.group(NORMAL_REGEX_TYPE_GROUP_INDEX)!));
+    final indexToReplacement = Map.fromEntries(entries);
+
+    _buildParameterizedFunction(sb, key, value, indexToReplacement);
+  }
+
+  static void _buildParameterizedFunction(StringBuffer sb, String key,
+      String? value, Map<int, String> indexToReplacement) {
     try {
       final camelKey = CaseUtil.getCamelcase(key);
       final tmpSb = StringBuffer('  String $camelKey(');
 
-      final validMatcher = <RegExpMatch>[];
-      allMatched.forEach((match) {
-        final sameTypeMatch = validMatcher.where((validMatch) =>
-            validMatch.group(REGEX_INDEX_GROUP_INDEX) ==
-            match.group(REGEX_INDEX_GROUP_INDEX));
-        if (sameTypeMatch.isNotEmpty &&
-            sameTypeMatch.first.group(REGEX_TYPE_GROUP_INDEX) !=
-                match.group(REGEX_TYPE_GROUP_INDEX)) {
-          throw Exception(
-              '$key contains a value with more than 1 argument with the same index but different type');
-        }
-        if (validMatcher
-            .where((validMatch) => validMatch.group(0) == match.group(0))
-            .isEmpty) {
-          validMatcher.add(match);
-        }
-      });
-
-      validMatcher.asMap().forEach((index, match) {
-        final argument = _getArgument(key, match);
+      var iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        final argument = _getArgument(key, match, index);
         tmpSb.write(argument);
-        if (index != validMatcher.length - 1) {
+        if (iterationIndex++ != indexToReplacement.length - 1) {
           tmpSb.write(', ');
         }
       });
       tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: <dynamic>[');
-      validMatcher.asMap().forEach((index, match) {
-        if (index != 0) {
+      iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        if (iterationIndex++ != 0) {
           tmpSb.write(', ');
         }
-        tmpSb.write('arg${match.group(REGEX_INDEX_GROUP_INDEX)}');
+        tmpSb.write('arg$index');
       });
       tmpSb
         ..writeln(']);')
@@ -64,9 +114,7 @@ class TranslationWriter {
     }
   }
 
-  static String _getArgument(String key, RegExpMatch match) {
-    final index = match.group(REGEX_INDEX_GROUP_INDEX);
-    final type = match.group(REGEX_TYPE_GROUP_INDEX);
+  static String _getArgument(String key, String type, int index) {
     if (type == 's') {
       return 'String arg$index';
     } else if (type == 'd') {
@@ -109,7 +157,7 @@ class TranslationWriter {
   static String? replaceArgumentDocumentation(String? value) {
     if (value == null) return null;
     var newValue = value;
-    final allMatches = formatRegex.allMatches(newValue);
+    final allMatches = positionalFormatRegex.allMatches(newValue);
     for (final match in allMatches) {
       final index = match.group(REGEX_INDEX_GROUP_INDEX);
       final type = match.group(REGEX_TYPE_GROUP_INDEX);
@@ -117,9 +165,6 @@ class TranslationWriter {
         newValue = newValue.replaceAll('%$index\$$type', '[arg$index string]');
       } else if (type == 'd') {
         newValue = newValue.replaceAll('%$index\$$type', '[arg$index number]');
-      } else {
-        throw Exception(
-            'Unsupported argument type for $type. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
       }
     }
     return newValue;

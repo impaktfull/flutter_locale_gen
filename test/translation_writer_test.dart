@@ -73,6 +73,28 @@ void main() {
             equals(
                 '  String appTitle(String arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
       });
+
+      test('Test translations with 2 string arguments, non-positional', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', 'hallo %s %s');
+        expect(
+            sb.toString(),
+            equals(
+                '  String appTitle(String arg1, String arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+      });
+
+      test(
+          'Test translations with 1 string and 1 integer argument, non-positional',
+          () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', 'hallo %s %d');
+        expect(
+            sb.toString(),
+            equals(
+                '  String appTitle(String arg1, num arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+      });
     });
 
     group('Tests with number arguments', () {
@@ -165,10 +187,23 @@ void main() {
                 '  String get appTitle => _t(LocalizationKeys.appTitle);\n\n'));
       });
 
-      test('Test translations with 1 number argument', () {
+      test('Test translations with different type of arguments for same index',
+          () {
         final sb = StringBuffer();
         TranslationWriter.buildTranslationFunction(
             sb, 'app_title', 'hallo %1\$s %1\$d');
+        expect(
+            sb.toString(),
+            equals(
+                '  String get appTitle => _t(LocalizationKeys.appTitle);\n\n'));
+      });
+
+      test(
+          'Test translations with mixed positional and non-positional arguments',
+          () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', 'hallo %1\$s %d');
         expect(
             sb.toString(),
             equals(
@@ -331,13 +366,9 @@ void main() {
       expect(result, 'Another test with [arg1 number] and [arg1 number]');
     });
     test('Test replaceArgumentDocumentation with %1\$x', () {
-      expect(
-          () => TranslationWriter.replaceArgumentDocumentation(
-              'Another test with %1\$x and %1\$x'),
-          throwsA(predicate((e) =>
-              e is Exception &&
-              e.toString() ==
-                  'Exception: Unsupported argument type for x. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues')));
+      final result = TranslationWriter.replaceArgumentDocumentation(
+          'Another test with %1\$x and %1\$x');
+      expect(result, 'Another test with %1\$x and %1\$x');
     });
   });
 }
