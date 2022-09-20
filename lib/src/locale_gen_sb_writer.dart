@@ -55,108 +55,19 @@ class LocaleGenSbWriter {
       ..writeln('//THIS FILE IS AUTO GENERATED. DO NOT EDIT//')
       ..writeln(
           '//============================================================//')
-      ..writeln('class Localization {')
-      ..writeln('  var _localisedValues = <String, dynamic>{};')
-      ..writeln('  var _localisedOverrideValues = <String, dynamic>{};')
-      ..writeln()
-      ..writeln(
-          '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
-      ..writeln()
-      ..writeln('  /// The locale is used to get the correct json locale.')
-      ..writeln(
-          '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
-      ..writeln('  final Locale locale;')
-      ..writeln()
-      ..writeln('  Localization({required this.locale});')
-      ..writeln()
-      ..writeln('  static Future<Localization> load(Locale locale, {')
-      ..writeln('    LocalizationOverrides? localizationOverrides,')
-      ..writeln('    bool showLocalizationKeys = false,')
-      ..writeln('    bool useCaching = true,')
-      ..writeln('    }) async {')
-      ..writeln('    final localizations = Localization(locale: locale);')
-      ..writeln('    if (showLocalizationKeys) {')
-      ..writeln('      return localizations;')
-      ..writeln('    }')
-      ..writeln('    if (localizationOverrides != null) {')
-      ..writeln(
-          '      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);')
-      ..writeln(
-          '      localizations._localisedOverrideValues = overrideLocalizations;')
-      ..writeln('    }')
-      ..writeln(
-          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${locale.toLanguageTag()}.json', cache: useCaching);")
-      ..writeln(
-          '    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as')
-      ..writeln('    return localizations;')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln('  String _t(String key, {List<dynamic>? args}) {')
-      ..writeln('    try {')
-      ..writeln(
-          '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
-      ..writeln('      if (value == null) return key;')
-      ..writeln('      if (args == null || args.isEmpty) return value;')
-      ..writeln('      var newValue = value;')
-      ..writeln('      // ignore: avoid_annotating_with_dynamic')
-      ..writeln(
-          '      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));')
-      ..writeln('      return newValue;')
-      ..writeln('    } catch (e) {')
-      ..writeln("      return '⚠\$key⚠';")
-      ..writeln('    }')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln(
-          '  String _replaceWith(String value, Object? arg, int argIndex) {')
-      ..writeln('    if (arg == null) return value;')
-      ..writeln('    if (arg is String) {')
-      ..writeln("      return value.replaceAll('%\$argIndex\\\$s', arg);")
-      ..writeln('    } else if (arg is num) {')
-      ..writeln("      return value.replaceAll('%\$argIndex\\\$d', '\$arg');")
-      ..writeln('    }')
-      ..writeln('    return value;')
-      ..writeln('  }')
-      ..writeln();
-    defaultTranslations.forEach((key, value) {
-      TranslationWriter.buildDocumentation(
-          sb, key, allTranslations, params.docLanguages);
-      TranslationWriter.buildTranslationFunction(sb, key, value);
-    });
-    sb
-      ..writeln(
-          '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
-      ..writeln()
-      ..writeln('}');
-    return sb.toString();
-  }
-
-  static String createLocalizationDelegateFile(LocaleGenParams params) {
-    final importPath = params.outputDir.replaceFirst('lib/', '');
-    final sb = StringBuffer()
-      ..writeln("import 'dart:async';")
-      ..writeln();
-    [
-      "import 'package:flutter/foundation.dart';",
-      "import 'package:flutter/widgets.dart';",
-      "import 'package:${params.projectName}/${importPath}localization.dart';",
-      "import 'package:${params.projectName}/${importPath}localization_overrides.dart';",
-    ]
-      ..sort((i1, i2) => i1.compareTo(i2))
-      ..forEach(sb.writeln);
-    sb
-      ..writeln()
-      ..writeln(
-          '//============================================================//')
-      ..writeln('//THIS FILE IS AUTO GENERATED. DO NOT EDIT//')
-      ..writeln(
-          '//============================================================//')
       ..writeln()
       ..writeln('typedef LocaleFilter = bool Function(String languageCode);')
       ..writeln()
-      ..writeln(
-          'class LocalizationDelegate extends LocalizationsDelegate<Localization> {')
+      ..writeln('class Localization {')
       ..writeln('  static LocaleFilter? localeFilter;')
+      ..writeln()
+      ..writeln('  static var _localisedValues = <String, dynamic>{};')
+      ..writeln('  static var _localisedOverrideValues = <String, dynamic>{};')
+      ..writeln('  /// The locale is used to get the correct json locale.')
+      ..writeln(
+          '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
+      ..writeln('  static Locale? locale;')
+      ..writeln()
       ..writeln(
           LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
       ..writeln()
@@ -181,42 +92,66 @@ class LocaleGenSbWriter {
           '    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  LocalizationOverrides? localizationOverrides;')
-      ..writeln('  Locale? newLocale;')
-      ..writeln('  Locale? activeLocale;')
-      ..writeln('  final bool useCaching;')
-      ..writeln('  bool showLocalizationKeys;')
+      ..writeln('  static Future<void> load({')
+      ..writeln('    Locale? locale, ')
+      ..writeln('    LocalizationOverrides? localizationOverrides,')
+      ..writeln('    bool showLocalizationKeys = false,')
+      ..writeln('    bool useCaching = true,')
+      ..writeln('    }) async {')
+      ..writeln('    final currentLocale = locale ?? defaultLocale;')
+      ..writeln('    Localization.locale = currentLocale;')
+      ..writeln('    if (showLocalizationKeys) {')
+      ..writeln('      _localisedValues.clear();')
+      ..writeln('      _localisedOverrideValues.clear();')
+      ..writeln('      return;')
+      ..writeln('    }')
+      ..writeln('    if (localizationOverrides != null) {')
+      ..writeln(
+          '      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);')
+      ..writeln('      _localisedOverrideValues = overrideLocalizations;')
+      ..writeln('    }')
+      ..writeln(
+          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${currentLocale.toLanguageTag()}.json', cache: useCaching);")
+      ..writeln(
+          '    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;')
+      ..writeln('  }')
       ..writeln()
-      ..writeln('  LocalizationDelegate({')
-      ..writeln('    this.newLocale,')
-      ..writeln('    this.localizationOverrides,')
-      ..writeln('    this.showLocalizationKeys = false,')
-      ..writeln('    this.useCaching = !kDebugMode,')
-      ..writeln('  }) {')
-      ..writeln('    if (newLocale != null) {')
-      ..writeln('      activeLocale = newLocale;')
+      ..writeln('  static String _t(String key, {List<dynamic>? args}) {')
+      ..writeln('    try {')
+      ..writeln(
+          '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
+      ..writeln('      if (value == null) return key;')
+      ..writeln('      if (args == null || args.isEmpty) return value;')
+      ..writeln('      var newValue = value;')
+      ..writeln('      // ignore: avoid_annotating_with_dynamic')
+      ..writeln(
+          '      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));')
+      ..writeln('      return newValue;')
+      ..writeln('    } catch (e) {')
+      ..writeln("      return '⚠\$key⚠';")
       ..writeln('    }')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  @override')
       ..writeln(
-          '  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());')
-      ..writeln()
-      ..writeln('  @override')
-      ..writeln('  Future<Localization> load(Locale locale) async {')
-      ..writeln('    final newActiveLocale = newLocale ?? locale;')
-      ..writeln('    activeLocale = newActiveLocale;')
-      ..writeln('    return Localization.load(')
-      ..writeln('      newActiveLocale,')
-      ..writeln('      localizationOverrides: localizationOverrides,')
-      ..writeln('      showLocalizationKeys: showLocalizationKeys,')
-      ..writeln('      useCaching: useCaching,')
-      ..writeln('    );')
+          '  static String _replaceWith(String value, Object? arg, int argIndex) {')
+      ..writeln('    if (arg == null) return value;')
+      ..writeln('    if (arg is String) {')
+      ..writeln("      return value.replaceAll('%\$argIndex\\\$s', arg);")
+      ..writeln('    } else if (arg is num) {')
+      ..writeln("      return value.replaceAll('%\$argIndex\\\$d', '\$arg');")
+      ..writeln('    }')
+      ..writeln('    return value;')
       ..writeln('  }')
-      ..writeln()
-      ..writeln('  @override')
+      ..writeln();
+    defaultTranslations.forEach((key, value) {
+      TranslationWriter.buildDocumentation(
+          sb, key, allTranslations, params.docLanguages);
+      TranslationWriter.buildTranslationFunction(sb, key, value);
+    });
+    sb
       ..writeln(
-          '  bool shouldReload(LocalizationsDelegate<Localization> old) => true;')
+          '  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
+      ..writeln()
       ..writeln('}');
     return sb.toString();
   }

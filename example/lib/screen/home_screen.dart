@@ -39,12 +39,17 @@ class HomeScreen extends StatelessWidget {
               onPressed:
                   Provider.of<LocaleViewModel>(context).onSwitchToZHHansCN,
             ),
+            MaterialButton(
+              child: const Text('show translation keys'),
+              onPressed:
+                  Provider.of<LocaleViewModel>(context).showTranslationKeys,
+            ),
             Container(height: 32),
-            Text(Localization.of(context).test),
-            Text(Localization.of(context).testArg1('string')),
-            Text(Localization.of(context).testArg2(1.0)),
-            Text(Localization.of(context).testArg3('string', 1.0)),
-            Text(Localization.of(context).testArg4('string', 1.0)),
+            Text(Localization.test),
+            Text(Localization.testArg1('string')),
+            Text(Localization.testArg2(1.0)),
+            Text(Localization.testArg3('string', 1.0)),
+            Text(Localization.testArg4('string', 1.0)),
           ],
         ),
       ),

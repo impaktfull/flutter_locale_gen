@@ -20,7 +20,7 @@ class TranslationWriter {
     }
     try {
       final camelKey = CaseUtil.getCamelcase(key);
-      final tmpSb = StringBuffer('  String $camelKey(');
+      final tmpSb = StringBuffer('  static String $camelKey(');
 
       final validMatcher = <RegExpMatch>[];
       allMatched.forEach((match) {
@@ -80,7 +80,7 @@ class TranslationWriter {
     final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(
-          '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
+          '  static String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
       ..writeln();
   }
 

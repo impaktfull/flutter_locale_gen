@@ -8,43 +8,71 @@ import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
-class Localization {
-  var _localisedValues = <String, dynamic>{};
-  var _localisedOverrideValues = <String, dynamic>{};
 
-  static Localization of(BuildContext context) =>
-      Localizations.of<Localization>(context, Localization)!;
+typedef LocaleFilter = bool Function(String languageCode);
+
+class Localization {
+  static LocaleFilter? localeFilter;
+
+  static var _localisedValues = <String, dynamic>{};
+  static var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  final Locale locale;
+  static Locale? locale;
 
-  Localization({required this.locale});
+  static const defaultLocale = Locale.fromSubtags(
+      languageCode: 'en', scriptCode: null, countryCode: null);
 
-  static Future<Localization> load(
-    Locale locale, {
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(
+        languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+    Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags =
+        _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags
+        .where((element) => localeFilter?.call(element) ?? true)
+        .toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales
+        .where((element) => localeFilter?.call(element.toLanguageTag()) ?? true)
+        .toList();
+  }
+
+  static Future<void> load({
+    Locale? locale,
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
   }) async {
-    final localizations = Localization(locale: locale);
+    final currentLocale = locale ?? defaultLocale;
+    Localization.locale = currentLocale;
     if (showLocalizationKeys) {
-      return localizations;
+      _localisedValues.clear();
+      _localisedOverrideValues.clear();
+      return;
     }
     if (localizationOverrides != null) {
       final overrideLocalizations =
-          await localizationOverrides.getOverriddenLocalizations(locale);
-      localizations._localisedOverrideValues = overrideLocalizations;
+          await localizationOverrides.getOverriddenLocalizations(currentLocale);
+      _localisedOverrideValues = overrideLocalizations;
     }
     final jsonContent = await rootBundle.loadString(
-        'assets/locale/${locale.toLanguageTag()}.json',
+        'assets/locale/${currentLocale.toLanguageTag()}.json',
         cache: useCaching);
-    localizations._localisedValues =
-        json.decode(jsonContent) as Map<String, dynamic>; // ignore: avoid_as
-    return localizations;
+    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  String _t(String key, {List<dynamic>? args}) {
+  static String _t(String key, {List<dynamic>? args}) {
     try {
       final value =
           (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
@@ -60,7 +88,7 @@ class Localization {
     }
   }
 
-  String _replaceWith(String value, Object? arg, int argIndex) {
+  static String _replaceWith(String value, Object? arg, int argIndex) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceAll('%$argIndex\$s', arg);
@@ -79,7 +107,7 @@ class Localization {
   /// zh-Hans-CN: **'视频的灯光脚本'**
   ///
   /// fi-FI: **'Näet lisää napauttamalla kuvakkeita'**
-  String get test => _t(LocalizationKeys.test);
+  static String get test => _t(LocalizationKeys.test);
 
   /// Translations:
   ///
@@ -90,7 +118,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string]'**
-  String testArg1(String arg1) =>
+  static String testArg1(String arg1) =>
       _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
 
   /// Translations:
@@ -102,7 +130,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 number]'**
-  String testArg2(num arg1) =>
+  static String testArg2(num arg1) =>
       _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
   /// Translations:
@@ -114,7 +142,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number]'**
-  String testArg3(String arg1, num arg2) =>
+  static String testArg3(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -126,7 +154,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number] [arg1 string]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number] [arg1 string]'**
-  String testArg4(String arg1, num arg2) =>
+  static String testArg4(String arg1, num arg2) =>
       _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -138,7 +166,7 @@ class Localization {
   /// zh-Hans-CN: **'频\n的\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n[arg1 string] [arg2 number] [arg1 string]'**
-  String testNewLine(String arg1, num arg2) =>
+  static String testNewLine(String arg1, num arg2) =>
       _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -150,9 +178,9 @@ class Localization {
   /// zh-Hans-CN: **'Carriage\r\nReturn'**
   ///
   /// fi-FI: **'Carriage\r\nReturn'**
-  String get testNewLineCarriageReturn =>
+  static String get testNewLineCarriageReturn =>
       _t(LocalizationKeys.testNewLineCarriageReturn);
 
-  String getTranslation(String key, {List<dynamic>? args}) =>
+  static String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
 }
