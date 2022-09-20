@@ -1,4 +1,8 @@
 # Changelog
+## [6.0.0] - 2022-09-20
+### Added
+- Added support for non-positional arguments. You **cannot** use both positional and non-positional arguments in the same string.
+
 ## [5.0.0] - 2022-08-23
 ### Fixed
 - Sorting of the default language in the supported languages

@@ -5,5 +5,7 @@
   "test_arg3": "Test argument %1$s %2$d",
   "test_arg4": "Test argument %1$s %2$d %1$s",
   "welcome_message": "Hallo daar",
-  "test_new_line": "Test\nargument\n\n%1$s %2$d %1$s"
+  "test_new_line": "Test\nargument\n\n%1$s %2$d %1$s",
+  "test_arg_non_positional": "Test argument %s",
+  "test_arg_non_positional2": "Test argument %s %d"
 }
