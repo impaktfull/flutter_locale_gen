@@ -60,12 +60,38 @@ class Localization {
     }
   }
 
+  String _nonPositionalT(String key, {List<dynamic>? args}) {
+    try {
+      final value =
+          (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
+      if (value == null) return key;
+      if (args == null || args.isEmpty) return value;
+      var newValue = value;
+      // ignore: avoid_annotating_with_dynamic
+      args.asMap().forEach(
+          (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg));
+      return newValue;
+    } catch (e) {
+      return '⚠$key⚠';
+    }
+  }
+
   String _replaceWith(String value, Object? arg, int argIndex) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceAll('%$argIndex\$s', arg);
     } else if (arg is num) {
       return value.replaceAll('%$argIndex\$d', '$arg');
+    }
+    return value;
+  }
+
+  String _replaceFirstWith(String value, Object? arg) {
+    if (arg == null) return value;
+    if (arg is String) {
+      return value.replaceFirst('%s', arg);
+    } else if (arg is num) {
+      return value.replaceFirst('%d', '$arg');
     }
     return value;
   }
@@ -155,4 +181,7 @@ class Localization {
 
   String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
+
+  String getTranslationNonPositional(String key, {List<dynamic>? args}) =>
+      _nonPositionalT(key, args: args ?? <dynamic>[]);
 }
