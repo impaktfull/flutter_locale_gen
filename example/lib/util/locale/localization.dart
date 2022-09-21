@@ -67,9 +67,10 @@ class Localization {
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
       var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
       args.asMap().forEach(
-          (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg));
+            // ignore: avoid_annotating_with_dynamic
+            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
+          );
       return newValue;
     } catch (e) {
       return '⚠$key⚠';

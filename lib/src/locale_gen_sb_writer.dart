@@ -114,9 +114,11 @@ class LocaleGenSbWriter {
       ..writeln('      if (value == null) return key;')
       ..writeln('      if (args == null || args.isEmpty) return value;')
       ..writeln('      var newValue = value;')
-      ..writeln('      // ignore: avoid_annotating_with_dynamic')
+      ..writeln('      args.asMap().forEach(')
+      ..writeln('            // ignore: avoid_annotating_with_dynamic')
       ..writeln(
-          '      args.asMap().forEach((index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg));')
+          '            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),')
+      ..writeln('      );')
       ..writeln('      return newValue;')
       ..writeln('    } catch (e) {')
       ..writeln("      return '⚠\$key⚠';")
