@@ -72,6 +72,12 @@ nl '%1$s, ik woon in %2$s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wis
 fr 'I live in %2$s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't knew that KOEN?
 ```
 
+*Note:* As of 6.0.0 non-positional arguments are also supported. You **cannot** use both positional and non-positional arguments in the same string.
+Example:
+```
+'%s, ik woon in %s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
+```
+
 ### Working on mac?
 
 add this to you .bash_profile
