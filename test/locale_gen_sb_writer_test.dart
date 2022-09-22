@@ -5,13 +5,16 @@ import 'package:test/test.dart';
 void main() {
   group('LocaleGen SB writer createLocalizationKeysFile', () {
     test('Test createLocalizationKeysFile', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(params, {}, {});
-      expect(result, r'''//============================================================//
+      final result =
+          LocaleGenSbWriter.createLocalizationKeysFile(params, {}, {});
+      expect(result,
+          r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
@@ -21,7 +24,8 @@ class LocalizationKeys {
     });
 
     test('Test createLocalizationKeysFile 1 translation', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -37,8 +41,10 @@ locale_gen:
           'test_translations': 'Dit is een test vertaling',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(params, defaultTranslations, allTranslations);
-      expect(result, r'''//============================================================//
+      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+          params, defaultTranslations, allTranslations);
+      expect(result,
+          r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
@@ -55,7 +61,8 @@ class LocalizationKeys {
     });
 
     test('Test createLocalizationKeysFile multiple translations', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -73,8 +80,10 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(params, defaultTranslations, allTranslations);
-      expect(result, r'''//============================================================//
+      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+          params, defaultTranslations, allTranslations);
+      expect(result,
+          r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
@@ -91,7 +100,8 @@ class LocalizationKeys {
     });
 
     test('Test createLocalizationKeysFile multiple translations in all ', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -110,8 +120,10 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(params, defaultTranslations, allTranslations);
-      expect(result, r'''//============================================================//
+      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+          params, defaultTranslations, allTranslations);
+      expect(result,
+          r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
@@ -135,7 +147,8 @@ class LocalizationKeys {
     });
 
     test('Test createLocalizationKeysFile missing translations', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -149,8 +162,10 @@ locale_gen:
         },
         'nl': {},
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(params, defaultTranslations, allTranslations);
-      expect(result, r'''//============================================================//
+      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+          params, defaultTranslations, allTranslations);
+      expect(result,
+          r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
@@ -169,7 +184,8 @@ class LocalizationKeys {
 
   group('LocaleGen SB writer createLocalizationFile', () {
     test('Test createLocalizationFile', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -295,7 +311,8 @@ class Localization {
 ''');
     });
     test('Test createLocalizationFile other output path', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -423,7 +440,8 @@ class Localization {
     });
 
     test('Test createLocalizationFile 1 translation', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -439,7 +457,8 @@ locale_gen:
           'test_translations': 'Dit is een test vertaling',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(params, defaultTranslations, allTranslations);
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -568,7 +587,8 @@ class Localization {
     });
 
     test('Test createLocalizationFile multiple translations', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -586,7 +606,8 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(params, defaultTranslations, allTranslations);
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -715,7 +736,8 @@ class Localization {
     });
 
     test('Test createLocalizationFile multiple translations in all ', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -734,7 +756,8 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(params, defaultTranslations, allTranslations);
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -870,7 +893,8 @@ class Localization {
     });
 
     test('Test createLocalizationFile missing translations', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
@@ -884,7 +908,8 @@ locale_gen:
         },
         'nl': {},
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(params, defaultTranslations, allTranslations);
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -1015,7 +1040,8 @@ class Localization {
 
   group('LocaleGen SB writer createLocalizationOverrides', () {
     test('Test createLocalizationKeysFile', () {
-      final params = LocaleGenParams.fromYamlString('locale_gen', '''name: locale_gen_example
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
 locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
