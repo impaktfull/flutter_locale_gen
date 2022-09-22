@@ -122,3 +122,4 @@ app.*.symbols
 
 #FVM
 **/.fvm/flutter_sdk
+/test/coverage_helper_test.dart

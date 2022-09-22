@@ -11,9 +11,9 @@ locale_gen:
   locale_assets_path: test/assets/locale
 ''');
       final translations = LocaleGenWriter.getTranslations(params, 'nl');
-      expect(translations.length, 7);
-      expect(translations.keys.length, 7);
-      expect(translations.values.length, 7);
+      expect(translations.length, 9);
+      expect(translations.keys.length, 9);
+      expect(translations.values.length, 9);
     });
     test('Test en translations', () {
       final params = LocaleGenParams.fromYamlString(
@@ -23,9 +23,9 @@ locale_gen:
   locale_assets_path: test/assets/locale
 ''');
       final translations = LocaleGenWriter.getTranslations(params, 'en');
-      expect(translations.length, 6);
-      expect(translations.keys.length, 6);
-      expect(translations.values.length, 6);
+      expect(translations.length, 8);
+      expect(translations.keys.length, 8);
+      expect(translations.values.length, 8);
     });
     test('Test en translations with incorrect path', () {
       final params = LocaleGenParams.fromYamlString(

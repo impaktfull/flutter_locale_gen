@@ -4,5 +4,7 @@
   "test_arg2": "Testing argument %1$d",
   "test_arg3": "Testing argument %1$s %2$d",
   "test_arg4": "Testing argument %1$s %2$d %1$s",
-  "test_new_line": "Testing\nargument\n\n%1$s %2$d %1$s"
+  "test_new_line": "Testing\nargument\n\n%1$s %2$d %1$s",
+  "test_arg_non_positional": "Testing argument %s",
+  "test_arg_non_positional2": "Testing argument %s %d"
 }
