@@ -133,7 +133,8 @@ class LocaleGenSbWriter {
       ..writeln('    }')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  static String _nonPositionalT(String key, {List<dynamic>? args}) {')
+      ..writeln(
+          '  static String _nonPositionalT(String key, {List<dynamic>? args}) {')
       ..writeln('    try {')
       ..writeln(
           '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
@@ -162,7 +163,8 @@ class LocaleGenSbWriter {
       ..writeln('    return value;')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  static String _replaceFirstWith(String value, Object? arg) {')
+      ..writeln(
+          '  static String _replaceFirstWith(String value, Object? arg) {')
       ..writeln('    if (arg == null) return value;')
       ..writeln('    if (arg is String) {')
       ..writeln("      return value.replaceFirst('%s', arg);")

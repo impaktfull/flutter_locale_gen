@@ -53,6 +53,38 @@ flutter packages pub run locale_gen
 pub run locale_gen
 ```
 
+### Migration steps
+With the newest version of locale_gen the context no longer needs to be provided when accessing the translations. This means there are a couple of breaking changes.
+
+The first one is that you can now directly get the translation from the Localization object without having to pass the context, so instead of:
+
+```shell
+Localization.of(context).translation;
+```
+
+you can now do
+
+```shell
+Localization.translation;
+```
+
+The second breaking change is how you initialize/change the locale. Before you could do this by changing the localizationDelegate that is passed to the materialApp, but now you just call the load function of the Localization object. So instead of:
+
+```shell
+      localeDelegate = LocalizationDelegate(
+        newLocale: locale,
+        localizationOverrides: customLocalizationOverrides,
+      );
+```
+you now do:
+
+```shell
+await Localization.load(
+      locale: locale,
+      localizationOverrides: customLocalizationOverrides,
+    );
+```
+
 ### Arguments
 
 Arguments are supported as of 0.1.0
