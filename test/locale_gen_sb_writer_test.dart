@@ -267,7 +267,7 @@ class Localization {
     }
   }
 
-  String _nonPositionalT(String key, {List<dynamic>? args}) {
+  static String _nonPositionalT(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -293,7 +293,7 @@ class Localization {
     return value;
   }
 
-  String _replaceFirstWith(String value, Object? arg) {
+  static String _replaceFirstWith(String value, Object? arg) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceFirst('%s', arg);
@@ -395,7 +395,7 @@ class Localization {
     }
   }
 
-  String _nonPositionalT(String key, {List<dynamic>? args}) {
+  static String _nonPositionalT(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -421,7 +421,7 @@ class Localization {
     return value;
   }
 
-  String _replaceFirstWith(String value, Object? arg) {
+  static String _replaceFirstWith(String value, Object? arg) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceFirst('%s', arg);
@@ -535,7 +535,7 @@ class Localization {
     }
   }
 
-  String _nonPositionalT(String key, {List<dynamic>? args}) {
+  static String _nonPositionalT(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -561,7 +561,7 @@ class Localization {
     return value;
   }
 
-  String _replaceFirstWith(String value, Object? arg) {
+  static String _replaceFirstWith(String value, Object? arg) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceFirst('%s', arg);
@@ -684,7 +684,7 @@ class Localization {
     }
   }
 
-  String _nonPositionalT(String key, {List<dynamic>? args}) {
+  static String _nonPositionalT(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -710,7 +710,7 @@ class Localization {
     return value;
   }
 
-  String _replaceFirstWith(String value, Object? arg) {
+  static String _replaceFirstWith(String value, Object? arg) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceFirst('%s', arg);
@@ -834,7 +834,7 @@ class Localization {
     }
   }
 
-  String _nonPositionalT(String key, {List<dynamic>? args}) {
+  static String _nonPositionalT(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -860,7 +860,7 @@ class Localization {
     return value;
   }
 
-  String _replaceFirstWith(String value, Object? arg) {
+  static String _replaceFirstWith(String value, Object? arg) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceFirst('%s', arg);
@@ -986,7 +986,7 @@ class Localization {
     }
   }
 
-  String _nonPositionalT(String key, {List<dynamic>? args}) {
+  static String _nonPositionalT(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -1012,7 +1012,7 @@ class Localization {
     return value;
   }
 
-  String _replaceFirstWith(String value, Object? arg) {
+  static String _replaceFirstWith(String value, Object? arg) {
     if (arg == null) return value;
     if (arg is String) {
       return value.replaceFirst('%s', arg);
