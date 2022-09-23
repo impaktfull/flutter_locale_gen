@@ -53,7 +53,7 @@ flutter packages pub run locale_gen
 pub run locale_gen
 ```
 
-### Migration steps
+### Migration steps <7.0.0 to >=7.0.0
 With the newest version of locale_gen the context no longer needs to be provided when accessing the translations. This means there are a couple of breaking changes.
 
 The first one is that you can now directly get the translation from the Localization object without having to pass the context, so instead of:
@@ -70,7 +70,7 @@ Localization.translation;
 
 The second breaking change is how you initialize/change the locale. Before you could do this by changing the localizationDelegate that is passed to the materialApp, but now you just call the load function of the Localization object. So instead of:
 
-```shell
+```dart
       localeDelegate = LocalizationDelegate(
         newLocale: locale,
         localizationOverrides: customLocalizationOverrides,
@@ -78,7 +78,7 @@ The second breaking change is how you initialize/change the locale. Before you c
 ```
 you now do:
 
-```shell
+```dart
 await Localization.load(
       locale: locale,
       localizationOverrides: customLocalizationOverrides,
