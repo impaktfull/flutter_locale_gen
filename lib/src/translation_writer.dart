@@ -87,7 +87,7 @@ class TranslationWriter {
       String? value, Map<int, String> indexToReplacement, String functionName) {
     try {
       final camelKey = CaseUtil.getCamelcase(key);
-      final tmpSb = StringBuffer('  String $camelKey(');
+      final tmpSb = StringBuffer('  static String $camelKey(');
 
       var iterationIndex = 0;
       indexToReplacement.forEach((index, match) {
@@ -130,7 +130,7 @@ class TranslationWriter {
     final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(
-          '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
+          '  static String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
       ..writeln();
   }
 

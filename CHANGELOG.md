@@ -1,4 +1,8 @@
 # Changelog
+## [7.0.0] - 2022-09-23
+### Breaking
+- Removed the need of passing a context to get translations. Migration steps are described in the readme.
+
 ## [6.0.0] - 2022-09-20
 ### Added
 - Added support for non-positional arguments. You **cannot** use both positional and non-positional arguments in the same string.

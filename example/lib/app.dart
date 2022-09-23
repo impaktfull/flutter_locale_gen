@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:locale_gen_example/repository/locale_repository.dart';
 import 'package:locale_gen_example/screen/home_screen.dart';
-import 'package:locale_gen_example/util/locale/localization_delegate.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
 import 'package:locale_gen_example/viewmodel/locale/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +16,12 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.red,
           ),
-          localizationsDelegates: [
-            value.localeDelegate,
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
-          locale: value.localeDelegate.activeLocale,
-          supportedLocales: LocalizationDelegate.supportedLocales,
+          locale: Localization.locale,
+          supportedLocales: Localization.supportedLocales,
           home: HomeScreen(),
         ),
       ),
