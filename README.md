@@ -58,13 +58,13 @@ With the newest version of locale_gen the context no longer needs to be provided
 
 The first one is that you can now directly get the translation from the Localization object without having to pass the context, so instead of:
 
-```shell
+```dart
 Localization.of(context).translation;
 ```
 
 you can now do
 
-```shell
+```dart
 Localization.translation;
 ```
 
