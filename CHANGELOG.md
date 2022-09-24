@@ -1,4 +1,12 @@
 # Changelog
+## [8.0.0] - 2022-09-24
+### Breaking
+- Arguments are now formatted using the [sprintf](https://pub.dev/packages/sprintf) package. This means %d now refers to integers only. Use %f to format doubles, you can also use some format specifiers, eg: (%.2f will show 2 decimals)
+- This means that the sprintf package must be added to the pubspec.yaml (at least ^6.0.2)
+
+### Added
+- Support for plurals had been added, see the readme on how to use them
+
 ## [7.0.0] - 2022-09-23
 ### Breaking
 - Removed the need of passing a context to get translations. Migration steps are described in the readme.

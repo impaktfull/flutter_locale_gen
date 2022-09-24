@@ -796,6 +796,135 @@ class Localization {
 }
 ''');
     });
+
+    test('Test createLocalizationFile 1 plural', () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  languages: ['en','nl']
+  locale_assets_path: test/assets/locale
+''');
+      final defaultTranslations = <String, dynamic>{
+        'test_translations': {'other': 'This is a test translation'},
+      };
+      final allTranslations = <String, Map<String, dynamic>>{
+        'en': {
+          'test_translations': {'other': 'This is a test translation'},
+        },
+        'nl': {
+          'test_translations': {'other': 'Dit is een test vertaling'},
+        },
+      };
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, defaultTranslations, allTranslations);
+      expect(result, r'''import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:locale_gen_example/util/locale/localization_keys.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
+class Localization {
+  static LocaleFilter? localeFilter;
+
+  static var _localisedValues = <String, dynamic>{};
+  static var _localisedOverrideValues = <String, dynamic>{};
+
+  /// The locale is used to get the correct json locale.
+  /// It can later be used to check what the locale is that was used to load this Localization instance.
+  static Locale? locale;
+
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
+  }
+
+  static Future<void> load({
+    Locale? locale, 
+    LocalizationOverrides? localizationOverrides,
+    bool showLocalizationKeys = false,
+    bool useCaching = true,
+    }) async {
+    final currentLocale = locale ?? defaultLocale;
+    Localization.locale = currentLocale;
+    if (showLocalizationKeys) {
+      _localisedValues.clear();
+      _localisedOverrideValues.clear();
+      return;
+    }
+    if (localizationOverrides != null) {
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
+      _localisedOverrideValues = overrideLocalizations;
+    }
+    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+  }
+
+  static String _t(String key, {List<dynamic>? args}) {
+    try {
+      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
+      if (value == null) return key;
+      if (args == null || args.isEmpty) return value;
+      return sprintf(value, args);
+    } catch (e) {
+      return '⚠$key⚠';
+    }
+  }
+
+  static String _plural(String key, {required num count, List<dynamic>? args}) {
+    try {
+      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as Map<String, dynamic>?;
+      if (value == null) return key;
+      
+      final pluralValue = Intl.plural(
+        count,
+        zero: value['zero'] as String?,
+        one: value['one'] as String?,
+        two: value['two'] as String?,
+        few: value['few'] as String?,
+        many: value['many'] as String?,
+        other: value['other'] as String,
+      );
+      if (args == null || args.isEmpty) return pluralValue;
+      return sprintf(pluralValue, args);
+    } catch (e) {
+      return '⚠$key⚠';
+    }
+  }
+
+  /// Translations:
+  ///
+  /// en:  **'{other: This is a test translation}'**
+  ///
+  /// nl:  **'{other: Dit is een test vertaling}'**
+  static String testTranslations(num count) => _plural(LocalizationKeys.testTranslations, count: count);
+
+  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+
+}
+''');
+    });
   });
 
   group('LocaleGen SB writer createLocalizationOverrides', () {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 import 'package:sprintf/sprintf.dart';
@@ -80,6 +81,28 @@ class Localization {
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
       return sprintf(value, args);
+    } catch (e) {
+      return '⚠$key⚠';
+    }
+  }
+
+  static String _plural(String key, {required num count, List<dynamic>? args}) {
+    try {
+      final value = (_localisedOverrideValues[key] ?? _localisedValues[key])
+          as Map<String, dynamic>?;
+      if (value == null) return key;
+
+      final pluralValue = Intl.plural(
+        count,
+        zero: value['zero'] as String?,
+        one: value['one'] as String?,
+        two: value['two'] as String?,
+        few: value['few'] as String?,
+        many: value['many'] as String?,
+        other: value['other'] as String,
+      );
+      if (args == null || args.isEmpty) return pluralValue;
+      return sprintf(pluralValue, args);
     } catch (e) {
       return '⚠$key⚠';
     }
@@ -179,6 +202,18 @@ class Localization {
   /// fi-FI: **'Testataan ei-positiaalista argumenttia %s ja %f'**
   static String testNonPositional(String arg1, double arg2) =>
       _t(LocalizationKeys.testNonPositional, args: <dynamic>[arg1, arg2]);
+
+  /// Translations:
+  ///
+  /// en:  **'{one: %d hour, other: %d hours}'**
+  ///
+  /// nl:  **''**
+  ///
+  /// zh-Hans-CN: **''**
+  ///
+  /// fi-FI: **''**
+  static String testPlural(num count, int arg1) =>
+      _plural(LocalizationKeys.testPlural, count: count, args: <dynamic>[arg1]);
 
   static String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
