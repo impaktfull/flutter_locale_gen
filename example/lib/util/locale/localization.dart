@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -78,51 +79,10 @@ class Localization {
           (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) =>
-          newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value =
-          (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-          );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   /// Translations:
@@ -157,7 +117,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 number]'**
-  static String testArg2(num arg1) =>
+  static String testArg2(int arg1) =>
       _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
   /// Translations:
@@ -169,19 +129,19 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number]'**
-  static String testArg3(String arg1, num arg2) =>
+  static String testArg3(String arg1, int arg2) =>
       _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
-  /// en:  **'Testing argument [arg1 string] [arg2 number] [arg1 string]'**
+  /// en:  **'Testing argument [arg1 string] %2$.02f [arg1 string]'**
   ///
-  /// nl:  **'Test argument [arg1 string] [arg2 number] [arg1 string]'**
+  /// nl:  **'Test argument [arg1 string] %2$f [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number] [arg1 string]'**
+  /// zh-Hans-CN: **'频的 [arg1 string] %2$f [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number] [arg1 string]'**
-  static String testArg4(String arg1, num arg2) =>
+  /// fi-FI: **'Lisää napauttamalla [arg1 string] %2$f [arg1 string]'**
+  static String testArg4(String arg1, double arg2) =>
       _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -193,7 +153,7 @@ class Localization {
   /// zh-Hans-CN: **'频\n的\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n[arg1 string] [arg2 number] [arg1 string]'**
-  static String testNewLine(String arg1, num arg2) =>
+  static String testNewLine(String arg1, int arg2) =>
       _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -208,10 +168,18 @@ class Localization {
   static String get testNewLineCarriageReturn =>
       _t(LocalizationKeys.testNewLineCarriageReturn);
 
+  /// Translations:
+  ///
+  /// en:  **'Testing non positional argument %s and %.02f'**
+  ///
+  /// nl:  **'Test niet positioneel argument %s en %f'**
+  ///
+  /// zh-Hans-CN: **'测试非位置参数 %s 和 %f'**
+  ///
+  /// fi-FI: **'Testataan ei-positiaalista argumenttia %s ja %f'**
+  static String testNonPositional(String arg1, double arg2) =>
+      _t(LocalizationKeys.testNonPositional, args: <dynamic>[arg1, arg2]);
+
   static String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key,
-          {List<dynamic>? args}) =>
-      _nonPositionalT(key, args: args ?? <dynamic>[]);
 }

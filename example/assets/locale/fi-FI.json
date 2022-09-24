@@ -3,8 +3,9 @@
   "test_arg1": "Lisää napauttamalla %1$s",
   "test_arg2": "Lisää napauttamalla %1$d",
   "test_arg3": "Lisää napauttamalla %1$s %2$d",
-  "test_arg4": "Lisää napauttamalla %1$s %2$d %1$s",
+  "test_arg4": "Lisää napauttamalla %1$s %2$f %1$s",
   "welcome_message": "Lisää napauttamalla",
   "test_new_line": "Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s",
-  "test_new_line_carriage_return": "Carriage\r\nReturn"
+  "test_new_line_carriage_return": "Carriage\r\nReturn",
+  "test_non_positional": "Testataan ei-positiaalista argumenttia %s ja %f"
 }

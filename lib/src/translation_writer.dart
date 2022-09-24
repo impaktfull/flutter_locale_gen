@@ -1,8 +1,8 @@
 import 'case_util.dart';
 
 class TranslationWriter {
-  static final positionalFormatRegex = RegExp(r'\%(\d*)\$([sd])');
-  static final normalFormatRegex = RegExp(r'\%([sd])');
+  static final positionalFormatRegex = RegExp(r'\%(\d*)\$[\\.]?[\d+]*([sdf])');
+  static final normalFormatRegex = RegExp(r'\%[\\.]?[\d+]*([sdf])');
   static const REGEX_INDEX_GROUP_INDEX = 1;
   static const REGEX_TYPE_GROUP_INDEX = 2;
   static const NORMAL_REGEX_TYPE_GROUP_INDEX = 1;
@@ -79,8 +79,7 @@ class TranslationWriter {
         MapEntry(index++, match.group(NORMAL_REGEX_TYPE_GROUP_INDEX)!));
     final indexToReplacement = Map.fromEntries(entries);
 
-    _buildParameterizedFunction(
-        sb, key, value, indexToReplacement, '_nonPositionalT');
+    _buildParameterizedFunction(sb, key, value, indexToReplacement, '_t');
   }
 
   static void _buildParameterizedFunction(StringBuffer sb, String key,
@@ -120,10 +119,12 @@ class TranslationWriter {
     if (type == 's') {
       return 'String arg$index';
     } else if (type == 'd') {
-      return 'num arg$index';
+      return 'int arg$index';
+    } else if (type == 'f') {
+      return 'double arg$index';
     }
     throw Exception(
-        'Unsupported argument type for $key. Supported types are -> s,d. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
+        'Unsupported argument type for $key. Supported types are -> s,d,f. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
   }
 
   static void _buildDefaultFunction(StringBuffer sb, String key) {

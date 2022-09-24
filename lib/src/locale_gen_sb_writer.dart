@@ -41,6 +41,7 @@ class LocaleGenSbWriter {
       ..writeln("import 'dart:convert';")
       ..writeln();
     [
+      "import 'package:sprintf/sprintf.dart';",
       "import 'package:flutter/services.dart';",
       "import 'package:flutter/widgets.dart';",
       "import 'package:${params.projectName}/${importPath}localization_keys.dart';",
@@ -123,55 +124,10 @@ class LocaleGenSbWriter {
           '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
       ..writeln('      if (value == null) return key;')
       ..writeln('      if (args == null || args.isEmpty) return value;')
-      ..writeln('      var newValue = value;')
-      ..writeln('      // ignore: avoid_annotating_with_dynamic')
-      ..writeln(
-          '      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));')
-      ..writeln('      return newValue;')
+      ..writeln('      return sprintf(value, args);')
       ..writeln('    } catch (e) {')
       ..writeln("      return '⚠\$key⚠';")
       ..writeln('    }')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln(
-          '  static String _nonPositionalT(String key, {List<dynamic>? args}) {')
-      ..writeln('    try {')
-      ..writeln(
-          '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
-      ..writeln('      if (value == null) return key;')
-      ..writeln('      if (args == null || args.isEmpty) return value;')
-      ..writeln('      var newValue = value;')
-      ..writeln('      args.asMap().forEach(')
-      ..writeln('            // ignore: avoid_annotating_with_dynamic')
-      ..writeln(
-          '            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),')
-      ..writeln('      );')
-      ..writeln('      return newValue;')
-      ..writeln('    } catch (e) {')
-      ..writeln("      return '⚠\$key⚠';")
-      ..writeln('    }')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln(
-          '  static String _replaceWith(String value, Object? arg, int argIndex) {')
-      ..writeln('    if (arg == null) return value;')
-      ..writeln('    if (arg is String) {')
-      ..writeln("      return value.replaceAll('%\$argIndex\\\$s', arg);")
-      ..writeln('    } else if (arg is num) {')
-      ..writeln("      return value.replaceAll('%\$argIndex\\\$d', '\$arg');")
-      ..writeln('    }')
-      ..writeln('    return value;')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln(
-          '  static String _replaceFirstWith(String value, Object? arg) {')
-      ..writeln('    if (arg == null) return value;')
-      ..writeln('    if (arg is String) {')
-      ..writeln("      return value.replaceFirst('%s', arg);")
-      ..writeln('    } else if (arg is num) {')
-      ..writeln("      return value.replaceFirst('%d', '\$arg');")
-      ..writeln('    }')
-      ..writeln('    return value;')
       ..writeln('  }')
       ..writeln();
     defaultTranslations.forEach((key, value) {
@@ -182,9 +138,6 @@ class LocaleGenSbWriter {
     sb
       ..writeln(
           '  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
-      ..writeln()
-      ..writeln(
-          '  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);')
       ..writeln()
       ..writeln('}');
     return sb.toString();

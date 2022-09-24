@@ -81,7 +81,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(String arg1, String arg2) => _nonPositionalT(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  static String appTitle(String arg1, String arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
 
       test(
@@ -93,7 +93,18 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(String arg1, num arg2) => _nonPositionalT(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  static String appTitle(String arg1, int arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+      });
+      test(
+          'Test translations with 1 string and 1 complex float argument, non-positional',
+          () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', 'hallo %s %.02f');
+        expect(
+            sb.toString(),
+            equals(
+                '  static String appTitle(String arg1, double arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
     });
 
@@ -105,17 +116,28 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(num arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
+                '  static String appTitle(int arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
       });
 
       test('Test translations with 2 number arguments', () {
         final sb = StringBuffer();
         TranslationWriter.buildTranslationFunction(
-            sb, 'app_title', 'hallo %1\$d %2\$d');
+            sb, 'app_title', 'hallo %1\$d %2\$f');
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(num arg1, num arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  static String appTitle(int arg1, double arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+      });
+
+      test('Test translations with 2 number arguments, special float format',
+          () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', 'hallo %1\$d %2\$.04f');
+        expect(
+            sb.toString(),
+            equals(
+                '  static String appTitle(int arg1, double arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
 
       test('Test translations with 1 number argument but 2 number replacements',
@@ -126,7 +148,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(num arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
+                '  static String appTitle(int arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
       });
 
       test(
@@ -138,7 +160,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(num arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
+                '  static String appTitle(int arg1) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1]);\n\n'));
       });
     });
 
@@ -150,7 +172,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(String arg1, num arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  static String appTitle(String arg1, int arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
 
       test(
@@ -162,7 +184,7 @@ void main() {
         expect(
             sb.toString(),
             equals(
-                '  static String appTitle(String arg1, num arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
+                '  static String appTitle(String arg1, int arg2) => _t(LocalizationKeys.appTitle, args: <dynamic>[arg1, arg2]);\n\n'));
       });
 
       test('Test translations with 11 different arguments', () {

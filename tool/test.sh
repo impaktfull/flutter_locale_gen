@@ -12,7 +12,7 @@ echo "==="
 
 flutter test --coverage || exit -1;
 
-#genhtml coverage/lcov.info -o coverage/html
-#open coverage/html/index.html
+genhtml coverage/lcov.info -o coverage/html
+open coverage/html/index.html
 
-coveralls-lcov coverage/lcov.info
+#coveralls-lcov coverage/lcov.info
