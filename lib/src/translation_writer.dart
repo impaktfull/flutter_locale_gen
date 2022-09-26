@@ -1,3 +1,6 @@
+import 'package:locale_gen/src/extensions/null_extension.dart';
+import 'package:locale_gen/src/plural.dart';
+
 import 'case_util.dart';
 
 class TranslationWriter {
@@ -10,29 +13,51 @@ class TranslationWriter {
   const TranslationWriter._();
 
   static void buildTranslationFunction(
-      StringBuffer sb, String key, String? value) {
-    if (value == null || value.isEmpty) {
+      StringBuffer sb, String key, dynamic value) {
+    if (value == null || (value is String && value.isEmpty)) {
       _buildDefaultFunction(sb, key);
       return;
     }
-    final allPositionalMatched = positionalFormatRegex.allMatches(value);
-    final allNormalMatched = normalFormatRegex.allMatches(value);
-    if (allPositionalMatched.isEmpty && allNormalMatched.isEmpty) {
-      _buildDefaultFunction(sb, key);
-      return;
-    }
-    if (allPositionalMatched.isNotEmpty && allNormalMatched.isNotEmpty) {
-      print(Exception(
-          'The translation for key "$key" contains both positional and normal format parameters'));
-      _buildDefaultFunction(sb, key);
-      return;
-    }
-
     try {
-      if (allPositionalMatched.isNotEmpty) {
-        _buildPositionalParameterized(sb, key, value, allPositionalMatched);
+      final Map<int, String> arguments;
+      Plural? plural;
+
+      // Plural
+      if (value is Map<String, dynamic>) {
+        if (value['other'] == null) {
+          throw Exception('Other is required for plurals. Key: $key');
+        }
+
+        plural = Plural.fromJson(value);
+        arguments = {};
+        plural.zero?.let((value) =>
+            arguments.addAll(_extractParameters(key: key, value: value)));
+        plural.one?.let((value) =>
+            arguments.addAll(_extractParameters(key: key, value: value)));
+        plural.two?.let((value) =>
+            arguments.addAll(_extractParameters(key: key, value: value)));
+        plural.few?.let((value) =>
+            arguments.addAll(_extractParameters(key: key, value: value)));
+        plural.many?.let((value) =>
+            arguments.addAll(_extractParameters(key: key, value: value)));
+        arguments.addAll(_extractParameters(key: key, value: plural.other));
       } else {
-        _buildNormalParameterized(sb, key, value, allNormalMatched);
+        value as String;
+        arguments = _extractParameters(key: key, value: value);
+      }
+
+      if (arguments.isEmpty) {
+        if (plural != null) {
+          _buildDefaultPluralFunction(sb, key, plural);
+        } else {
+          _buildDefaultFunction(sb, key);
+        }
+      } else {
+        if (plural != null) {
+          _buildParameterizedPluralFunction(sb, key, plural, arguments);
+        } else {
+          _buildParameterizedFunction(sb, key, arguments);
+        }
       }
     } on Exception catch (e) {
       print(e);
@@ -40,8 +65,24 @@ class TranslationWriter {
     }
   }
 
-  static void _buildPositionalParameterized(StringBuffer sb, String key,
-      String? value, Iterable<RegExpMatch> matches) {
+  static Map<int, String> _extractParameters(
+      {required String key, required String value}) {
+    final allPositionalMatched = positionalFormatRegex.allMatches(value);
+    final allNormalMatched = normalFormatRegex.allMatches(value);
+    if (allPositionalMatched.isNotEmpty && allNormalMatched.isNotEmpty) {
+      throw Exception(
+          'The translation for key "$key" contains both positional and normal format parameters');
+    }
+    if (allPositionalMatched.isNotEmpty) {
+      return _extractPositionalParameters(key, allPositionalMatched);
+    } else if (allNormalMatched.isNotEmpty) {
+      return _extractNonPositionalParameters(allNormalMatched);
+    }
+    return {};
+  }
+
+  static Map<int, String> _extractPositionalParameters(
+      String key, Iterable<RegExpMatch> matches) {
     // Validate
     final validMatcher = <RegExpMatch>[];
     matches.forEach((match) {
@@ -67,23 +108,61 @@ class TranslationWriter {
         .toList()
       ..sort((a, b) => a.key.compareTo(b.key));
 
-    final indexToReplacement = Map.fromEntries(entries);
-
-    _buildParameterizedFunction(sb, key, value, indexToReplacement, '_t');
+    return Map.fromEntries(entries);
   }
 
-  static void _buildNormalParameterized(StringBuffer sb, String key,
-      String? value, Iterable<RegExpMatch> matches) {
+  static Map<int, String> _extractNonPositionalParameters(
+      Iterable<RegExpMatch> matches) {
     var index = 1;
     final entries = matches.map((match) =>
         MapEntry(index++, match.group(NORMAL_REGEX_TYPE_GROUP_INDEX)!));
-    final indexToReplacement = Map.fromEntries(entries);
-
-    _buildParameterizedFunction(sb, key, value, indexToReplacement, '_t');
+    return Map.fromEntries(entries);
   }
 
-  static void _buildParameterizedFunction(StringBuffer sb, String key,
-      String? value, Map<int, String> indexToReplacement, String functionName) {
+  static void _buildDefaultPluralFunction(
+      StringBuffer sb, String key, Plural plural) {
+    final camelKey = CaseUtil.getCamelcase(key);
+    sb
+      ..writeln(
+          '  static String $camelKey(num count) => _plural(LocalizationKeys.$camelKey, count: count);')
+      ..writeln();
+  }
+
+  static void _buildParameterizedPluralFunction(StringBuffer sb, String key,
+      Plural plural, Map<int, String> indexToReplacement) {
+    try {
+      final camelKey = CaseUtil.getCamelcase(key);
+      final tmpSb = StringBuffer('  static String $camelKey(num count, ');
+
+      var iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        final argument = _getArgument(key, match, index);
+        tmpSb.write(argument);
+        if (iterationIndex++ != indexToReplacement.length - 1) {
+          tmpSb.write(', ');
+        }
+      });
+      tmpSb.write(
+          ') => _plural(LocalizationKeys.$camelKey, count: count, args: <dynamic>[');
+      iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        if (iterationIndex++ != 0) {
+          tmpSb.write(', ');
+        }
+        tmpSb.write('arg$index');
+      });
+      tmpSb
+        ..writeln(']);')
+        ..writeln();
+      sb.write(tmpSb.toString());
+    } on Exception catch (e) {
+      print(e);
+      _buildDefaultFunction(sb, key);
+    }
+  }
+
+  static void _buildParameterizedFunction(
+      StringBuffer sb, String key, Map<int, String> indexToReplacement) {
     try {
       final camelKey = CaseUtil.getCamelcase(key);
       final tmpSb = StringBuffer('  static String $camelKey(');
@@ -96,8 +175,7 @@ class TranslationWriter {
           tmpSb.write(', ');
         }
       });
-      tmpSb.write(
-          ') => $functionName(LocalizationKeys.$camelKey, args: <dynamic>[');
+      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: <dynamic>[');
       iterationIndex = 0;
       indexToReplacement.forEach((index, match) {
         if (iterationIndex++ != 0) {

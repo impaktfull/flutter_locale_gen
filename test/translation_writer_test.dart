@@ -232,6 +232,43 @@ void main() {
                 '  static String get appTitle => _t(LocalizationKeys.appTitle);\n\n'));
       });
     });
+
+    group('Tests with plurals', () {
+      test('Test with plural without arguments', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(sb, 'app_title',
+            <String, dynamic>{'one': 'hour', 'other': 'hours'});
+        expect(
+            sb.toString(),
+            equals(
+                '  static String appTitle(num count) => _plural(LocalizationKeys.appTitle, count: count);\n\n'));
+      });
+      test('Test with plural with arguments', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', <String, dynamic>{
+          'one': '%1\$s hour',
+          'other': '%2\$s hours',
+          'zero': '',
+          'two': '',
+          'few': '',
+          'many': ''
+        });
+        expect(
+            sb.toString(),
+            equals(
+                '  static String appTitle(num count, String arg1, String arg2) => _plural(LocalizationKeys.appTitle, count: count, args: <dynamic>[arg1, arg2]);\n\n'));
+      });
+      test('Test with plural without other', () {
+        final sb = StringBuffer();
+        TranslationWriter.buildTranslationFunction(
+            sb, 'app_title', <String, dynamic>{'one': '%1\$s hour'});
+        expect(
+            sb.toString(),
+            equals(
+                '  static String get appTitle => _t(LocalizationKeys.appTitle);\n\n'));
+      });
+    });
   });
 
   group('buildDocumentation', () {

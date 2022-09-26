@@ -89,4 +89,15 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'Testataan ei-positiaalista argumenttia %s ja %f'**
   static const testNonPositional = 'test_non_positional';
+
+  /// Translations:
+  ///
+  /// en:  **'{one: %d hour, other: %d hours}'**
+  ///
+  /// nl:  **''**
+  ///
+  /// zh-Hans-CN: **''**
+  ///
+  /// fi-FI: **''**
+  static const testPlural = 'test_plural';
 }

@@ -116,6 +116,27 @@ Example:
 '%s, ik woon in %s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
 ```
 
+### Plurals
+
+Since 8.0.0 plurals are supported. To specify a plural, you can use the following syntax in the json file:
+
+```json
+{
+  "example_plural": {
+    "zero": "You have no items",
+    "one": "You have %1$d item",
+    "two": "You have 2 items, party!",
+    "few": "You have a few items, nice!",
+    "many": "You have many items, fantastic!",
+    "other": "You have %1$d items"
+  }
+}
+```
+This will generate functions where you pass the number of items as an argument. The function will then return the correct translation based on the number of items.
+The count argument *WILL NOT* be passed as an argument for string interpolation.
+
+Note that the "other" key is always required, the other keys are dependant on the language in question
+
 ### Working on mac?
 
 add this to you .bash_profile

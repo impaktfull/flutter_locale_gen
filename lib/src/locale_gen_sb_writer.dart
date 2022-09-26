@@ -36,11 +36,14 @@ class LocaleGenSbWriter {
       LocaleGenParams params,
       Map<String, dynamic> defaultTranslations,
       Map<String, Map<String, dynamic>> allTranslations) {
+    final hasPlurals = defaultTranslations.values
+        .any((element) => element is Map<String, dynamic>);
     final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
       ..writeln();
     [
+      if (hasPlurals) ...["import 'package:intl/intl.dart';"],
       "import 'package:sprintf/sprintf.dart';",
       "import 'package:flutter/services.dart';",
       "import 'package:flutter/widgets.dart';",
@@ -130,6 +133,32 @@ class LocaleGenSbWriter {
       ..writeln('    }')
       ..writeln('  }')
       ..writeln();
+    if (hasPlurals) {
+      sb
+        ..writeln(
+            '  static String _plural(String key, {required num count, List<dynamic>? args}) {')
+        ..writeln('    try {')
+        ..writeln(
+            '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as Map<String, dynamic>?;')
+        ..writeln('      if (value == null) return key;')
+        ..writeln('      ')
+        ..writeln('      final pluralValue = Intl.plural(')
+        ..writeln('        count,')
+        ..writeln('        zero: value[\'zero\'] as String?,')
+        ..writeln('        one: value[\'one\'] as String?,')
+        ..writeln('        two: value[\'two\'] as String?,')
+        ..writeln('        few: value[\'few\'] as String?,')
+        ..writeln('        many: value[\'many\'] as String?,')
+        ..writeln('        other: value[\'other\'] as String,')
+        ..writeln('      );')
+        ..writeln('      if (args == null || args.isEmpty) return pluralValue;')
+        ..writeln('      return sprintf(pluralValue, args);')
+        ..writeln('    } catch (e) {')
+        ..writeln("      return '⚠\$key⚠';")
+        ..writeln('    }')
+        ..writeln('  }')
+        ..writeln();
+    }
     defaultTranslations.forEach((key, value) {
       TranslationWriter.buildDocumentation(
           sb, key, allTranslations, params.docLanguages);
