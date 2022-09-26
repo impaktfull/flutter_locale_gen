@@ -7,6 +7,9 @@
 ### Added
 - Support for plurals had been added, see the readme on how to use them
 
+### Updated
+- Dependencies
+
 ## [7.0.0] - 2022-09-23
 ### Breaking
 - Removed the need of passing a context to get translations. Migration steps are described in the readme.
