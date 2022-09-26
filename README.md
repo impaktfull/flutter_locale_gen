@@ -17,6 +17,9 @@ Dart tool that will convert your default locale json to dart code.
 
 [![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
 ```
+dependencies:
+  sprintf: ^6.0.2
+  
 dev-dependencies:
   locale_gen: <latest-version>
 ```
@@ -89,10 +92,13 @@ await Localization.load(
 
 Arguments are supported as of 0.1.0
 
-You can pass a String or a num to as an argument.
+You can pass a String, an integer or a double to as an argument. (int and double since 8.0.0, num before that)
+
+Since 8.0.0 you can use more specifications from C's sprintf to apply format to numbers. If any modifier is causing a mismatch, please create a ticket
 
 Formatting for String: %1$s
-Formatting for num: %1$d
+Formatting for int: %1$d
+Formatting for double: %1$f
 
 The number in between % and $ indicate the index of the argument. It is possible to place an argument in 1 language first but in another second:
 

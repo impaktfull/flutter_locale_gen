@@ -3,7 +3,8 @@
   "test_arg1": "频的 %1$s",
   "test_arg2": "频的 %1$d",
   "test_arg3": "频的 %1$s %2$d",
-  "test_arg4": "频的 %1$s %2$d %1$s",
+  "test_arg4": "频的 %1$s %2$f %1$s",
   "test_new_line": "频\n的\n\n%1$s %2$d %1$s",
-  "test_new_line_carriage_return": "Carriage\r\nReturn"
+  "test_new_line_carriage_return": "Carriage\r\nReturn",
+  "test_non_positional": "测试非位置参数 %s 和 %f"
 }

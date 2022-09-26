@@ -197,6 +197,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -258,54 +259,13 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-      );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -325,6 +285,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/src/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/src/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -386,54 +347,13 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-      );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -465,6 +385,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -526,49 +447,10 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-      );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   /// Translations:
@@ -579,8 +461,6 @@ class Localization {
   static String get testTranslations => _t(LocalizationKeys.testTranslations);
 
   static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -614,6 +494,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -675,49 +556,10 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-      );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   /// Translations:
@@ -728,8 +570,6 @@ class Localization {
   static String get testTranslations => _t(LocalizationKeys.testTranslations);
 
   static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -764,6 +604,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -825,49 +666,10 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-      );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   /// Translations:
@@ -885,8 +687,6 @@ class Localization {
   static String get testTranslations2 => _t(LocalizationKeys.testTranslations2);
 
   static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -916,6 +716,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:sprintf/sprintf.dart';
 
 //============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -977,49 +778,10 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      // ignore: avoid_annotating_with_dynamic
-      args.asMap().forEach((index, dynamic arg) => newValue = _replaceWith(newValue, arg, index + 1));
-      return newValue;
+      return sprintf(value, args);
     } catch (e) {
       return '⚠$key⚠';
     }
-  }
-
-  static String _nonPositionalT(String key, {List<dynamic>? args}) {
-    try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
-      if (value == null) return key;
-      if (args == null || args.isEmpty) return value;
-      var newValue = value;
-      args.asMap().forEach(
-            // ignore: avoid_annotating_with_dynamic
-            (index, dynamic arg) => newValue = _replaceFirstWith(newValue, arg),
-      );
-      return newValue;
-    } catch (e) {
-      return '⚠$key⚠';
-    }
-  }
-
-  static String _replaceWith(String value, Object? arg, int argIndex) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceAll('%$argIndex\$s', arg);
-    } else if (arg is num) {
-      return value.replaceAll('%$argIndex\$d', '$arg');
-    }
-    return value;
-  }
-
-  static String _replaceFirstWith(String value, Object? arg) {
-    if (arg == null) return value;
-    if (arg is String) {
-      return value.replaceFirst('%s', arg);
-    } else if (arg is num) {
-      return value.replaceFirst('%d', '$arg');
-    }
-    return value;
   }
 
   /// Translations:
@@ -1030,8 +792,6 @@ class Localization {
   static String get testTranslations => _t(LocalizationKeys.testTranslations);
 
   static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
-
-  static String getTranslationNonPositional(String key, {List<dynamic>? args}) => _nonPositionalT(key, args: args ?? <dynamic>[]);
 
 }
 ''');

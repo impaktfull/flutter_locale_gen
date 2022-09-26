@@ -48,13 +48,13 @@ class LocalizationKeys {
 
   /// Translations:
   ///
-  /// en:  **'Testing argument [arg1 string] [arg2 number] [arg1 string]'**
+  /// en:  **'Testing argument [arg1 string] %2$.02f [arg1 string]'**
   ///
-  /// nl:  **'Test argument [arg1 string] [arg2 number] [arg1 string]'**
+  /// nl:  **'Test argument [arg1 string] %2$f [arg1 string]'**
   ///
-  /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number] [arg1 string]'**
+  /// zh-Hans-CN: **'频的 [arg1 string] %2$f [arg1 string]'**
   ///
-  /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number] [arg1 string]'**
+  /// fi-FI: **'Lisää napauttamalla [arg1 string] %2$f [arg1 string]'**
   static const testArg4 = 'test_arg4';
 
   /// Translations:
@@ -78,4 +78,15 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'Carriage\r\nReturn'**
   static const testNewLineCarriageReturn = 'test_new_line_carriage_return';
+
+  /// Translations:
+  ///
+  /// en:  **'Testing non positional argument %s and %.02f'**
+  ///
+  /// nl:  **'Test niet positioneel argument %s en %f'**
+  ///
+  /// zh-Hans-CN: **'测试非位置参数 %s 和 %f'**
+  ///
+  /// fi-FI: **'Testataan ei-positiaalista argumenttia %s ja %f'**
+  static const testNonPositional = 'test_non_positional';
 }
