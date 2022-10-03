@@ -206,14 +206,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -222,25 +222,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -254,7 +254,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -265,7 +265,7 @@ class Localization {
     }
   }
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -294,14 +294,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -310,25 +310,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -342,7 +342,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -353,7 +353,7 @@ class Localization {
     }
   }
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -394,14 +394,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -410,25 +410,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -442,7 +442,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -458,9 +458,9 @@ class Localization {
   /// en:  **'This is a test translation'**
   ///
   /// nl:  **'Dit is een test vertaling'**
-  static String get testTranslations => _t(LocalizationKeys.testTranslations);
+  String get testTranslations => _t(LocalizationKeys.testTranslations);
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -503,14 +503,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -519,25 +519,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -551,7 +551,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -567,9 +567,9 @@ class Localization {
   /// en:  **'This is a test translation'**
   ///
   /// nl:  **'Dit is een test vertaling'**
-  static String get testTranslations => _t(LocalizationKeys.testTranslations);
+  String get testTranslations => _t(LocalizationKeys.testTranslations);
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -613,14 +613,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -629,25 +629,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -661,7 +661,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -677,16 +677,16 @@ class Localization {
   /// en:  **'This is a test translation'**
   ///
   /// nl:  **'Dit is een test vertaling'**
-  static String get testTranslations => _t(LocalizationKeys.testTranslations);
+  String get testTranslations => _t(LocalizationKeys.testTranslations);
 
   /// Translations:
   ///
   /// en:  **'This is a test translation2'**
   ///
   /// nl:  **'Dit is een test vertaling2'**
-  static String get testTranslations2 => _t(LocalizationKeys.testTranslations2);
+  String get testTranslations2 => _t(LocalizationKeys.testTranslations2);
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -725,14 +725,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -741,25 +741,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -773,7 +773,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -789,9 +789,9 @@ class Localization {
   /// en:  **'This is a test translation'**
   ///
   /// nl:  **''**
-  static String get testTranslations => _t(LocalizationKeys.testTranslations);
+  String get testTranslations => _t(LocalizationKeys.testTranslations);
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
@@ -833,14 +833,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
 
@@ -849,25 +849,25 @@ class Localization {
     Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
     return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -881,7 +881,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
@@ -892,7 +892,7 @@ class Localization {
     }
   }
 
-  static String _plural(String key, {required num count, List<dynamic>? args}) {
+  String _plural(String key, {required num count, List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as Map<String, dynamic>?;
       if (value == null) return key;
@@ -918,9 +918,9 @@ class Localization {
   /// en:  **'{other: This is a test translation}'**
   ///
   /// nl:  **'{other: Dit is een test vertaling}'**
-  static String testTranslations(num count) => _plural(LocalizationKeys.testTranslations, count: count);
+  String testTranslations(num count) => _plural(LocalizationKeys.testTranslations, count: count);
 
-  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
+  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
 }
 ''');
