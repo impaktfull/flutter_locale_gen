@@ -8,7 +8,7 @@ class LocaleViewModel with ChangeNotifier {
   var customLocalizationOverrides = CustomLocalizationOverrideManager();
   static Localization? _localization;
 
-  static Localization get localization => _localization!;
+  static Localization get localization => _localization ?? Localization();
 
   LocaleViewModel(this._localeRepository);
 

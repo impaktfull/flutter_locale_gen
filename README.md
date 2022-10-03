@@ -56,6 +56,30 @@ flutter packages pub run locale_gen
 pub run locale_gen
 ```
 
+### Migration steps <9.0.0 to >=9.0.0
+With version 9.0.0 of local gen you no longer have static access to the translations, instead you can now manually manage the different localization instances. You can for example store a localization instance as a static. This way you can use it largely the same way as before. Example from the example project:
+
+```dart
+class LocaleViewModel with ChangeNotifier {
+  static Localization? localization;
+  ...
+
+  void init(){
+    _localization = Localization()
+    await Localization.load(
+      locale: locale,
+      localizationOverrides: customLocalizationOverrides,
+    );
+  }
+```
+
+You can then access this localization instance anywhere in the project like:
+```dart
+LocaleViewModel.localization.translation1;
+LocaleViewModel.localization.translation2;
+LocaleViewModel.localization.translation3;
+```
+
 ### Migration steps <7.0.0 to >=7.0.0
 With the newest version of locale_gen the context no longer needs to be provided when accessing the translations. This means there are a couple of breaking changes.
 
