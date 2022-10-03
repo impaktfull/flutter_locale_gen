@@ -61,7 +61,7 @@ With version 9.0.0 of local gen you no longer have static access to the translat
 
 ```dart
 class LocaleViewModel with ChangeNotifier {
-  static final Localization localization = Localization();
+  static final Localization localizationInstance = Localization();
   ...
 
   void init(){
@@ -72,11 +72,11 @@ class LocaleViewModel with ChangeNotifier {
   }
 ```
 
-You can then access this localization instance anywhere in the project like:
+You can then access this localizationInstance anywhere in the project like:
 ```dart
-LocaleViewModel.localization.translation1;
-LocaleViewModel.localization.translation2;
-LocaleViewModel.localization.translation3;
+LocaleViewModel.localizationInstance.translation1;
+LocaleViewModel.localizationInstance.translation2;
+LocaleViewModel.localizationInstance.translation3;
 ```
 
 ### Migration steps <7.0.0 to >=7.0.0
