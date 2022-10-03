@@ -64,11 +64,12 @@ class LocaleViewModel with ChangeNotifier {
   static final Localization localizationInstance = Localization();
   ...
 
-  void init(){
+  Future<void> init(){
     await Localization.load(
       locale: locale,
       localizationOverrides: customLocalizationOverrides,
     );
+    notifyListeners();
   }
 ```
 
