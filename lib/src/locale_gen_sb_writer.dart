@@ -63,15 +63,15 @@ class LocaleGenSbWriter {
       ..writeln('typedef LocaleFilter = bool Function(String languageCode);')
       ..writeln()
       ..writeln('class Localization {')
-      ..writeln('  static LocaleFilter? localeFilter;')
+      ..writeln('  LocaleFilter? localeFilter;')
       ..writeln()
-      ..writeln('  static var _localisedValues = <String, dynamic>{};')
-      ..writeln('  static var _localisedOverrideValues = <String, dynamic>{};')
+      ..writeln('  var _localisedValues = <String, dynamic>{};')
+      ..writeln('  var _localisedOverrideValues = <String, dynamic>{};')
       ..writeln()
       ..writeln('  /// The locale is used to get the correct json locale.')
       ..writeln(
           '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
-      ..writeln('  static Locale? locale;')
+      ..writeln('  Locale? locale;')
       ..writeln()
       ..writeln(
           LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
@@ -83,7 +83,7 @@ class LocaleGenSbWriter {
     sb
       ..writeln('  ];')
       ..writeln()
-      ..writeln('  static List<String> get supportedLanguages {')
+      ..writeln('  List<String> get supportedLanguages {')
       ..writeln(
           '    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);')
       ..writeln('    if (localeFilter == null) return supportedLanguageTags;')
@@ -91,20 +91,20 @@ class LocaleGenSbWriter {
           '    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  static List<Locale> get supportedLocales {')
+      ..writeln('  List<Locale> get supportedLocales {')
       ..writeln('    if (localeFilter == null) return _supportedLocales;')
       ..writeln(
           '    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  static Future<void> load({')
+      ..writeln('  Future<void> load({')
       ..writeln('    Locale? locale, ')
       ..writeln('    LocalizationOverrides? localizationOverrides,')
       ..writeln('    bool showLocalizationKeys = false,')
       ..writeln('    bool useCaching = true,')
       ..writeln('    }) async {')
       ..writeln('    final currentLocale = locale ?? defaultLocale;')
-      ..writeln('    Localization.locale = currentLocale;')
+      ..writeln('    this.locale = currentLocale;')
       ..writeln('    if (showLocalizationKeys) {')
       ..writeln('      _localisedValues.clear();')
       ..writeln('      _localisedOverrideValues.clear();')
@@ -121,7 +121,7 @@ class LocaleGenSbWriter {
           '    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;')
       ..writeln('  }')
       ..writeln()
-      ..writeln('  static String _t(String key, {List<dynamic>? args}) {')
+      ..writeln('  String _t(String key, {List<dynamic>? args}) {')
       ..writeln('    try {')
       ..writeln(
           '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
@@ -136,7 +136,7 @@ class LocaleGenSbWriter {
     if (hasPlurals) {
       sb
         ..writeln(
-            '  static String _plural(String key, {required num count, List<dynamic>? args}) {')
+            '  String _plural(String key, {required num count, List<dynamic>? args}) {')
         ..writeln('    try {')
         ..writeln(
             '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as Map<String, dynamic>?;')
@@ -166,7 +166,7 @@ class LocaleGenSbWriter {
     });
     sb
       ..writeln(
-          '  static String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
+          '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
       ..writeln()
       ..writeln('}');
     return sb.toString();

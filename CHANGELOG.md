@@ -1,4 +1,8 @@
 # Changelog
+## [9.0.0] - 2022-10-03
+### Breaking
+- Translations can no longer be accessed from static methods on the Localization class. Instead you now need to manually manage the different localization instances. Migration steps are described in the readme.
+
 ## [8.0.0] - 2022-09-24
 ### Breaking
 - Arguments are now formatted using the [sprintf](https://pub.dev/packages/sprintf) package. This means %d now refers to integers only. Use %f to format doubles, you can also use some format specifiers, eg: (%.2f will show 2 decimals)

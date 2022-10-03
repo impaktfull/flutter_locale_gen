@@ -14,14 +14,14 @@ import 'package:sprintf/sprintf.dart';
 typedef LocaleFilter = bool Function(String languageCode);
 
 class Localization {
-  static LocaleFilter? localeFilter;
+  LocaleFilter? localeFilter;
 
-  static var _localisedValues = <String, dynamic>{};
-  static var _localisedOverrideValues = <String, dynamic>{};
+  var _localisedValues = <String, dynamic>{};
+  var _localisedOverrideValues = <String, dynamic>{};
 
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  static Locale? locale;
+  Locale? locale;
 
   static const defaultLocale = Locale.fromSubtags(
       languageCode: 'en', scriptCode: null, countryCode: null);
@@ -34,7 +34,7 @@ class Localization {
     Locale.fromSubtags(languageCode: 'fi', scriptCode: null, countryCode: 'FI'),
   ];
 
-  static List<String> get supportedLanguages {
+  List<String> get supportedLanguages {
     final supportedLanguageTags =
         _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
     if (localeFilter == null) return supportedLanguageTags;
@@ -43,21 +43,21 @@ class Localization {
         .toList();
   }
 
-  static List<Locale> get supportedLocales {
+  List<Locale> get supportedLocales {
     if (localeFilter == null) return _supportedLocales;
     return _supportedLocales
         .where((element) => localeFilter?.call(element.toLanguageTag()) ?? true)
         .toList();
   }
 
-  static Future<void> load({
+  Future<void> load({
     Locale? locale,
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
   }) async {
     final currentLocale = locale ?? defaultLocale;
-    Localization.locale = currentLocale;
+    this.locale = currentLocale;
     if (showLocalizationKeys) {
       _localisedValues.clear();
       _localisedOverrideValues.clear();
@@ -74,7 +74,7 @@ class Localization {
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
-  static String _t(String key, {List<dynamic>? args}) {
+  String _t(String key, {List<dynamic>? args}) {
     try {
       final value =
           (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
@@ -86,7 +86,7 @@ class Localization {
     }
   }
 
-  static String _plural(String key, {required num count, List<dynamic>? args}) {
+  String _plural(String key, {required num count, List<dynamic>? args}) {
     try {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key])
           as Map<String, dynamic>?;
@@ -117,7 +117,7 @@ class Localization {
   /// zh-Hans-CN: **'视频的灯光脚本'**
   ///
   /// fi-FI: **'Näet lisää napauttamalla kuvakkeita'**
-  static String get test => _t(LocalizationKeys.test);
+  String get test => _t(LocalizationKeys.test);
 
   /// Translations:
   ///
@@ -128,7 +128,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string]'**
-  static String testArg1(String arg1) =>
+  String testArg1(String arg1) =>
       _t(LocalizationKeys.testArg1, args: <dynamic>[arg1]);
 
   /// Translations:
@@ -140,7 +140,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 number]'**
-  static String testArg2(int arg1) =>
+  String testArg2(int arg1) =>
       _t(LocalizationKeys.testArg2, args: <dynamic>[arg1]);
 
   /// Translations:
@@ -152,7 +152,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] [arg2 number]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] [arg2 number]'**
-  static String testArg3(String arg1, int arg2) =>
+  String testArg3(String arg1, int arg2) =>
       _t(LocalizationKeys.testArg3, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -164,7 +164,7 @@ class Localization {
   /// zh-Hans-CN: **'频的 [arg1 string] %2$f [arg1 string]'**
   ///
   /// fi-FI: **'Lisää napauttamalla [arg1 string] %2$f [arg1 string]'**
-  static String testArg4(String arg1, double arg2) =>
+  String testArg4(String arg1, double arg2) =>
       _t(LocalizationKeys.testArg4, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -176,7 +176,7 @@ class Localization {
   /// zh-Hans-CN: **'频\n的\n\n[arg1 string] [arg2 number] [arg1 string]'**
   ///
   /// fi-FI: **'Lisää\nLisää napauttamalla\n\n[arg1 string] [arg2 number] [arg1 string]'**
-  static String testNewLine(String arg1, int arg2) =>
+  String testNewLine(String arg1, int arg2) =>
       _t(LocalizationKeys.testNewLine, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
@@ -188,7 +188,7 @@ class Localization {
   /// zh-Hans-CN: **'Carriage\r\nReturn'**
   ///
   /// fi-FI: **'Carriage\r\nReturn'**
-  static String get testNewLineCarriageReturn =>
+  String get testNewLineCarriageReturn =>
       _t(LocalizationKeys.testNewLineCarriageReturn);
 
   /// Translations:
@@ -200,21 +200,21 @@ class Localization {
   /// zh-Hans-CN: **'测试非位置参数 %s 和 %f'**
   ///
   /// fi-FI: **'Testataan ei-positiaalista argumenttia %s ja %f'**
-  static String testNonPositional(String arg1, double arg2) =>
+  String testNonPositional(String arg1, double arg2) =>
       _t(LocalizationKeys.testNonPositional, args: <dynamic>[arg1, arg2]);
 
   /// Translations:
   ///
   /// en:  **'{one: %d hour, other: %d hours}'**
   ///
-  /// nl:  **''**
+  /// nl:  **'{one: %d uur, other: %d uren}'**
   ///
-  /// zh-Hans-CN: **''**
+  /// zh-Hans-CN: **'{other: %d 小时}'**
   ///
-  /// fi-FI: **''**
-  static String testPlural(num count, int arg1) =>
+  /// fi-FI: **'{one: %d tunti, other: %d tuntia}'**
+  String testPlural(num count, int arg1) =>
       _plural(LocalizationKeys.testPlural, count: count, args: <dynamic>[arg1]);
 
-  static String getTranslation(String key, {List<dynamic>? args}) =>
+  String getTranslation(String key, {List<dynamic>? args}) =>
       _t(key, args: args ?? <dynamic>[]);
 }

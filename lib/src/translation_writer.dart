@@ -124,7 +124,7 @@ class TranslationWriter {
     final camelKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(
-          '  static String $camelKey(num count) => _plural(LocalizationKeys.$camelKey, count: count);')
+          '  String $camelKey(num count) => _plural(LocalizationKeys.$camelKey, count: count);')
       ..writeln();
   }
 
@@ -132,7 +132,7 @@ class TranslationWriter {
       Plural plural, Map<int, String> indexToReplacement) {
     try {
       final camelKey = CaseUtil.getCamelcase(key);
-      final tmpSb = StringBuffer('  static String $camelKey(num count, ');
+      final tmpSb = StringBuffer('  String $camelKey(num count, ');
 
       var iterationIndex = 0;
       indexToReplacement.forEach((index, match) {
@@ -165,7 +165,7 @@ class TranslationWriter {
       StringBuffer sb, String key, Map<int, String> indexToReplacement) {
     try {
       final camelKey = CaseUtil.getCamelcase(key);
-      final tmpSb = StringBuffer('  static String $camelKey(');
+      final tmpSb = StringBuffer('  String $camelKey(');
 
       var iterationIndex = 0;
       indexToReplacement.forEach((index, match) {
@@ -209,7 +209,7 @@ class TranslationWriter {
     final camelCaseKey = CaseUtil.getCamelcase(key);
     sb
       ..writeln(
-          '  static String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
+          '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
       ..writeln();
   }
 
