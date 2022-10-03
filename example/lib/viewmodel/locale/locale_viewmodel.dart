@@ -6,9 +6,9 @@ import 'package:locale_gen_example/util/locale/localization.dart';
 class LocaleViewModel with ChangeNotifier {
   final LocaleRepository _localeRepository;
   var customLocalizationOverrides = CustomLocalizationOverrideManager();
-  static Localization? _localization;
+  static final Localization _localizationInstance = Localization();
 
-  static Localization get localization => _localization ?? Localization();
+  static Localization get localizationInstance => _localizationInstance;
 
   LocaleViewModel(this._localeRepository);
 
@@ -19,8 +19,7 @@ class LocaleViewModel with ChangeNotifier {
 
   Future<void> initLocale() async {
     final locale = await _localeRepository.getCustomLocale();
-    _localization = Localization();
-    await localization.load(
+    await _localizationInstance.load(
       locale: locale,
       localizationOverrides: customLocalizationOverrides,
     );
@@ -55,7 +54,7 @@ class LocaleViewModel with ChangeNotifier {
   Future<void> showTranslationKeys() async {
     final locale = await _localeRepository.getCustomLocale();
 
-    await localization.load(
+    await _localizationInstance.load(
       locale: locale,
       localizationOverrides: customLocalizationOverrides,
       showLocalizationKeys: true,
@@ -65,7 +64,7 @@ class LocaleViewModel with ChangeNotifier {
 
   Future<void> _onUpdateLocaleClicked(Locale? locale) async {
     await _localeRepository.setCustomLocale(locale);
-    await localization.load(
+    await _localizationInstance.load(
       locale: locale,
       localizationOverrides: customLocalizationOverrides,
     );

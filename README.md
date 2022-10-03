@@ -61,11 +61,10 @@ With version 9.0.0 of local gen you no longer have static access to the translat
 
 ```dart
 class LocaleViewModel with ChangeNotifier {
-  static Localization? localization;
+  static final Localization localization = Localization();
   ...
 
   void init(){
-    _localization = Localization()
     await Localization.load(
       locale: locale,
       localizationOverrides: customLocalizationOverrides,
