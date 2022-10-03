@@ -94,10 +94,10 @@ class LocalizationKeys {
   ///
   /// en:  **'{one: %d hour, other: %d hours}'**
   ///
-  /// nl:  **''**
+  /// nl:  **'{one: %d uur, other: %d uren}'**
   ///
-  /// zh-Hans-CN: **''**
+  /// zh-Hans-CN: **'{other: %d 小时}'**
   ///
-  /// fi-FI: **''**
+  /// fi-FI: **'{one: %d tunti, other: %d tuntia}'**
   static const testPlural = 'test_plural';
 }

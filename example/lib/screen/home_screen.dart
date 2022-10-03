@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:locale_gen_example/util/locale/localization.dart';
 import 'package:locale_gen_example/viewmodel/locale/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -45,14 +44,14 @@ class HomeScreen extends StatelessWidget {
                   Provider.of<LocaleViewModel>(context).showTranslationKeys,
             ),
             Container(height: 22),
-            Text(Localization.test),
-            Text(Localization.testArg1('string')),
-            Text(Localization.testArg2(1)),
-            Text(Localization.testArg3('string', 1)),
-            Text(Localization.testArg4('string', 1)),
-            Text(Localization.testNonPositional('string', 1)),
-            Text(Localization.testPlural(4, 4)),
-            Text(Localization.testPlural(1, 1)),
+            Text(LocaleViewModel.localization.test),
+            Text(LocaleViewModel.localization.testArg1('string')),
+            Text(LocaleViewModel.localization.testArg2(1)),
+            Text(LocaleViewModel.localization.testArg3('string', 1)),
+            Text(LocaleViewModel.localization.testArg4('string', 1)),
+            Text(LocaleViewModel.localization.testNonPositional('string', 1)),
+            Text(LocaleViewModel.localization.testPlural(4, 4)),
+            Text(LocaleViewModel.localization.testPlural(1, 1)),
           ],
         ),
       ),
