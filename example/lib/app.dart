@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
           ],
           locale: LocaleViewModel.localizationInstance.locale,
-          supportedLocales: LocaleViewModel.localizationInstance.supportedLocales,
+          supportedLocales:
+              LocaleViewModel.localizationInstance.supportedLocales,
           home: HomeScreen(),
         ),
       ),

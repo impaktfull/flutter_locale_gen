@@ -49,7 +49,8 @@ class HomeScreen extends StatelessWidget {
             Text(LocaleViewModel.localizationInstance.testArg2(1)),
             Text(LocaleViewModel.localizationInstance.testArg3('string', 1)),
             Text(LocaleViewModel.localizationInstance.testArg4('string', 1)),
-            Text(LocaleViewModel.localizationInstance.testNonPositional('string', 1)),
+            Text(LocaleViewModel.localizationInstance
+                .testNonPositional('string', 1)),
             Text(LocaleViewModel.localizationInstance.testPlural(4, 4)),
             Text(LocaleViewModel.localizationInstance.testPlural(1, 1)),
           ],
