@@ -1,5 +1,4 @@
-os: osx
-osx_image: xcode12.2
+os: linux
 
 before_install:
   - chmod +x ./tool/test.sh
