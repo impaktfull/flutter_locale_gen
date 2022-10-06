@@ -1,4 +1,8 @@
 # Changelog
+## [9.0.1] - 2022-10-06
+### Updated
+- Updated travis to linux from macOS
+
 ## [9.0.0] - 2022-10-03
 ### Breaking
 - Translations can no longer be accessed from static methods on the Localization class. Instead you now need to manually manage the different localization instances. Migration steps are described in the readme.
