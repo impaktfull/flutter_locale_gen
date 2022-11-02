@@ -80,6 +80,10 @@ LocaleViewModel.localizationInstance.translation2;
 LocaleViewModel.localizationInstance.translation3;
 ```
 
+### Custom asset bundle
+Since version *10.0.0* you can specify the bundle to load the assets from in the `load` function.
+This can be used as an alternative to overriding translations, fetching them from the network, ...
+
 ### Migration steps <7.0.0 to >=7.0.0
 With the newest version of locale_gen the context no longer needs to be provided when accessing the translations. This means there are a couple of breaking changes.
 
