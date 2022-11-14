@@ -1,5 +1,5 @@
 # Changelog
-## [10.0.0] - 2022-11-02
+## [10.0.0] - 2022-11-14
 - Updated the signature of `load` to support getting the bundle to load from. Falls back to `rootBubdle`
 
 ## [9.0.1] - 2022-10-06
