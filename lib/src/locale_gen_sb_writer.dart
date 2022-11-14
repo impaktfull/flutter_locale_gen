@@ -102,6 +102,7 @@ class LocaleGenSbWriter {
       ..writeln('    LocalizationOverrides? localizationOverrides,')
       ..writeln('    bool showLocalizationKeys = false,')
       ..writeln('    bool useCaching = true,')
+      ..writeln('    AssetBundle? bundle,')
       ..writeln('    }) async {')
       ..writeln('    final currentLocale = locale ?? defaultLocale;')
       ..writeln('    this.locale = currentLocale;')
@@ -116,7 +117,7 @@ class LocaleGenSbWriter {
       ..writeln('      _localisedOverrideValues = overrideLocalizations;')
       ..writeln('    }')
       ..writeln(
-          "    final jsonContent = await rootBundle.loadString('${params.assetsDir}\${currentLocale.toLanguageTag()}.json', cache: useCaching);")
+          "    final jsonContent = await (bundle ?? rootBundle).loadString('${params.assetsDir}\${currentLocale.toLanguageTag()}.json', cache: useCaching);")
       ..writeln(
           '    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;')
       ..writeln('  }')

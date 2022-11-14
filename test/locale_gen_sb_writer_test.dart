@@ -238,6 +238,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -250,7 +251,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
@@ -326,6 +327,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -338,7 +340,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
@@ -426,6 +428,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -438,7 +441,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
@@ -535,6 +538,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -547,7 +551,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
@@ -645,6 +649,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -657,7 +662,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
@@ -757,6 +762,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -769,7 +775,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
@@ -865,6 +871,7 @@ class Localization {
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
+    AssetBundle? bundle,
     }) async {
     final currentLocale = locale ?? defaultLocale;
     this.locale = currentLocale;
@@ -877,7 +884,7 @@ class Localization {
       final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
       _localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await rootBundle.loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
     _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
   }
 
