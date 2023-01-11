@@ -2,7 +2,7 @@ class CaseUtil {
   static final RegExp _upperAlphaRegex = RegExp(r'[A-Z]');
   static final RegExp _symbolRegex = RegExp(r'[ ./_\-]');
 
-  CaseUtil._();
+  const CaseUtil._();
 
   static String getCamelcase(String string) {
     final wordsGroup = _groupIntoWords(string);
@@ -19,9 +19,7 @@ class CaseUtil {
 
     for (var i = 0; i < text.length; i++) {
       final char = String.fromCharCode(text.codeUnitAt(i));
-      final nextChar = text.length == i + 1
-          ? null
-          : String.fromCharCode(text.codeUnitAt(i + 1));
+      final nextChar = text.length == i + 1 ? null : String.fromCharCode(text.codeUnitAt(i + 1));
 
       if (_symbolRegex.hasMatch(char)) {
         continue;
@@ -29,9 +27,7 @@ class CaseUtil {
 
       sb.write(char);
 
-      final isEndOfWord = nextChar == null ||
-          (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) ||
-          _symbolRegex.hasMatch(nextChar);
+      final isEndOfWord = nextChar == null || (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) || _symbolRegex.hasMatch(nextChar);
 
       if (isEndOfWord) {
         words.add(sb.toString());

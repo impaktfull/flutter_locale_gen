@@ -24,7 +24,6 @@ class LocaleViewModel with ChangeNotifier {
         newLocale: locale,
         localizationOverrides: customLocalizationOverrides,
       );
-      notifyListeners();
     }
     notifyListeners();
   }
