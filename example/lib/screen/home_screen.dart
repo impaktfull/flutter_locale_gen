@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
 import 'package:locale_gen_example/viewmodel/locale/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final localization = Localization.of(context);
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         title: const Text('locale gen'),
       ),
       body: Center(
@@ -44,15 +46,14 @@ class HomeScreen extends StatelessWidget {
                   Provider.of<LocaleViewModel>(context).showTranslationKeys,
             ),
             Container(height: 22),
-            Text(LocaleViewModel.localizationInstance.test),
-            Text(LocaleViewModel.localizationInstance.testArg1('string')),
-            Text(LocaleViewModel.localizationInstance.testArg2(1)),
-            Text(LocaleViewModel.localizationInstance.testArg3('string', 1)),
-            Text(LocaleViewModel.localizationInstance.testArg4('string', 1)),
-            Text(LocaleViewModel.localizationInstance
-                .testNonPositional('string', 1)),
-            Text(LocaleViewModel.localizationInstance.testPlural(4, 4)),
-            Text(LocaleViewModel.localizationInstance.testPlural(1, 1)),
+            Text(localization.test),
+            Text(localization.testArg1('string')),
+            Text(localization.testArg2(1)),
+            Text(localization.testArg3('string', 1)),
+            Text(localization.testArg4('string', 1)),
+            Text(localization.testNonPositional('string', 1)),
+            Text(localization.testPlural(4, 4)),
+            Text(localization.testPlural(1, 1)),
           ],
         ),
       ),

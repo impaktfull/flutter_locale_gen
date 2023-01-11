@@ -68,58 +68,38 @@ class LocaleGenSbWriter {
       ..writeln('  var _localisedValues = <String, dynamic>{};')
       ..writeln('  var _localisedOverrideValues = <String, dynamic>{};')
       ..writeln()
+      ..writeln(
+          '  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;')
+      ..writeln()
       ..writeln('  /// The locale is used to get the correct json locale.')
       ..writeln(
           '  /// It can later be used to check what the locale is that was used to load this Localization instance.')
-      ..writeln('  Locale? locale;')
+      ..writeln('  final Locale? locale;')
       ..writeln()
-      ..writeln(
-          LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
+      ..writeln('  Localization({required this.locale});')
       ..writeln()
-      ..writeln('  static const _supportedLocales = [');
-    params.languages.moveToFirstIndex(params.defaultLanguage).forEach(
-        (language) =>
-            sb.writeln(LocaleGenParser.parseSupportedLocale(language)));
-    sb
-      ..writeln('  ];')
-      ..writeln()
-      ..writeln('  List<String> get supportedLanguages {')
-      ..writeln(
-          '    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);')
-      ..writeln('    if (localeFilter == null) return supportedLanguageTags;')
-      ..writeln(
-          '    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln('  List<Locale> get supportedLocales {')
-      ..writeln('    if (localeFilter == null) return _supportedLocales;')
-      ..writeln(
-          '    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();')
-      ..writeln('  }')
-      ..writeln()
-      ..writeln('  Future<void> load({')
-      ..writeln('    Locale? locale, ')
+      ..writeln('  static Future<Localization> load({')
+      ..writeln('    required Locale locale, ')
       ..writeln('    LocalizationOverrides? localizationOverrides,')
       ..writeln('    bool showLocalizationKeys = false,')
       ..writeln('    bool useCaching = true,')
       ..writeln('    AssetBundle? bundle,')
       ..writeln('    }) async {')
-      ..writeln('    final currentLocale = locale ?? defaultLocale;')
-      ..writeln('    this.locale = currentLocale;')
+      ..writeln('    final localizations = Localization(locale: locale);')
       ..writeln('    if (showLocalizationKeys) {')
-      ..writeln('      _localisedValues.clear();')
-      ..writeln('      _localisedOverrideValues.clear();')
-      ..writeln('      return;')
+      ..writeln('      return localizations;')
       ..writeln('    }')
       ..writeln('    if (localizationOverrides != null) {')
       ..writeln(
-          '      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);')
-      ..writeln('      _localisedOverrideValues = overrideLocalizations;')
+          '      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);')
+      ..writeln(
+          '      localizations._localisedOverrideValues = overrideLocalizations;')
       ..writeln('    }')
       ..writeln(
-          "    final jsonContent = await (bundle ?? rootBundle).loadString('${params.assetsDir}\${currentLocale.toLanguageTag()}.json', cache: useCaching);")
+          "    final jsonContent = await (bundle ?? rootBundle).loadString('${params.assetsDir}\${locale.toLanguageTag()}.json', cache: useCaching);")
       ..writeln(
-          '    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;')
+          '    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;')
+      ..writeln('    return localizations;')
       ..writeln('  }')
       ..writeln()
       ..writeln('  String _t(String key, {List<dynamic>? args}) {')
@@ -169,6 +149,96 @@ class LocaleGenSbWriter {
       ..writeln(
           '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
       ..writeln()
+      ..writeln('}');
+    return sb.toString();
+  }
+
+  static String createLocalizationDelegateFile(LocaleGenParams params) {
+    final importPath = params.outputDir.replaceFirst('lib/', '');
+    final sb = StringBuffer()
+      ..writeln("import 'dart:async';")
+      ..writeln();
+    [
+      "import 'package:flutter/foundation.dart';",
+      "import 'package:flutter/widgets.dart';",
+      "import 'package:${params.projectName}/${importPath}localization.dart';",
+      "import 'package:${params.projectName}/${importPath}localization_overrides.dart';",
+    ]
+      ..sort((i1, i2) => i1.compareTo(i2))
+      ..forEach(sb.writeln);
+    sb
+      ..writeln()
+      ..writeln(
+          '//============================================================//')
+      ..writeln('//THIS FILE IS AUTO GENERATED. DO NOT EDIT//')
+      ..writeln(
+          '//============================================================//')
+      ..writeln()
+      ..writeln('typedef LocaleFilter = bool Function(String languageCode);')
+      ..writeln()
+      ..writeln(
+          'class LocalizationDelegate extends LocalizationsDelegate<Localization> {')
+      ..writeln('  static LocaleFilter? localeFilter;')
+      ..writeln(
+          LocaleGenParser.parseDefaultLanguageLocale(params.defaultLanguage))
+      ..writeln()
+      ..writeln('  static const _supportedLocales = [');
+    params.languages.moveToFirstIndex(params.defaultLanguage).forEach(
+        (language) =>
+            sb.writeln(LocaleGenParser.parseSupportedLocale(language)));
+    sb
+      ..writeln('  ];')
+      ..writeln()
+      ..writeln('  static List<String> get supportedLanguages {')
+      ..writeln(
+          '    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);')
+      ..writeln('    if (localeFilter == null) return supportedLanguageTags;')
+      ..writeln(
+          '    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();')
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  static List<Locale> get supportedLocales {')
+      ..writeln('    if (localeFilter == null) return _supportedLocales;')
+      ..writeln(
+          '    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();')
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  LocalizationOverrides? localizationOverrides;')
+      ..writeln('  Locale? newLocale;')
+      ..writeln('  Locale? activeLocale;')
+      ..writeln('  final bool useCaching;')
+      ..writeln('  bool showLocalizationKeys;')
+      ..writeln()
+      ..writeln('  LocalizationDelegate({')
+      ..writeln('    this.newLocale,')
+      ..writeln('    this.localizationOverrides,')
+      ..writeln('    this.showLocalizationKeys = false,')
+      ..writeln('    this.useCaching = !kDebugMode,')
+      ..writeln('  }) {')
+      ..writeln('    if (newLocale != null) {')
+      ..writeln('      activeLocale = newLocale;')
+      ..writeln('    }')
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  @override')
+      ..writeln(
+          '  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());')
+      ..writeln()
+      ..writeln('  @override')
+      ..writeln('  Future<Localization> load(Locale locale) async {')
+      ..writeln('    final newActiveLocale = newLocale ?? locale;')
+      ..writeln('    activeLocale = newActiveLocale;')
+      ..writeln('    return Localization.load(')
+      ..writeln('      locale: newActiveLocale,')
+      ..writeln('      localizationOverrides: localizationOverrides,')
+      ..writeln('      showLocalizationKeys: showLocalizationKeys,')
+      ..writeln('      useCaching: useCaching,')
+      ..writeln('    );')
+      ..writeln('  }')
+      ..writeln()
+      ..writeln('  @override')
+      ..writeln(
+          '  bool shouldReload(LocalizationsDelegate<Localization> old) => true;')
       ..writeln('}');
     return sb.toString();
   }
