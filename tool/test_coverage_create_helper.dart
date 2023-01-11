@@ -5,7 +5,8 @@ import 'package:locale_gen/src/extensions/list_extensions.dart';
 const packageName = 'locale_gen';
 
 void main() {
-  Logger.debug('First create a file with all other files imported so flutter test coverage uses all files');
+  Logger.debug(
+      'First create a file with all other files imported so flutter test coverage uses all files');
   final imports = Directory('lib').listSync(recursive: true).where((element) {
     if (Directory(element.path).existsSync()) return false;
     if (!element.path.endsWith('.dart')) return false;
@@ -20,7 +21,8 @@ void main() {
   if (!testFile.existsSync()) {
     testFile.createSync();
   }
-  final content = '${imports.toList().sortedBy((e) => e).join('\n')}\nvoid main(){}';
+  final content =
+      '${imports.toList().sortedBy((e) => e).join('\n')}\nvoid main(){}';
   testFile.writeAsStringSync(content);
   Logger.debug('Created the test/coverage_helper_test.dart');
 }
