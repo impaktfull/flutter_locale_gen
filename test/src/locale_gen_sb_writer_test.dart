@@ -211,48 +211,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -300,48 +284,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -401,48 +369,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -511,48 +463,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -622,48 +558,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -735,48 +655,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -844,48 +748,32 @@ class Localization {
   var _localisedValues = <String, dynamic>{};
   var _localisedOverrideValues = <String, dynamic>{};
 
+  static Localization of(BuildContext context) => Localizations.of<Localization>(context, Localization)!;
+
   /// The locale is used to get the correct json locale.
   /// It can later be used to check what the locale is that was used to load this Localization instance.
-  Locale? locale;
+  final Locale? locale;
 
-  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+  Localization({required this.locale});
 
-  static const _supportedLocales = [
-    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
-    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
-  ];
-
-  List<String> get supportedLanguages {
-    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
-    if (localeFilter == null) return supportedLanguageTags;
-    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
-  }
-
-  List<Locale> get supportedLocales {
-    if (localeFilter == null) return _supportedLocales;
-    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
-  }
-
-  Future<void> load({
-    Locale? locale, 
+  static Future<Localization> load({
+    required Locale locale, 
     LocalizationOverrides? localizationOverrides,
     bool showLocalizationKeys = false,
     bool useCaching = true,
     AssetBundle? bundle,
     }) async {
-    final currentLocale = locale ?? defaultLocale;
-    this.locale = currentLocale;
+    final localizations = Localization(locale: locale);
     if (showLocalizationKeys) {
-      _localisedValues.clear();
-      _localisedOverrideValues.clear();
-      return;
+      return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(currentLocale);
-      _localisedOverrideValues = overrideLocalizations;
+      final overrideLocalizations = await localizationOverrides.getOverriddenLocalizations(locale);
+      localizations._localisedOverrideValues = overrideLocalizations;
     }
-    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${currentLocale.toLanguageTag()}.json', cache: useCaching);
-    _localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    final jsonContent = await (bundle ?? rootBundle).loadString('assets/locale/${locale.toLanguageTag()}.json', cache: useCaching);
+    localizations._localisedValues = json.decode(jsonContent) as Map<String, dynamic>;
+    return localizations;
   }
 
   String _t(String key, {List<dynamic>? args}) {
@@ -933,7 +821,406 @@ class Localization {
 ''');
     });
   });
+  group('LocaleGen SB writer createLocalizationDelegateFile', () {
+    test('Test createLocalizationDelegateFile', () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  languages: ['en','nl']
+  locale_assets_path: test/assets/locale
+''');
+      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      expect(result, r'''import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
+class LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  static LocaleFilter? localeFilter;
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
+  }
+
+  LocalizationOverrides? localizationOverrides;
+  Locale? newLocale;
+  Locale? activeLocale;
+  final bool useCaching;
+  bool showLocalizationKeys;
+
+  LocalizationDelegate({
+    this.newLocale,
+    this.localizationOverrides,
+    this.showLocalizationKeys = false,
+    this.useCaching = !kDebugMode,
+  }) {
+    if (newLocale != null) {
+      activeLocale = newLocale;
+    }
+  }
+
+  @override
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
+
+  @override
+  Future<Localization> load(Locale locale) async {
+    final newActiveLocale = newLocale ?? locale;
+    activeLocale = newActiveLocale;
+    return Localization.load(
+      locale: newActiveLocale,
+      localizationOverrides: localizationOverrides,
+      showLocalizationKeys: showLocalizationKeys,
+      useCaching: useCaching,
+    );
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<Localization> old) => true;
+}
+''');
+    });
+    test('Test createLocalizationDelegateFile with unsorted default language',
+        () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  languages: ['nl','en']
+  locale_assets_path: test/assets/locale
+''');
+      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      expect(result, r'''import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
+class LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  static LocaleFilter? localeFilter;
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
+  }
+
+  LocalizationOverrides? localizationOverrides;
+  Locale? newLocale;
+  Locale? activeLocale;
+  final bool useCaching;
+  bool showLocalizationKeys;
+
+  LocalizationDelegate({
+    this.newLocale,
+    this.localizationOverrides,
+    this.showLocalizationKeys = false,
+    this.useCaching = !kDebugMode,
+  }) {
+    if (newLocale != null) {
+      activeLocale = newLocale;
+    }
+  }
+
+  @override
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
+
+  @override
+  Future<Localization> load(Locale locale) async {
+    final newActiveLocale = newLocale ?? locale;
+    activeLocale = newActiveLocale;
+    return Localization.load(
+      locale: newActiveLocale,
+      localizationOverrides: localizationOverrides,
+      showLocalizationKeys: showLocalizationKeys,
+      useCaching: useCaching,
+    );
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<Localization> old) => true;
+}
+''');
+    });
+    test(
+        'Test createLocalizationDelegateFile with sorted default language but use nl as default',
+        () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  default_language: 'nl'
+  languages: ['nl','en']
+  locale_assets_path: test/assets/locale
+''');
+      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      expect(result, r'''import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
+class LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  static LocaleFilter? localeFilter;
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null);
+
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
+  }
+
+  LocalizationOverrides? localizationOverrides;
+  Locale? newLocale;
+  Locale? activeLocale;
+  final bool useCaching;
+  bool showLocalizationKeys;
+
+  LocalizationDelegate({
+    this.newLocale,
+    this.localizationOverrides,
+    this.showLocalizationKeys = false,
+    this.useCaching = !kDebugMode,
+  }) {
+    if (newLocale != null) {
+      activeLocale = newLocale;
+    }
+  }
+
+  @override
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
+
+  @override
+  Future<Localization> load(Locale locale) async {
+    final newActiveLocale = newLocale ?? locale;
+    activeLocale = newActiveLocale;
+    return Localization.load(
+      locale: newActiveLocale,
+      localizationOverrides: localizationOverrides,
+      showLocalizationKeys: showLocalizationKeys,
+      useCaching: useCaching,
+    );
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<Localization> old) => true;
+}
+''');
+    });
+    test(
+        'Test createLocalizationDelegateFile with unsorted default language but use nl as default',
+        () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  default_language: 'nl'
+  languages: ['en', 'nl']
+  locale_assets_path: test/assets/locale
+''');
+      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      expect(result, r'''import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:locale_gen_example/util/locale/localization.dart';
+import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
+class LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  static LocaleFilter? localeFilter;
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null);
+
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
+  }
+
+  LocalizationOverrides? localizationOverrides;
+  Locale? newLocale;
+  Locale? activeLocale;
+  final bool useCaching;
+  bool showLocalizationKeys;
+
+  LocalizationDelegate({
+    this.newLocale,
+    this.localizationOverrides,
+    this.showLocalizationKeys = false,
+    this.useCaching = !kDebugMode,
+  }) {
+    if (newLocale != null) {
+      activeLocale = newLocale;
+    }
+  }
+
+  @override
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
+
+  @override
+  Future<Localization> load(Locale locale) async {
+    final newActiveLocale = newLocale ?? locale;
+    activeLocale = newActiveLocale;
+    return Localization.load(
+      locale: newActiveLocale,
+      localizationOverrides: localizationOverrides,
+      showLocalizationKeys: showLocalizationKeys,
+      useCaching: useCaching,
+    );
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<Localization> old) => true;
+}
+''');
+    });
+    test('Test createLocalizationDelegateFile with other output path', () {
+      final params = LocaleGenParams.fromYamlString(
+          'locale_gen', '''name: locale_gen_example
+locale_gen:
+  languages: ['en','nl']
+  locale_assets_path: test/assets/locale
+  output_path: lib/src/util/locale
+''');
+      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      expect(result, r'''import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:locale_gen_example/src/util/locale/localization.dart';
+import 'package:locale_gen_example/src/util/locale/localization_overrides.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+typedef LocaleFilter = bool Function(String languageCode);
+
+class LocalizationDelegate extends LocalizationsDelegate<Localization> {
+  static LocaleFilter? localeFilter;
+  static const defaultLocale = Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null);
+
+  static const _supportedLocales = [
+    Locale.fromSubtags(languageCode: 'en', scriptCode: null, countryCode: null),
+    Locale.fromSubtags(languageCode: 'nl', scriptCode: null, countryCode: null),
+  ];
+
+  static List<String> get supportedLanguages {
+    final supportedLanguageTags = _supportedLocales.map((e) => e.toLanguageTag()).toList(growable: false);
+    if (localeFilter == null) return supportedLanguageTags;
+    return supportedLanguageTags.where((element) => localeFilter?.call(element) ?? true).toList();
+  }
+
+  static List<Locale> get supportedLocales {
+    if (localeFilter == null) return _supportedLocales;
+    return _supportedLocales.where((element) => localeFilter?.call(element.toLanguageTag()) ?? true).toList();
+  }
+
+  LocalizationOverrides? localizationOverrides;
+  Locale? newLocale;
+  Locale? activeLocale;
+  final bool useCaching;
+  bool showLocalizationKeys;
+
+  LocalizationDelegate({
+    this.newLocale,
+    this.localizationOverrides,
+    this.showLocalizationKeys = false,
+    this.useCaching = !kDebugMode,
+  }) {
+    if (newLocale != null) {
+      activeLocale = newLocale;
+    }
+  }
+
+  @override
+  bool isSupported(Locale locale) => supportedLanguages.contains(locale.toLanguageTag());
+
+  @override
+  Future<Localization> load(Locale locale) async {
+    final newActiveLocale = newLocale ?? locale;
+    activeLocale = newActiveLocale;
+    return Localization.load(
+      locale: newActiveLocale,
+      localizationOverrides: localizationOverrides,
+      showLocalizationKeys: showLocalizationKeys,
+      useCaching: useCaching,
+    );
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<Localization> old) => true;
+}
+''');
+    });
+  });
   group('LocaleGen SB writer createLocalizationOverrides', () {
     test('Test createLocalizationKeysFile', () {
       final params = LocaleGenParams.fromYamlString(

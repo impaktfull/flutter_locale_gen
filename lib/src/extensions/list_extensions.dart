@@ -10,4 +10,14 @@ extension ListExtension<T> on List<T> {
     }
     return this;
   }
+
+  List<T> sortedBy<R>(Comparable<R> Function(T item) by) {
+    sort((a, b) => _compareValues(by(a), by(b)));
+    return this;
+  }
+}
+
+int _compareValues<T extends Comparable<dynamic>>(T a, T b) {
+  if (identical(a, b)) return 0;
+  return a.compareTo(b);
 }

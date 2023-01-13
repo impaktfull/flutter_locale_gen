@@ -29,6 +29,7 @@ class LocaleGenWriter {
     }
     _createLocalizationKeysFile(params, defaultTranslations, allTranslations);
     _createLocalizationFile(params, defaultTranslations, allTranslations);
+    _createLocalizationDelegateFile(params);
     _createLocalizationOverrides(params);
     print('Done!!!');
   }
@@ -61,6 +62,11 @@ class LocaleGenWriter {
     final content = LocaleGenSbWriter.createLocalizationFile(
         params, defaultTranslations, allTranslations);
     writeFile(params.outputDir, 'localization.dart', content);
+  }
+
+  static void _createLocalizationDelegateFile(LocaleGenParams params) {
+    final content = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+    writeFile(params.outputDir, 'localization_delegate.dart', content);
   }
 
   static void _createLocalizationOverrides(LocaleGenParams params) {

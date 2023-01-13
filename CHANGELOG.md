@@ -1,4 +1,12 @@
 # Changelog
+## [11.0.0] - 2023-01-11
+### BREAKING CHANGE!!
+- After some time of using the new locale_gen package. It made our lifes harder than before.
+  For now we reverted the
+    - `.of(context)` removal
+    - `singelton` implementation
+  Other changes like `sprintf`, `plurals` and dependency updates are still in place.
+
 ## [10.0.0] - 2022-11-14
 - Updated the signature of `load` to support getting the bundle to load from. Falls back to `rootBubdle`
 

@@ -1,5 +1,5 @@
-import 'package:locale_gen/src/extensions/null_extension.dart';
-import 'package:locale_gen/src/plural.dart';
+import 'package:locale_gen/src/extensions/null_extensions.dart';
+import 'package:locale_gen/src/model/plural.dart';
 
 import 'case_util.dart';
 
