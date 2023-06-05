@@ -287,9 +287,9 @@ void main() {
       test('Test with translations', () {
         final sb = StringBuffer();
         TranslationWriter.buildDocumentation(sb, 'app_title', {
-          'nl': {'app_title': 'Hallo'},
-          'en': {'app_title': 'Hello'},
-          'fr': {'app_title': 'Bonjour'},
+          'nl': <String, dynamic>{'app_title': 'Hallo'},
+          'en': <String, dynamic>{'app_title': 'Hello'},
+          'fr': <String, dynamic>{'app_title': 'Bonjour'},
         }, [
           'nl',
           'en',
@@ -307,9 +307,9 @@ void main() {
       test('Test with translations sub-set', () {
         final sb = StringBuffer();
         TranslationWriter.buildDocumentation(sb, 'app_title', {
-          'nl': {'app_title': 'Hallo'},
-          'en': {'app_title': 'Hello'},
-          'fr': {'app_title': 'Bonjour'},
+          'nl': <String, dynamic>{'app_title': 'Hallo'},
+          'en': <String, dynamic>{'app_title': 'Hello'},
+          'fr': <String, dynamic>{'app_title': 'Bonjour'},
         }, [
           'en',
           'fr'
@@ -324,9 +324,9 @@ void main() {
       test('Test with translations sub-set unknown', () {
         final sb = StringBuffer();
         TranslationWriter.buildDocumentation(sb, 'app_title', {
-          'nl': {'app_title': 'Hallo'},
-          'en': {'app_title': 'Hello'},
-          'fr': {'app_title': 'Bonjour'},
+          'nl': <String, dynamic>{'app_title': 'Hallo'},
+          'en': <String, dynamic>{'app_title': 'Hello'},
+          'fr': <String, dynamic>{'app_title': 'Bonjour'},
         }, [
           'en',
           'fr',
@@ -342,8 +342,8 @@ void main() {
       test('Test with translations with multi lines with \n', () {
         final sb = StringBuffer();
         TranslationWriter.buildDocumentation(sb, 'app_title', {
-          'nl': {'app_title': 'Hallo\nAlles Goed'},
-          'en': {'app_title': 'Hi There\nEverything alright'},
+          'nl': <String, dynamic>{'app_title': 'Hallo\nAlles Goed'},
+          'en': <String, dynamic>{'app_title': 'Hi There\nEverything alright'},
         }, [
           'nl',
           'en',
@@ -358,8 +358,10 @@ void main() {
       test('Test with translations with double multi lines with \n', () {
         final sb = StringBuffer();
         TranslationWriter.buildDocumentation(sb, 'app_title', {
-          'nl': {'app_title': 'Hallo\n\nAlles goed'},
-          'en': {'app_title': 'Hi There\n\nEverything alright'},
+          'nl': <String, dynamic>{'app_title': 'Hallo\n\nAlles goed'},
+          'en': <String, dynamic>{
+            'app_title': 'Hi There\n\nEverything alright'
+          },
         }, [
           'nl',
           'en',
@@ -375,8 +377,10 @@ void main() {
       test('Test with translations with double multi lines with \r', () {
         final sb = StringBuffer();
         TranslationWriter.buildDocumentation(sb, 'app_title', {
-          'nl': {'app_title': 'Hallo\r\rAlles goed'},
-          'en': {'app_title': 'Hi There\r\rEverything alright'},
+          'nl': <String, dynamic>{'app_title': 'Hallo\r\rAlles goed'},
+          'en': <String, dynamic>{
+            'app_title': 'Hi There\r\rEverything alright'
+          },
         }, [
           'nl',
           'en',

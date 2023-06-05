@@ -7,6 +7,8 @@ import 'package:locale_gen_example/viewmodel/locale/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<LocaleViewModel>(
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
           ],
           locale: viewModel.localeDelegate.activeLocale,
           supportedLocales: LocalizationDelegate.supportedLocales,
-          home: HomeScreen(),
+          home: const HomeScreen(),
         ),
       ),
       create: (context) => LocaleViewModel(LocaleRepository())..init(),

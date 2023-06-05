@@ -1,4 +1,7 @@
 # Changelog
+## [12.0.0] - 2023-06-05
+Updated to intl 0.18.x
+
 ## [11.0.0] - 2023-01-11
 ### BREAKING CHANGE!!
 - After some time of using the new locale_gen package. It made our lifes harder than before.

@@ -6,9 +6,9 @@ import 'case_util.dart';
 class TranslationWriter {
   static final positionalFormatRegex = RegExp(r'\%(\d*)\$[\\.]?[\d+]*([sdf])');
   static final normalFormatRegex = RegExp(r'\%[\\.]?[\d+]*([sdf])');
-  static const REGEX_INDEX_GROUP_INDEX = 1;
-  static const REGEX_TYPE_GROUP_INDEX = 2;
-  static const NORMAL_REGEX_TYPE_GROUP_INDEX = 1;
+  static const regexIndexGroupIndex = 1;
+  static const regexTypeGroupIndex = 2;
+  static const normalRegexTypeGroupIndex = 1;
 
   const TranslationWriter._();
 
@@ -85,13 +85,13 @@ class TranslationWriter {
       String key, Iterable<RegExpMatch> matches) {
     // Validate
     final validMatcher = <RegExpMatch>[];
-    matches.forEach((match) {
+    for (final match in matches) {
       final sameTypeMatch = validMatcher.where((validMatch) =>
-          validMatch.group(REGEX_INDEX_GROUP_INDEX) ==
-          match.group(REGEX_INDEX_GROUP_INDEX));
+          validMatch.group(regexIndexGroupIndex) ==
+          match.group(regexIndexGroupIndex));
       if (sameTypeMatch.isNotEmpty &&
-          sameTypeMatch.first.group(REGEX_TYPE_GROUP_INDEX) !=
-              match.group(REGEX_TYPE_GROUP_INDEX)) {
+          sameTypeMatch.first.group(regexTypeGroupIndex) !=
+              match.group(regexTypeGroupIndex)) {
         throw Exception(
             '$key contains a value with more than 1 argument with the same index but different type');
       }
@@ -100,11 +100,10 @@ class TranslationWriter {
           .isEmpty) {
         validMatcher.add(match);
       }
-    });
+    }
     final entries = validMatcher
-        .map((match) => MapEntry(
-            int.parse(match.group(REGEX_INDEX_GROUP_INDEX)!),
-            match.group(REGEX_TYPE_GROUP_INDEX)!))
+        .map((match) => MapEntry(int.parse(match.group(regexIndexGroupIndex)!),
+            match.group(regexTypeGroupIndex)!))
         .toList()
       ..sort((a, b) => a.key.compareTo(b.key));
 
@@ -114,8 +113,8 @@ class TranslationWriter {
   static Map<int, String> _extractNonPositionalParameters(
       Iterable<RegExpMatch> matches) {
     var index = 1;
-    final entries = matches.map((match) =>
-        MapEntry(index++, match.group(NORMAL_REGEX_TYPE_GROUP_INDEX)!));
+    final entries = matches.map(
+        (match) => MapEntry(index++, match.group(normalRegexTypeGroupIndex)!));
     return Map.fromEntries(entries);
   }
 
@@ -221,18 +220,23 @@ class TranslationWriter {
     if (includedLanguages.isEmpty) return;
 
     sb.writeln('  /// Translations:');
-    includedLanguages.forEach((language) {
+    for (final language in includedLanguages) {
       final values = translations[language];
-      if (values == null) return;
+      if (values == null) continue;
       final languageFormatted = '$language:'.padRight(4, ' ');
-      final value = values[key];
+      String? value;
+      if (values[key] is String?) {
+        value = values[key] as String?;
+      } else {
+        value = values[key].toString();
+      }
       var formattedNewLines =
           value?.toString().replaceAll('\n', '\\n').replaceAll('\r', '\\r');
       formattedNewLines = replaceArgumentDocumentation(formattedNewLines);
       sb
         ..writeln('  ///')
         ..writeln("  /// $languageFormatted **'${formattedNewLines ?? ''}'**");
-    });
+    }
   }
 
   static String? replaceArgumentDocumentation(String? value) {
@@ -240,8 +244,8 @@ class TranslationWriter {
     var newValue = value;
     final allMatches = positionalFormatRegex.allMatches(newValue);
     for (final match in allMatches) {
-      final index = match.group(REGEX_INDEX_GROUP_INDEX);
-      final type = match.group(REGEX_TYPE_GROUP_INDEX);
+      final index = match.group(regexIndexGroupIndex);
+      final type = match.group(regexTypeGroupIndex);
       if (type == 's') {
         newValue = newValue.replaceAll('%$index\$$type', '[arg$index string]');
       } else if (type == 'd') {

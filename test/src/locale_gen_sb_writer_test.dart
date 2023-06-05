@@ -11,8 +11,8 @@ locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result =
-          LocaleGenSbWriter.createLocalizationKeysFile(params, {}, {});
+      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+          params, <String, dynamic>{}, {});
       expect(result,
           r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -190,7 +190,8 @@ locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationFile(params, {}, {});
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, <String, dynamic>{}, {});
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -263,7 +264,8 @@ locale_gen:
   locale_assets_path: test/assets/locale
   output_path: lib/src/util/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationFile(params, {}, {});
+      final result = LocaleGenSbWriter.createLocalizationFile(
+          params, <String, dynamic>{}, {});
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -718,10 +720,10 @@ locale_gen:
         'test_translations': {'other': 'This is a test translation'},
       };
       final allTranslations = <String, Map<String, dynamic>>{
-        'en': {
+        'en': <String, dynamic>{
           'test_translations': {'other': 'This is a test translation'},
         },
-        'nl': {
+        'nl': <String, dynamic>{
           'test_translations': {'other': 'Dit is een test vertaling'},
         },
       };

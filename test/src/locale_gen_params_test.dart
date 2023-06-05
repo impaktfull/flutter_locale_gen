@@ -119,7 +119,7 @@ void main() {
             LocaleGenParams.fromYamlString('locale_gen',
                     'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  doc_languages: []')
                 .docLanguages,
-            []);
+            <String>[]);
       });
     });
   });

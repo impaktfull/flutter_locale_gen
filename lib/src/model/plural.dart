@@ -7,10 +7,10 @@ class Plural {
   final String other;
 
   Plural.fromJson(Map<String, dynamic> json)
-      : zero = json['zero'],
-        one = json['one'],
-        two = json['two'],
-        few = json['few'],
-        many = json['many'],
-        other = json['other'];
+      : zero = json['zero'] as String?,
+        one = json['one'] as String?,
+        two = json['two'] as String?,
+        few = json['few'] as String?,
+        many = json['many'] as String?,
+        other = json['other'] as String;
 }

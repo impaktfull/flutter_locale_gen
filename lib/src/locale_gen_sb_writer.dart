@@ -20,14 +20,14 @@ class LocaleGenSbWriter {
           '//============================================================//')
       ..writeln('class LocalizationKeys {')
       ..writeln();
-    defaultTranslations.forEach((key, value) {
+    for (final key in defaultTranslations.keys) {
       TranslationWriter.buildDocumentation(
           sb, key, allTranslations, params.docLanguages);
       final correctKey = CaseUtil.getCamelcase(key);
       sb
         ..writeln('  static const $correctKey = \'$key\';')
         ..writeln();
-    });
+    }
     sb.writeln('}');
     return sb.toString();
   }
@@ -37,7 +37,7 @@ class LocaleGenSbWriter {
       Map<String, dynamic> defaultTranslations,
       Map<String, Map<String, dynamic>> allTranslations) {
     final hasPlurals = defaultTranslations.values
-        .any((element) => element is Map<String, dynamic>);
+        .any((dynamic element) => element is Map<String, dynamic>);
     final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
@@ -140,7 +140,7 @@ class LocaleGenSbWriter {
         ..writeln('  }')
         ..writeln();
     }
-    defaultTranslations.forEach((key, value) {
+    defaultTranslations.forEach((key, dynamic value) {
       TranslationWriter.buildDocumentation(
           sb, key, allTranslations, params.docLanguages);
       TranslationWriter.buildTranslationFunction(sb, key, value);

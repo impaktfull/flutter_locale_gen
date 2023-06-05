@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:locale_gen/src/extensions/list_extensions.dart';
-
 const packageName = 'locale_gen';
 
 void main() {
@@ -21,8 +19,8 @@ void main() {
   if (!testFile.existsSync()) {
     testFile.createSync();
   }
-  final content =
-      '${imports.toList().sortedBy((e) => e).join('\n')}\nvoid main(){}';
+  final sortedImports = imports.toList()..sort((e1, e2) => e1.compareTo(e2));
+  final content = '${sortedImports.join('\n')}\nvoid main(){}';
   testFile.writeAsStringSync(content);
   Logger.debug('Created the test/coverage_helper_test.dart');
 }

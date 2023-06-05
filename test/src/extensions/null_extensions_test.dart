@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('let', () {
     test('Check if let can be completed because of call on not null', () {
-      const String? item = 'not-null';
+      const item = 'not-null';
       var letCompleted = false;
       item.let((value) {
         letCompleted = true;

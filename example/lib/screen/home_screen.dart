@@ -5,6 +5,8 @@ import 'package:locale_gen_example/viewmodel/locale/locale_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final localization = Localization.of(context);
@@ -18,32 +20,32 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MaterialButton(
-              child: const Text('System Language (Not translated)'),
               onPressed: Provider.of<LocaleViewModel>(context)
                   .onSwitchToSystemLanguage,
+              child: const Text('System Language (Not translated)'),
             ),
             MaterialButton(
-              child: const Text('English (Not translated)'),
               onPressed:
                   Provider.of<LocaleViewModel>(context).onSwitchToEnglish,
+              child: const Text('English (Not translated)'),
             ),
             MaterialButton(
-              child: const Text('Nederlands (Not translated)'),
               onPressed: Provider.of<LocaleViewModel>(context).onSwitchToDutch,
+              child: const Text('Nederlands (Not translated)'),
             ),
             MaterialButton(
-              child: const Text('fi-FI (Not translated)'),
               onPressed: Provider.of<LocaleViewModel>(context).onSwitchToFiFi,
+              child: const Text('fi-FI (Not translated)'),
             ),
             MaterialButton(
-              child: const Text('zh-Hans-CN (Not translated)'),
               onPressed:
                   Provider.of<LocaleViewModel>(context).onSwitchToZHHansCN,
+              child: const Text('zh-Hans-CN (Not translated)'),
             ),
             MaterialButton(
-              child: const Text('show translation keys'),
               onPressed:
                   Provider.of<LocaleViewModel>(context).showTranslationKeys,
+              child: const Text('show translation keys'),
             ),
             Container(height: 22),
             Text(localization.test),

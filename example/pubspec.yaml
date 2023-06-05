@@ -3,18 +3,20 @@ description: A project used to demo the Todo Reporter
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
+  intl: ^0.18.0
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   provider: ^6.0.5
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.1.1
   sprintf: ^7.0.0
 
 dev_dependencies:
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
   locale_gen:

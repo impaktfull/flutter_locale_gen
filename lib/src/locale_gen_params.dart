@@ -31,8 +31,8 @@ class LocaleGenParams {
   }
 
   LocaleGenParams.fromYamlString(this.programName, String pubspecContent) {
-    final doc = loadYaml(pubspecContent);
-    final projectName = doc['name'];
+    final doc = loadYaml(pubspecContent) as YamlMap;
+    final projectName = doc['name'] as String?;
 
     if (projectName == null || projectName.isEmpty) {
       throw Exception(
@@ -40,7 +40,7 @@ class LocaleGenParams {
     }
 
     this.projectName = projectName;
-    final config = doc[programName];
+    final config = doc[programName] as YamlMap?;
     if (config == null) {
       languages = ['en'];
       defaultLanguage = 'en';
@@ -52,7 +52,7 @@ class LocaleGenParams {
 
   @mustCallSuper
   void configure(YamlMap config) {
-    final YamlList? yamlList = config['languages'];
+    final YamlList? yamlList = config['languages'] as YamlList?;
     if (yamlList == null || yamlList.isEmpty) {
       throw Exception(
           "At least 1 language should be added to the 'languages' section in the pubspec.yaml\n"
@@ -61,15 +61,16 @@ class LocaleGenParams {
     }
 
     final languages =
-        yamlList.map((item) => item.toString()).toList(growable: false);
+        yamlList.map((dynamic item) => item.toString()).toList(growable: false);
 
-    final YamlList? docLanguageList = config['doc_languages'];
+    final YamlList? docLanguageList = config['doc_languages'] as YamlList?;
     List<String>? docLanguages;
     if (docLanguageList != null) {
-      docLanguages = docLanguageList.map((item) => item.toString()).toList();
+      docLanguages =
+          docLanguageList.map((dynamic item) => item.toString()).toList();
     }
 
-    var defaultLanguage = config['default_language'];
+    var defaultLanguage = config['default_language'] as String?;
     if (defaultLanguage == null) {
       if (languages.contains('en')) {
         defaultLanguage = 'en';
@@ -82,7 +83,7 @@ class LocaleGenParams {
       throw Exception('default language is not included in the languages list');
     }
 
-    var outputDir = config['output_path'];
+    var outputDir = config['output_path'] as String?;
     outputDir ??= defaultOutputDir;
     if (!outputDir.endsWith('/')) {
       outputDir += '/';
@@ -91,12 +92,12 @@ class LocaleGenParams {
       throw ArgumentError('output_path should always start with lib');
     }
 
-    var assetsDir = config['assets_path'];
+    var assetsDir = config['assets_path'] as String?;
     assetsDir ??= defaultAssetsDir;
     if (!assetsDir.endsWith('/')) {
       assetsDir += '/';
     }
-    var localeAssetsDir = config['locale_assets_path'];
+    var localeAssetsDir = config['locale_assets_path'] as String?;
     localeAssetsDir ??= defaultLocaleAssetsDir;
     if (!localeAssetsDir.endsWith('/')) {
       localeAssetsDir += '/';
