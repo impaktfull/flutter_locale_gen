@@ -3,7 +3,7 @@ name: Automated version bump
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   bump_version:
