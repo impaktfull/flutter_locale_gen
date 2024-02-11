@@ -1,8 +1,18 @@
+# 12.1.1
+
+## Fixed
+
+- Documentation old references are removed
+
 # 12.1.0
 
 ## Feat
 
 - Formatting function added. (`dart run locale_gen:format`)
+
+## Updated
+
+- License to BSD-3-Clause license
 
 ## [12.0.0] - 2023-06-05
 Updated to intl 0.18.x
