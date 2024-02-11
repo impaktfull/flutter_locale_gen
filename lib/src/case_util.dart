@@ -12,6 +12,12 @@ class CaseUtil {
     return words.join('');
   }
 
+  static String getSnakeCase(String string) {
+    final wordsGroup = _groupIntoWords(string);
+    final words = wordsGroup.map(_allLowerCase).toList();
+    return words.join('_');
+  }
+
   static List<String> _groupIntoWords(String text) {
     final sb = StringBuffer();
     final words = <String>[];
@@ -42,7 +48,8 @@ class CaseUtil {
     return words;
   }
 
-  static String _upperCaseFirstLetter(String word) {
-    return '${word.substring(0, 1).toUpperCase()}${word.substring(1).toLowerCase()}';
-  }
+  static String _upperCaseFirstLetter(String word) =>
+      '${word.substring(0, 1).toUpperCase()}${word.substring(1).toLowerCase()}';
+
+  static String _allLowerCase(String word) => word.toLowerCase();
 }

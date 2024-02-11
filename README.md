@@ -55,7 +55,19 @@ flutter packages pub run locale_gen
 ### Run package with Dart
 
 ```shell
-pub run locale_gen
+dart pub run locale_gen
+```
+
+### Format your locale file in Flutter
+
+```shell
+flutter packages pub run locale_gen:format
+```
+
+### Format your locale file in Dart
+
+```shell
+dart pub run locale_gen:format
 ```
 
 ### Migration steps <9.0.0 to >=9.0.0
