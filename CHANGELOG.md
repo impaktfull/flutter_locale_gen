@@ -1,4 +1,9 @@
-# Changelog
+# 13.0.0
+
+## Feat
+
+- Formatting function added. (`dart run locale_gen:format`)
+
 ## [12.0.0] - 2023-06-05
 Updated to intl 0.18.x
 
