@@ -3,15 +3,15 @@
 Dart tool that will convert your default locale json to dart code.
 
 [![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
-[![Build Status Analyzer](https://github.com/vanlooverenkoen/locale_gen/actions/workflows/analyzer.yml/badge.svg)](https://github.com/vanlooverenkoen/locale_gen/actions/workflows/analyzer.yml)
-[![Build Status Formatting](https://github.com/vanlooverenkoen/locale_gen/actions/workflows/formatting.yml/badge.svg)](https://github.com/vanlooverenkoen/locale_gen/actions/workflows/formatting.yml)
-[![Build Status Test](https://github.com/vanlooverenkoen/locale_gen/actions/workflows/tests.yml/badge.svg)](https://github.com/vanlooverenkoen/locale_gen/actions/workflows/tests.yml)
-[![Coverage Status](https://coveralls.io/repos/github/vanlooverenkoen/locale_gen/badge.svg)](https://coveralls.io/github/vanlooverenkoen/locale_gen)
+[![Build Status Analyzer](https://github.com/vanlooverenkoen/flutter_locale_gen/actions/workflows/analyzer.yml/badge.svg)](https://github.com/vanlooverenkoen/flutter_locale_gen/actions/workflows/analyzer.yml)
+[![Build Status Formatting](https://github.com/vanlooverenkoen/flutter_locale_gen/actions/workflows/formatting.yml/badge.svg)](https://github.com/vanlooverenkoen/flutter_locale_gen/actions/workflows/formatting.yml)
+[![Build Status Test](https://github.com/vanlooverenkoen/flutter_locale_gen/actions/workflows/tests.yml/badge.svg)](https://github.com/vanlooverenkoen/flutter_locale_gen/actions/workflows/tests.yml)
+[![Coverage Status](https://coveralls.io/repos/github/vanlooverenkoen/flutter_locale_gen/badge.svg)](https://coveralls.io/github/vanlooverenkoen/flutter_locale_gen)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
 ## Example
 
-<img src="https://github.com/vanlooverenkoen/locale_gen/blob/master/assets/example.gif?raw=true" alt="Example" width="300"/>
+<img src="https://github.com/impaktfull/flutter_locale_gen/blob/master/assets/example.gif?raw=true" alt="Example" width="300"/>
 
 ## Setup
 
