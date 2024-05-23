@@ -1,3 +1,8 @@
+# 12.1.3
+## Updated
+
+- Updated dependency
+
 # 12.1.1 - 12.1.2
 
 ## Fixed
