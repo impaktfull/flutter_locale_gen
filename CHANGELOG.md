@@ -1,7 +1,7 @@
 # 12.1.3
 ## Updated
 
-- Updated dependency
+- Updated intl to support Flutter 3.22.x and above
 
 # 12.1.1 - 12.1.2
 
