@@ -1,4 +1,11 @@
+# 12.1.4
+
+## Updated
+
+- Updated license to 2025
+
 # 12.1.3
+
 ## Updated
 
 - Updated intl to support Flutter 3.22.x and above
