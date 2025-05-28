@@ -1,3 +1,9 @@
+# 12.2.0
+
+## Updated
+
+- Bumped `intl` dependency to ^0.20.0
+
 # 12.1.4
 
 ## Updated
