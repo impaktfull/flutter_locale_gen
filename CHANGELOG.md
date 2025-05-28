@@ -3,6 +3,7 @@
 ## Updated
 
 - Bumped `intl` dependency to ^0.20.0
+- analysis_options.yaml updated
 
 # 12.1.4
 
