@@ -3,10 +3,10 @@ description: A project used to demo the Todo Reporter
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.8.1 <4.0.0"
 
 dependencies:
-  intl: ^0.20.0
+  intl: ^0.20.2
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -27,7 +27,7 @@ flutter:
     - assets/locale/
 
 locale_gen:
-  languages: [ 'en','nl', 'zh-Hans-CN', 'fi-FI' ]
+  languages: ["en", "nl", "zh-Hans-CN", "fi-FI"]
 #  locale_assets_path: 'assets/localization'
 #  assets_path: 'assets/localization'
 #  output_path: 'lib/util/translations'
