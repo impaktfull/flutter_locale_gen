@@ -40,13 +40,14 @@ class Localization {
       return localizations;
     }
     if (localizationOverrides != null) {
-      final overrideLocalizations =
-          await localizationOverrides.getOverriddenLocalizations(locale);
+      final overrideLocalizations = await localizationOverrides
+          .getOverriddenLocalizations(locale);
       localizations._localisedOverrideValues = overrideLocalizations;
     }
     final jsonContent = await (bundle ?? rootBundle).loadString(
-        'assets/locale/${locale.toLanguageTag()}.json',
-        cache: useCaching);
+      'assets/locale/${locale.toLanguageTag()}.json',
+      cache: useCaching,
+    );
     localizations._localisedValues =
         json.decode(jsonContent) as Map<String, dynamic>;
     return localizations;
@@ -66,8 +67,9 @@ class Localization {
 
   String _plural(String key, {required num count, List<dynamic>? args}) {
     try {
-      final value = (_localisedOverrideValues[key] ?? _localisedValues[key])
-          as Map<String, dynamic>?;
+      final value =
+          (_localisedOverrideValues[key] ?? _localisedValues[key])
+              as Map<String, dynamic>?;
       if (value == null) return key;
 
       final pluralValue = Intl.plural(

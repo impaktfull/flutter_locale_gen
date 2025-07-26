@@ -14,7 +14,7 @@ class CustomLocalizationOverrideManager extends LocalizationOverrides {
       },
       const Locale('nl'): <String, dynamic>{
         'test': 'Testing in Nederlands (override)',
-      }
+      },
     };
     print('GOT THE LATEST TRANSLATIONS');
   }

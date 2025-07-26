@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<LocaleViewModel>(
         builder: (context, viewModel, child) => MaterialApp(
           title: 'Locale Gen',
-          theme: ThemeData(
-            primarySwatch: Colors.red,
-          ),
+          theme: ThemeData(primarySwatch: Colors.red),
           localizationsDelegates: [
             viewModel.localeDelegate,
             GlobalWidgetsLocalizations.delegate,

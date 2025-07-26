@@ -20,13 +20,15 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MaterialButton(
-              onPressed: Provider.of<LocaleViewModel>(context)
-                  .onSwitchToSystemLanguage,
+              onPressed: Provider.of<LocaleViewModel>(
+                context,
+              ).onSwitchToSystemLanguage,
               child: const Text('System Language (Not translated)'),
             ),
             MaterialButton(
-              onPressed:
-                  Provider.of<LocaleViewModel>(context).onSwitchToEnglish,
+              onPressed: Provider.of<LocaleViewModel>(
+                context,
+              ).onSwitchToEnglish,
               child: const Text('English (Not translated)'),
             ),
             MaterialButton(
@@ -38,13 +40,15 @@ class HomeScreen extends StatelessWidget {
               child: const Text('fi-FI (Not translated)'),
             ),
             MaterialButton(
-              onPressed:
-                  Provider.of<LocaleViewModel>(context).onSwitchToZHHansCN,
+              onPressed: Provider.of<LocaleViewModel>(
+                context,
+              ).onSwitchToZHHansCN,
               child: const Text('zh-Hans-CN (Not translated)'),
             ),
             MaterialButton(
-              onPressed:
-                  Provider.of<LocaleViewModel>(context).showTranslationKeys,
+              onPressed: Provider.of<LocaleViewModel>(
+                context,
+              ).showTranslationKeys,
               child: const Text('show translation keys'),
             ),
             Container(height: 22),
