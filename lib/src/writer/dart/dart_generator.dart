@@ -48,7 +48,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       ..writeln('  static Localization? _instance;')
       ..writeln()
       ..writeln(
-          '  Localization get instance => _instance ??= Localization._();')
+          '  static Localization get instance => _instance ??= Localization._();')
       ..writeln()
       ..writeln('  Localization._();')
       ..writeln()
