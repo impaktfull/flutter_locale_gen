@@ -1,15 +1,15 @@
-enum LocaleGenType {
+enum LocaleGenOutputType {
   flutter,
   dart;
 
-  static const defaultValue = LocaleGenType.flutter;
+  static const defaultValue = LocaleGenOutputType.flutter;
 
-  static LocaleGenType fromString(String? type) {
+  static LocaleGenOutputType fromString(String? type) {
     switch (type) {
       case 'dart':
-        return LocaleGenType.dart;
+        return LocaleGenOutputType.dart;
       default:
-        return LocaleGenType.flutter;
+        return LocaleGenOutputType.flutter;
     }
   }
 }

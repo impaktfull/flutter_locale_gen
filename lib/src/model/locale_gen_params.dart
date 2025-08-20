@@ -19,7 +19,7 @@ class LocaleGenParams {
   late String defaultLanguage;
   late List<String> languages;
   late List<String> docLanguages;
-  late LocaleGenType type;
+  late LocaleGenOutputType outputType;
 
   factory LocaleGenParams(String programName) {
     final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
@@ -47,7 +47,7 @@ class LocaleGenParams {
       languages = ['en'];
       defaultLanguage = 'en';
       docLanguages = languages;
-      type = LocaleGenType.defaultValue;
+      outputType = LocaleGenOutputType.defaultValue;
       return;
     }
     configure(config);
@@ -107,7 +107,7 @@ class LocaleGenParams {
       localeAssetsDir += '/';
     }
 
-    final type = config['type'] as String?;
+    final outputType = config['output_type'] as String?;
 
     this.localeAssetsDir = localeAssetsDir;
     this.outputDir = outputDir;
@@ -115,7 +115,7 @@ class LocaleGenParams {
     this.languages = languages;
     this.defaultLanguage = defaultLanguage;
     this.docLanguages = docLanguages ?? languages;
-    this.type = LocaleGenType.fromString(type);
+    this.outputType = LocaleGenOutputType.fromString(outputType);
 
     final different =
         this.docLanguages.where((language) => !languages.contains(language));

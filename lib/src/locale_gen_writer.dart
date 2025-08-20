@@ -26,7 +26,7 @@ class LocaleGenWriter {
       throw Exception(
           '${params.defaultLanguage} could not be used because it is not configured correctly');
     }
-    final writer = LocaleGenCoreWriter.fromType(params.type);
+    final writer = LocaleGenCoreWriter.fromType(params.outputType);
     writer.write(
       params,
       defaultTranslations,

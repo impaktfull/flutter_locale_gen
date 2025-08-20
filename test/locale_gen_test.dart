@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 void main() {
   final allowedExports = [
     'src/model/locale_gen_params.dart',
+    'src/model/locale_gen_type.dart',
     'src/locale_gen_writer.dart',
     'src/util/format/locale_gen_formatter.dart',
   ];

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:locale_gen/locale_gen.dart';
+import 'package:locale_gen/src/model/locale_gen_params.dart';
 import 'package:locale_gen/src/model/locale_gen_type.dart';
 import 'package:locale_gen/src/writer/dart/dart_writer.dart';
 import 'package:locale_gen/src/writer/flutter/flutter_writer.dart';
@@ -23,11 +23,11 @@ abstract class LocaleGenCoreWriter {
     file.writeAsStringSync(content);
   }
 
-  static LocaleGenCoreWriter fromType(LocaleGenType type) {
+  static LocaleGenCoreWriter fromType(LocaleGenOutputType type) {
     switch (type) {
-      case LocaleGenType.flutter:
+      case LocaleGenOutputType.flutter:
         return LocaleGenFlutterWriter();
-      case LocaleGenType.dart:
+      case LocaleGenOutputType.dart:
         return LocaleGenDartWriter();
     }
   }
