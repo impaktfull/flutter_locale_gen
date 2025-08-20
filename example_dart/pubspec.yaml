@@ -1,33 +1,20 @@
-name: locale_gen_example
-description: A project used to demo the Todo Reporter
+name: locale_gen_example_dart
+description: A project used to demo the locale_gen package
 version: 1.0.0+1
 
 environment:
   sdk: ">=3.8.1 <4.0.0"
 
 dependencies:
-  intl: ^0.20.2
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  provider: ^6.0.5
-  shared_preferences: ^2.1.1
   sprintf: ^7.0.0
 
 dev_dependencies:
-  flutter_lints: ^2.0.1
-  flutter_test:
-    sdk: flutter
   locale_gen:
     path: ../
 
-flutter:
-  assets:
-    - assets/locale/
-
 locale_gen:
   languages: ["en", "nl", "zh-Hans-CN", "fi-FI"]
+  type: dart
 #  locale_assets_path: 'assets/localization'
 #  assets_path: 'assets/localization'
 #  output_path: 'lib/util/translations'

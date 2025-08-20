@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:locale_gen/src/model/locale_gen_type.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
@@ -18,6 +19,7 @@ class LocaleGenParams {
   late String defaultLanguage;
   late List<String> languages;
   late List<String> docLanguages;
+  late LocaleGenType type;
 
   factory LocaleGenParams(String programName) {
     final pubspecYaml = File(join(Directory.current.path, 'pubspec.yaml'));
@@ -45,6 +47,7 @@ class LocaleGenParams {
       languages = ['en'];
       defaultLanguage = 'en';
       docLanguages = languages;
+      type = LocaleGenType.defaultValue;
       return;
     }
     configure(config);
@@ -97,11 +100,14 @@ class LocaleGenParams {
     if (!assetsDir.endsWith('/')) {
       assetsDir += '/';
     }
+
     var localeAssetsDir = config['locale_assets_path'] as String?;
     localeAssetsDir ??= defaultLocaleAssetsDir;
     if (!localeAssetsDir.endsWith('/')) {
       localeAssetsDir += '/';
     }
+
+    final type = config['type'] as String?;
 
     this.localeAssetsDir = localeAssetsDir;
     this.outputDir = outputDir;
@@ -109,6 +115,7 @@ class LocaleGenParams {
     this.languages = languages;
     this.defaultLanguage = defaultLanguage;
     this.docLanguages = docLanguages ?? languages;
+    this.type = LocaleGenType.fromString(type);
 
     final different =
         this.docLanguages.where((language) => !languages.contains(language));

@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:locale_gen/locale_gen.dart';
-import 'package:locale_gen/src/locale_gen_sb_writer.dart';
-import 'package:meta/meta.dart';
+import 'package:locale_gen/src/writer/core_writer.dart';
 import 'package:path/path.dart';
 
 class LocaleGenWriter {
@@ -27,10 +26,12 @@ class LocaleGenWriter {
       throw Exception(
           '${params.defaultLanguage} could not be used because it is not configured correctly');
     }
-    _createLocalizationKeysFile(params, defaultTranslations, allTranslations);
-    _createLocalizationFile(params, defaultTranslations, allTranslations);
-    _createLocalizationDelegateFile(params);
-    _createLocalizationOverrides(params);
+    final writer = LocaleGenCoreWriter.fromType(params.type);
+    writer.write(
+      params,
+      defaultTranslations,
+      allTranslations,
+    );
     print('Done!!!');
   }
 
@@ -44,44 +45,5 @@ class LocaleGenWriter {
 
     final jsonString = translationFile.readAsStringSync();
     return jsonDecode(jsonString) as Map<String, dynamic>; // ignore: avoid_as
-  }
-
-  static void _createLocalizationKeysFile(
-      LocaleGenParams params,
-      Map<String, dynamic> defaultTranslations,
-      Map<String, Map<String, dynamic>> allTranslations) {
-    final content = LocaleGenSbWriter.createLocalizationKeysFile(
-        params, defaultTranslations, allTranslations);
-    writeFile(params.outputDir, 'localization_keys.dart', content);
-  }
-
-  static void _createLocalizationFile(
-      LocaleGenParams params,
-      Map<String, dynamic> defaultTranslations,
-      Map<String, Map<String, dynamic>> allTranslations) {
-    final content = LocaleGenSbWriter.createLocalizationFile(
-        params, defaultTranslations, allTranslations);
-    writeFile(params.outputDir, 'localization.dart', content);
-  }
-
-  static void _createLocalizationDelegateFile(LocaleGenParams params) {
-    final content = LocaleGenSbWriter.createLocalizationDelegateFile(params);
-    writeFile(params.outputDir, 'localization_delegate.dart', content);
-  }
-
-  static void _createLocalizationOverrides(LocaleGenParams params) {
-    final content = LocaleGenSbWriter.createLocalizationOverrides(params);
-    writeFile(params.outputDir, 'localization_overrides.dart', content);
-  }
-
-  @visibleForTesting
-  static void writeFile(String outputDir, String fileName, String content) {
-    final file = File(join(Directory.current.path, outputDir, fileName));
-    if (!file.existsSync()) {
-      print('$fileName does not exists');
-      print('Creating $fileName ...');
-      file.createSync(recursive: true);
-    }
-    file.writeAsStringSync(content);
   }
 }
