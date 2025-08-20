@@ -14,7 +14,7 @@ dev_dependencies:
 
 locale_gen:
   languages: ["en", "nl", "zh-Hans-CN", "fi-FI"]
-  type: dart
+  output_type: dart
 #  locale_assets_path: 'assets/localization'
 #  assets_path: 'assets/localization'
 #  output_path: 'lib/util/translations'
