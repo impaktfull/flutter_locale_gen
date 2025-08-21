@@ -21,7 +21,7 @@ class LocalizedValue {
 class Localization {
   static Localization? _instance;
 
-  Localization get instance => _instance ??= Localization._();
+  static Localization get instance => _instance ??= Localization._();
 
   Localization._();
 

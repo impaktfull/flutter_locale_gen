@@ -2,7 +2,7 @@
 
 CURRENT=`pwd`
 DIR_NAME=`basename "$CURRENT"`
-if [ $DIR_NAME == 'tool' ]
+if [ $DIR_NAME == 'tools' ]
 then
   cd ..
 fi

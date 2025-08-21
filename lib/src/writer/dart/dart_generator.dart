@@ -157,7 +157,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       .replaceAll('\r', r'\r')
       .replaceAll('"', r'\"')
       .replaceAll('\$', r'\$')
-      .replaceAll('\$', r"\$");
+      .replaceAll('\$', r'\$');
 
   @override
   void buildDefaultPluralFunction(
