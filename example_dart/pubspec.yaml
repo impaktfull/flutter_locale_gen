@@ -1,0 +1,21 @@
+name: locale_gen_example_dart
+description: A project used to demo the locale_gen package
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.8.1 <4.0.0"
+
+dependencies:
+  sprintf: ^7.0.0
+
+dev_dependencies:
+  locale_gen:
+    path: ../
+
+locale_gen:
+  languages: ["en", "nl", "zh-Hans-CN", "fi-FI"]
+  output_type: dart
+#  locale_assets_path: 'assets/localization'
+#  assets_path: 'assets/localization'
+#  output_path: 'lib/util/translations'
+#  doc_languages: ['en']

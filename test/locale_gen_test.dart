@@ -4,8 +4,9 @@ import 'package:test/test.dart';
 
 void main() {
   final allowedExports = [
-    'src/locale_gen_params.dart',
+    'src/model/locale_gen_params.dart',
     'src/locale_gen_writer.dart',
+    'src/util/format/locale_gen_formatter.dart',
   ];
   test('Check if only allowed files are exported', () {
     final file = File('lib/locale_gen.dart');

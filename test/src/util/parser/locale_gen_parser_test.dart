@@ -1,4 +1,4 @@
-import 'package:locale_gen/src/locale_gen_parser.dart';
+import 'package:locale_gen/src/util/parser/locale_gen_parser.dart';
 import 'package:test/test.dart';
 
 void main() {

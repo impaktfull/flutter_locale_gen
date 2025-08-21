@@ -1,5 +1,5 @@
 name: locale_gen_example
-description: A project used to demo the Todo Reporter
+description: A project used to demo the locale_gen package
 version: 1.0.0+1
 
 environment:

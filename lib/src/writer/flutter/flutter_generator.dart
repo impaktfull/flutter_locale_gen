@@ -1,14 +1,13 @@
-import 'package:locale_gen/src/case_util.dart';
+import 'package:locale_gen/src/model/locale_gen_params.dart';
+import 'package:locale_gen/src/model/plural.dart';
+import 'package:locale_gen/src/util/case/case_util.dart';
 import 'package:locale_gen/src/extensions/list_extensions.dart';
-import 'package:locale_gen/src/locale_gen_parser.dart';
+import 'package:locale_gen/src/util/documentation/documentation_util.dart';
+import 'package:locale_gen/src/util/parser/locale_gen_parser.dart';
+import 'package:locale_gen/src/writer/core_generator.dart';
 
-import 'locale_gen_params.dart';
-import 'translation_writer.dart';
-
-class LocaleGenSbWriter {
-  const LocaleGenSbWriter._();
-
-  static String createLocalizationKeysFile(
+class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
+  String createLocalizationKeysFile(
       LocaleGenParams params,
       Map<String, dynamic> defaultTranslations,
       Map<String, Map<String, dynamic>> allTranslations) {
@@ -21,7 +20,7 @@ class LocaleGenSbWriter {
       ..writeln('class LocalizationKeys {')
       ..writeln();
     for (final key in defaultTranslations.keys) {
-      TranslationWriter.buildDocumentation(
+      DocumentationUtil.buildDocumentation(
           sb, key, allTranslations, params.docLanguages);
       final correctKey = CaseUtil.getCamelcase(key);
       sb
@@ -32,7 +31,7 @@ class LocaleGenSbWriter {
     return sb.toString();
   }
 
-  static String createLocalizationFile(
+  String createLocalizationFile(
       LocaleGenParams params,
       Map<String, dynamic> defaultTranslations,
       Map<String, Map<String, dynamic>> allTranslations) {
@@ -141,9 +140,9 @@ class LocaleGenSbWriter {
         ..writeln();
     }
     defaultTranslations.forEach((key, dynamic value) {
-      TranslationWriter.buildDocumentation(
+      DocumentationUtil.buildDocumentation(
           sb, key, allTranslations, params.docLanguages);
-      TranslationWriter.buildTranslationFunction(sb, key, value);
+      buildTranslationFunction(sb, params, key, value, allTranslations);
     });
     sb
       ..writeln(
@@ -153,7 +152,7 @@ class LocaleGenSbWriter {
     return sb.toString();
   }
 
-  static String createLocalizationDelegateFile(LocaleGenParams params) {
+  String createLocalizationDelegateFile(LocaleGenParams params) {
     final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:async';")
@@ -243,7 +242,7 @@ class LocaleGenSbWriter {
     return sb.toString();
   }
 
-  static String createLocalizationOverrides(LocaleGenParams params) {
+  String createLocalizationOverrides(LocaleGenParams params) {
     final sb = StringBuffer()
       ..writeln("import 'package:flutter/widgets.dart';")
       ..writeln()
@@ -259,5 +258,112 @@ class LocaleGenSbWriter {
           '  Future<Map<String, dynamic>> getOverriddenLocalizations(Locale locale);')
       ..writeln('}');
     return sb.toString();
+  }
+
+  @override
+  void buildDefaultPluralFunction(
+    StringBuffer sb,
+    LocaleGenParams params,
+    String key,
+    Plural plural,
+    Map<String, Map<String, dynamic>> allTranslations,
+  ) {
+    final camelKey = CaseUtil.getCamelcase(key);
+    sb
+      ..writeln(
+          '  String $camelKey(num count) => _plural(LocalizationKeys.$camelKey, count: count);')
+      ..writeln();
+  }
+
+  @override
+  void buildParameterizedPluralFunction(
+    StringBuffer sb,
+    LocaleGenParams params,
+    String key,
+    Plural plural,
+    Map<int, String> indexToReplacement,
+    Map<String, Map<String, dynamic>> allTranslations,
+  ) {
+    try {
+      final camelKey = CaseUtil.getCamelcase(key);
+      final tmpSb = StringBuffer('  String $camelKey(num count, ');
+
+      var iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        final argument = getArgument(key, match, index);
+        tmpSb.write(argument);
+        if (iterationIndex++ != indexToReplacement.length - 1) {
+          tmpSb.write(', ');
+        }
+      });
+      tmpSb.write(
+          ') => _plural(LocalizationKeys.$camelKey, count: count, args: <dynamic>[');
+      iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        if (iterationIndex++ != 0) {
+          tmpSb.write(', ');
+        }
+        tmpSb.write('arg$index');
+      });
+      tmpSb
+        ..writeln(']);')
+        ..writeln();
+      sb.write(tmpSb.toString());
+    } on Exception catch (e) {
+      print(e);
+      buildDefaultFunction(sb, params, key, allTranslations);
+    }
+  }
+
+  @override
+  void buildParameterizedFunction(
+    StringBuffer sb,
+    LocaleGenParams params,
+    String key,
+    Map<int, String> indexToReplacement,
+    Map<String, Map<String, dynamic>> allTranslations,
+  ) {
+    try {
+      final camelKey = CaseUtil.getCamelcase(key);
+      final tmpSb = StringBuffer('  String $camelKey(');
+
+      var iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        final argument = getArgument(key, match, index);
+        tmpSb.write(argument);
+        if (iterationIndex++ != indexToReplacement.length - 1) {
+          tmpSb.write(', ');
+        }
+      });
+      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: <dynamic>[');
+      iterationIndex = 0;
+      indexToReplacement.forEach((index, match) {
+        if (iterationIndex++ != 0) {
+          tmpSb.write(', ');
+        }
+        tmpSb.write('arg$index');
+      });
+      tmpSb
+        ..writeln(']);')
+        ..writeln();
+      sb.write(tmpSb.toString());
+    } on Exception catch (e) {
+      print(e);
+      buildDefaultFunction(sb, params, key, allTranslations);
+    }
+  }
+
+  @override
+  void buildDefaultFunction(
+    StringBuffer sb,
+    LocaleGenParams params,
+    String key,
+    Map<String, Map<String, dynamic>> allTranslations,
+  ) {
+    final camelCaseKey = CaseUtil.getCamelcase(key);
+    sb
+      ..writeln(
+          '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
+      ..writeln();
   }
 }

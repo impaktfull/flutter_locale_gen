@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:locale_gen/locale_gen.dart';
-import 'package:locale_gen/src/case_util.dart';
+import 'package:locale_gen/src/util/case/case_util.dart';
 
 class LocaleGenFormatter {
   const LocaleGenFormatter._();

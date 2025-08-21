@@ -1,3 +1,15 @@
+# 12.6.0
+
+## Feature
+
+- Added support for a Dart writer.
+  - Allowing you to use translations in non-Flutter projects
+  - No plurals are supported for Dart writer yet
+
+## Fixed
+
+- Project structure cleaned up
+
 # 12.5.0
 
 ## Updated
@@ -31,7 +43,7 @@
 
 # 12.1.0
 
-## Feat
+## Feature
 
 - Formatting function added. (`dart run locale_gen:format`)
 

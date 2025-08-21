@@ -1,5 +1,5 @@
-import 'package:locale_gen/src/locale_gen_params.dart';
-import 'package:locale_gen/src/locale_gen_sb_writer.dart';
+import 'package:locale_gen/src/model/locale_gen_params.dart';
+import 'package:locale_gen/src/writer/flutter/flutter_generator.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -11,8 +11,8 @@ locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(
-          params, <String, dynamic>{}, {});
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationKeysFile(params, <String, dynamic>{}, {});
       expect(result,
           r'''//============================================================//
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
@@ -41,7 +41,8 @@ locale_gen:
           'test_translations': 'Dit is een test vertaling',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+
+      final result = LocaleGenFlutterGenerator().createLocalizationKeysFile(
           params, defaultTranslations, allTranslations);
       expect(result,
           r'''//============================================================//
@@ -80,7 +81,7 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+      final result = LocaleGenFlutterGenerator().createLocalizationKeysFile(
           params, defaultTranslations, allTranslations);
       expect(result,
           r'''//============================================================//
@@ -120,7 +121,7 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+      final result = LocaleGenFlutterGenerator().createLocalizationKeysFile(
           params, defaultTranslations, allTranslations);
       expect(result,
           r'''//============================================================//
@@ -162,7 +163,7 @@ locale_gen:
         },
         'nl': {},
       };
-      final result = LocaleGenSbWriter.createLocalizationKeysFile(
+      final result = LocaleGenFlutterGenerator().createLocalizationKeysFile(
           params, defaultTranslations, allTranslations);
       expect(result,
           r'''//============================================================//
@@ -190,8 +191,8 @@ locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, <String, dynamic>{}, {});
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, <String, dynamic>{}, {});
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -264,8 +265,8 @@ locale_gen:
   locale_assets_path: test/assets/locale
   output_path: lib/src/util/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, <String, dynamic>{}, {});
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, <String, dynamic>{}, {});
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -349,8 +350,8 @@ locale_gen:
           'test_translations': 'Dit is een test vertaling',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, defaultTranslations, allTranslations);
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -443,8 +444,8 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, defaultTranslations, allTranslations);
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -538,8 +539,8 @@ locale_gen:
           'test_translations2': 'Dit is een test vertaling2',
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, defaultTranslations, allTranslations);
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -635,8 +636,8 @@ locale_gen:
         },
         'nl': {},
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, defaultTranslations, allTranslations);
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -727,8 +728,8 @@ locale_gen:
           'test_translations': {'other': 'Dit is een test vertaling'},
         },
       };
-      final result = LocaleGenSbWriter.createLocalizationFile(
-          params, defaultTranslations, allTranslations);
+      final result = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, defaultTranslations, allTranslations);
       expect(result, r'''import 'dart:convert';
 
 import 'package:flutter/services.dart';
@@ -831,7 +832,8 @@ locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      final result =
+          LocaleGenFlutterGenerator().createLocalizationDelegateFile(params);
       expect(result, r'''import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -910,7 +912,8 @@ locale_gen:
   languages: ['nl','en']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      final result =
+          LocaleGenFlutterGenerator().createLocalizationDelegateFile(params);
       expect(result, r'''import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -991,7 +994,8 @@ locale_gen:
   languages: ['nl','en']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      final result =
+          LocaleGenFlutterGenerator().createLocalizationDelegateFile(params);
       expect(result, r'''import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -1072,7 +1076,8 @@ locale_gen:
   languages: ['en', 'nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      final result =
+          LocaleGenFlutterGenerator().createLocalizationDelegateFile(params);
       expect(result, r'''import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -1151,7 +1156,8 @@ locale_gen:
   locale_assets_path: test/assets/locale
   output_path: lib/src/util/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationDelegateFile(params);
+      final result =
+          LocaleGenFlutterGenerator().createLocalizationDelegateFile(params);
       expect(result, r'''import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -1231,7 +1237,8 @@ locale_gen:
   languages: ['en','nl']
   locale_assets_path: test/assets/locale
 ''');
-      final result = LocaleGenSbWriter.createLocalizationOverrides(params);
+      final result =
+          LocaleGenFlutterGenerator().createLocalizationOverrides(params);
       expect(result, r'''import 'package:flutter/widgets.dart';
 
 //============================================================//
