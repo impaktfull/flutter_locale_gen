@@ -161,4 +161,27 @@ void main() {
       );
     });
   });
+
+  group('MessageFormatParser escaping', () {
+    test('escaped opening brace produces a literal { ', () {
+      final ast = MessageFormatParser.parse("price: '{'5");
+      expect(ast.roots.length, 1);
+      expect((ast.roots.first as LiteralNode).text, 'price: {5');
+    });
+
+    test('double single-quote produces a literal apostrophe', () {
+      final ast = MessageFormatParser.parse("it''s here");
+      expect((ast.roots.first as LiteralNode).text, "it's here");
+    });
+
+    test('quoted text after a special char is a literal block', () {
+      final ast = MessageFormatParser.parse("can't '{escape}' me");
+      expect((ast.roots.first as LiteralNode).text, "can't {escape} me");
+    });
+
+    test('lone apostrophe with no following special char is literal', () {
+      final ast = MessageFormatParser.parse("don't");
+      expect((ast.roots.first as LiteralNode).text, "don't");
+    });
+  });
 }

@@ -33,6 +33,10 @@ class MessageFormatParser {
 
     while (!cursor.isAtEnd) {
       final ch = cursor.peek();
+      if (ch == "'") {
+        _consumeQuotedLiteral(cursor, literal);
+        continue;
+      }
       if (ch == '{') {
         flushLiteral();
         nodes.add(_parsePlaceholder(cursor));
@@ -149,6 +153,38 @@ class MessageFormatParser {
         return DurationNode(name: name, style: style);
     }
     throw StateError('unreachable');
+  }
+
+  static void _consumeQuotedLiteral(_Cursor cursor, StringBuffer literal) {
+    cursor.advance(); // consume opening '
+    if (cursor.isAtEnd) {
+      literal.write("'");
+      return;
+    }
+    final next = cursor.peek();
+    if (next == "'") {
+      literal.write("'");
+      cursor.advance();
+      return;
+    }
+    if (next != '{' && next != '}' && next != '#' && next != '|') {
+      literal.write("'");
+      return;
+    }
+    while (!cursor.isAtEnd) {
+      final c = cursor.peek();
+      if (c == "'") {
+        cursor.advance();
+        if (!cursor.isAtEnd && cursor.peek() == "'") {
+          literal.write("'");
+          cursor.advance();
+          continue;
+        }
+        return;
+      }
+      literal.write(c);
+      cursor.advance();
+    }
   }
 
   static MessageFormatNode _parseSubMessage(
