@@ -25,8 +25,8 @@ class MessageFormatParser {
         nodes.add(LiteralNode(text));
         hasSeenNonEmptyLiteral = true;
       } else if (nodes.isNotEmpty && nodes.last is! LiteralNode) {
-        // Empty literal after non-literal (e.g., after a placeholder)
-        nodes.add(LiteralNode(''));
+        // Skip leading empty literals; preserve a trailing empty literal so the AST shape stays predictable for callers.
+        nodes.add(const LiteralNode(''));
       }
       literal.clear();
     }
@@ -60,7 +60,7 @@ class MessageFormatParser {
       nodes.add(LiteralNode(text));
     } else if (nodes.isNotEmpty && nodes.last is! LiteralNode && hasSeenNonEmptyLiteral) {
       // Add trailing empty literal only if we've seen actual content
-      nodes.add(LiteralNode(''));
+      nodes.add(const LiteralNode(''));
     } else if (nodes.isEmpty) {
       // Pure literal case
       nodes.add(LiteralNode(text));
