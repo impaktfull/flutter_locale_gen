@@ -169,7 +169,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         ..writeln('      if (value == null) return key;')
         ..writeln('      final stripped = _stripFormatSpecs(value);')
         ..writeln(
-            '      return MessageFormat(stripped, locale: locale?.toLanguageTag()).format(args);')
+            "      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? '${params.defaultLanguage}').format(args);")
         ..writeln('    } catch (e) {')
         ..writeln("      return '⚠\$key⚠';")
         ..writeln('    }')
@@ -461,7 +461,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         .map((p) => 'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
         .join(', ');
     final argEntries = mfParams.values
-        .map((p) => "'${p.originalName}': ${_argExpression(p)}")
+        .map((p) => "'${p.originalName}': ${_argExpression(p, params.defaultLanguage)}")
         .join(', ');
     sb
       ..writeln(
@@ -469,8 +469,8 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       ..writeln();
   }
 
-  static String _argExpression(MessageFormatParam p) {
-    const tag = 'locale?.toLanguageTag()';
+  static String _argExpression(MessageFormatParam p, String defaultLang) {
+    final tag = "locale?.toLanguageTag() ?? '$defaultLang'";
     switch (p.formatter) {
       case MessageFormatFormatter.none:
         return p.dartName;

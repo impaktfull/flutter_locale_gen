@@ -84,21 +84,27 @@ class Localization {
       }
       if (c == 'H') {
         var n = 1;
-        while (i + n < style.length && style[i + n] == 'H') n++;
+        while (i + n < style.length && style[i + n] == 'H') {
+          n++;
+        }
         buf.write(h.toString().padLeft(n, '0'));
         i += n;
         continue;
       }
       if (c == 'm') {
         var n = 1;
-        while (i + n < style.length && style[i + n] == 'm') n++;
+        while (i + n < style.length && style[i + n] == 'm') {
+          n++;
+        }
         buf.write(m.toString().padLeft(n, '0'));
         i += n;
         continue;
       }
       if (c == 's') {
         var n = 1;
-        while (i + n < style.length && style[i + n] == 's') n++;
+        while (i + n < style.length && style[i + n] == 's') {
+          n++;
+        }
         buf.write(s.toString().padLeft(n, '0'));
         i += n;
         continue;

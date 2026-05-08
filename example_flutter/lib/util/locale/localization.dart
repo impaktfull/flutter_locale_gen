@@ -64,7 +64,7 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       final stripped = _stripFormatSpecs(value);
-      return MessageFormat(stripped, locale: locale?.toLanguageTag()).format(args);
+      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? 'en').format(args);
     } catch (e) {
       return '⚠$key⚠';
     }
@@ -109,21 +109,27 @@ class Localization {
       }
       if (c == 'H') {
         var n = 1;
-        while (i + n < style.length && style[i + n] == 'H') n++;
+        while (i + n < style.length && style[i + n] == 'H') {
+          n++;
+        }
         buf.write(h.toString().padLeft(n, '0'));
         i += n;
         continue;
       }
       if (c == 'm') {
         var n = 1;
-        while (i + n < style.length && style[i + n] == 'm') n++;
+        while (i + n < style.length && style[i + n] == 'm') {
+          n++;
+        }
         buf.write(m.toString().padLeft(n, '0'));
         i += n;
         continue;
       }
       if (c == 's') {
         var n = 1;
-        while (i + n < style.length && style[i + n] == 's') n++;
+        while (i + n < style.length && style[i + n] == 's') {
+          n++;
+        }
         buf.write(s.toString().padLeft(n, '0'));
         i += n;
         continue;
@@ -307,7 +313,7 @@ class Localization {
   /// zh-Hans-CN: **'合计: {total, number, currency}'**
   ///
   /// fi-FI: **'Yhteensä: {total, number, currency}'**
-  String mfTotal({required num total}) => _mf(LocalizationKeys.mfTotal, args: {'total': NumberFormat.simpleCurrency(locale: locale?.toLanguageTag()).format(total)});
+  String mfTotal({required num total}) => _mf(LocalizationKeys.mfTotal, args: {'total': NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? 'en').format(total)});
 
   /// Translations:
   ///
@@ -318,7 +324,7 @@ class Localization {
   /// zh-Hans-CN: **'下单于 {placedAt, date, short}'**
   ///
   /// fi-FI: **'Tehty {placedAt, date, short}'**
-  String mfPlacedAt({required DateTime placedAt}) => _mf(LocalizationKeys.mfPlacedAt, args: {'placedAt': DateFormat.yMd(locale?.toLanguageTag()).format(placedAt)});
+  String mfPlacedAt({required DateTime placedAt}) => _mf(LocalizationKeys.mfPlacedAt, args: {'placedAt': DateFormat.yMd(locale?.toLanguageTag() ?? 'en').format(placedAt)});
 
   /// Translations:
   ///
@@ -329,7 +335,7 @@ class Localization {
   /// zh-Hans-CN: **'会议时间 {at, time, short}'**
   ///
   /// fi-FI: **'Kokous klo {at, time, short}'**
-  String mfMeetingAt({required DateTime at}) => _mf(LocalizationKeys.mfMeetingAt, args: {'at': DateFormat.jm(locale?.toLanguageTag()).format(at)});
+  String mfMeetingAt({required DateTime at}) => _mf(LocalizationKeys.mfMeetingAt, args: {'at': DateFormat.jm(locale?.toLanguageTag() ?? 'en').format(at)});
 
   /// Translations:
   ///
