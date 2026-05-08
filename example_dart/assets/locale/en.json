@@ -7,5 +7,13 @@
   "test_new_line": "Testing\nargument\n\n%1$s %2$d %1$s",
   "test_new_line_carriage_return": "Carriage\r\nReturn",
   "test_non_positional": "Testing non positional argument %s and %.02f",
-  "welcome_message": "Welcome"
+  "welcome_message": "Welcome",
+  "mf_greeting": "Hi, {name}!",
+  "mf_cart_count": "{count, plural, one {# item} other {# items}}",
+  "mf_pronoun": "{gender, select, male {he} female {she} other {they}}",
+  "mf_rank": "{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+  "mf_total": "Total: {total, number, currency}",
+  "mf_placed_at": "Placed on {placedAt, date, short}",
+  "mf_meeting_at": "Meeting at {at, time, short}",
+  "mf_race": "Lap time: {d, duration, mm:ss}"
 }
