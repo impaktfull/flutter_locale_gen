@@ -241,6 +241,14 @@ locale_gen:
 
 When more than one language defines the same key, the generator warns if the placeholder names or ICU node types differ between locales. Generation continues — the warning helps surface translator typos like `{name}` vs `{naam}`.
 
+### Default-locale fallback
+
+If `Localization.locale` is `null` at runtime, MessageFormat substitution and locale-aware number/date/time formatting fall back to the project's default locale (`LocalizationDelegate.defaultLocale`). You don't have to special-case the null path.
+
+### Limitations
+
+- The dynamic `getTranslation(key, args:)` method on `Localization` is sprintf-only; calling it with a MessageFormat key returns the raw template (`"Hi, {name}!"`) without substitution. For MessageFormat keys, use the generated typed function (e.g., `Localization.of(context).greeting(name: 'Alice')`).
+
 ### Working on mac?
 
 add this to you .bash_profile

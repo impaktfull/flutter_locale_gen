@@ -221,14 +221,8 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
     sb
       ..writeln(
           '  String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);')
-      ..writeln();
-    if (hasMessageFormat) {
-      sb
-        ..writeln(
-            '  String getMessageFormatTranslation(String key, {required Map<String, Object> args}) => _mf(key, args: args);')
-        ..writeln();
-    }
-    sb.writeln('}');
+      ..writeln()
+      ..writeln('}');
     return sb.toString();
   }
 

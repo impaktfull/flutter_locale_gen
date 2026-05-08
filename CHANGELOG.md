@@ -8,6 +8,11 @@
 - Optional `message_format_strict: true` config flag surfaces accidental sprintf usage in MessageFormat-only projects.
 - MessageFormat support also lands in the Dart (non-Flutter) writer, returning a `LocalizedValue` with one MessageFormat-interpolated string per locale.
 - The existing sprintf (`%s`, `%d`, `%1$s`) and JSON-object plural formats keep working unchanged; detection happens per key.
+- When `Localization.locale` is null at runtime, MessageFormat substitution and number/date/time formatting fall back to the project's default locale (`LocalizationDelegate.defaultLocale.toLanguageTag()`) instead of crashing.
+
+## Known limitations
+
+- The dynamic `getTranslation(key, args:)` escape hatch on the `Localization` class is sprintf-only. MessageFormat keys must be invoked via their generated typed functions (e.g., `Localization.of(context).greeting(name: 'Alice')`). Calling `getTranslation` with an ICU key returns the raw template string without substitution.
 
 # 12.6.0
 
