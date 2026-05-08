@@ -78,23 +78,42 @@ originalName → MessageFormatParam(
 
 **Type inference table:**
 
-| AST node | dartType |
-|---|---|
-| `PlaceholderNode` | `String` |
-| `PluralNode` | `num` |
-| `SelectOrdinalNode` | `num` |
-| `SelectNode` | `String` |
-| `NumberNode` | `num` |
-| `DateNode` | `DateTime` |
-| `TimeNode` | `DateTime` |
-| `DurationNode` | `Duration` |
+| AST node            | dartType   |
+| ------------------- | ---------- |
+| `PlaceholderNode`   | `String`   |
+| `PluralNode`        | `num`      |
+| `SelectOrdinalNode` | `num`      |
+| `SelectNode`        | `String`   |
+| `NumberNode`        | `num`      |
+| `DateNode`          | `DateTime` |
+| `TimeNode`          | `DateTime` |
+| `DurationNode`      | `Duration` |
 
 **Conflict policy:**
 
 - If the same `originalName` appears in the AST with two incompatible `dartType`s (e.g., once as `{x, number}`, again as `{x, date}`), the generator logs a warning and falls back to the default getter for that key.
 - After camelCase normalization, if two distinct `originalName`s collide on the same `dartName` (e.g., `{SC}` and `{sc}` both → `sc`), the generator logs a warning and falls back to the default getter for that key.
 
-Other locales are not parsed for parameter discovery, matching the current behavior.
+Other locales are not used for type generation — the typed Dart signature is always derived from the default language. Other locales are, however, validated for consistency (see next section).
+
+## Cross-locale validation
+
+After the default-language parameter set is determined for a MessageFormat key, every other locale's translation for that same key is parsed into a `MessageFormatAst` and compared against the default. The check is **warning-only** — the generated function is always emitted from the default language, even if mismatches exist.
+
+For each non-default locale, two things are compared:
+
+1. **Param name set** — the set of placeholder names in the locale's AST must equal the default's set. Missing names and extra names are both reported.
+2. **ICU node type per name** — for each shared name, the AST node type (placeholder vs plural vs select vs selectordinal vs number vs date vs time vs duration) must match the default. A mismatch (e.g., default uses `{count, plural, ...}` but a locale uses bare `{count}`) is reported.
+
+Each warning identifies the key, the locale, and the specific divergence. Example wording:
+
+> `[locale_gen] Warning: key "greeting" — locale "nl" uses param "naam"; default language "en" uses "name". The translated string must use the same placeholder names as the default language.`
+
+> `[locale_gen] Warning: key "cart_count" — locale "fr" uses placeholder for "count"; default language "en" uses plural. The ICU type must match across locales.`
+
+Style attributes inside number/date/time/duration nodes (e.g., `short` vs `long`) are **not** compared — they are allowed to differ per locale.
+
+If a non-default locale's translation for the key fails to parse as MessageFormat, that single locale is skipped with a warning; validation continues for other locales. The default-language-driven function is still emitted.
 
 ## Generated function shape
 
@@ -157,29 +176,29 @@ String _stripFormatSpecs(String value) { /* regex rewrite */ }
 
 When duration is used, an additional helper `_formatDuration(Duration d, String? style)` is emitted. It supports:
 
-| Style | Output |
-|---|---|
-| `null` (default) | zero-padded `HH:mm:ss` |
-| `short` | zero-padded `mm:ss` |
-| `medium` | zero-padded `HH:mm:ss` |
-| `long` | localized `1h 5m 30s`-style using a small label table generated alongside |
+| Style                                           | Output                                                                                       |
+| ----------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `null` (default)                                | zero-padded `HH:mm:ss`                                                                       |
+| `short`                                         | zero-padded `mm:ss`                                                                          |
+| `medium`                                        | zero-padded `HH:mm:ss`                                                                       |
+| `long`                                          | localized `1h 5m 30s`-style using a small label table generated alongside                    |
 | custom pattern (e.g., `HH:mm:ss`, `H'h' mm'm'`) | `H` / `m` / `s` substituted with zero-padded values; literal text in single quotes preserved |
 
 Date/time/number formatters use the existing `package:intl` factories:
 
-| ICU style | intl factory |
-|---|---|
-| `{x, date, short}` | `DateFormat.yMd(tag)` |
-| `{x, date, medium}` | `DateFormat.yMMMd(tag)` |
-| `{x, date, long}` | `DateFormat.yMMMMd(tag)` |
-| `{x, date, full}` | `DateFormat.yMMMMEEEEd(tag)` |
-| `{x, time, short}` | `DateFormat.jm(tag)` |
-| `{x, time, medium\|long\|full}` | `DateFormat.jms(tag)` |
-| `{x, date, <skeleton>}` | `DateFormat(skeleton, tag)` |
-| `{x, number}` | `NumberFormat.decimalPattern(tag)` |
-| `{x, number, percent}` | `NumberFormat.percentPattern(tag)` |
-| `{x, number, currency}` | `NumberFormat.simpleCurrency(locale: tag)` |
-| `{x, number, <skeleton>}` | `NumberFormat(skeleton, tag)` |
+| ICU style                       | intl factory                               |
+| ------------------------------- | ------------------------------------------ |
+| `{x, date, short}`              | `DateFormat.yMd(tag)`                      |
+| `{x, date, medium}`             | `DateFormat.yMMMd(tag)`                    |
+| `{x, date, long}`               | `DateFormat.yMMMMd(tag)`                   |
+| `{x, date, full}`               | `DateFormat.yMMMMEEEEd(tag)`               |
+| `{x, time, short}`              | `DateFormat.jm(tag)`                       |
+| `{x, time, medium\|long\|full}` | `DateFormat.jms(tag)`                      |
+| `{x, date, <skeleton>}`         | `DateFormat(skeleton, tag)`                |
+| `{x, number}`                   | `NumberFormat.decimalPattern(tag)`         |
+| `{x, number, percent}`          | `NumberFormat.percentPattern(tag)`         |
+| `{x, number, currency}`         | `NumberFormat.simpleCurrency(locale: tag)` |
+| `{x, number, <skeleton>}`       | `NumberFormat(skeleton, tag)`              |
 
 If a style doesn't match any of the above, the generator logs a warning and falls back to the default getter for that key.
 
@@ -210,6 +229,7 @@ Loaded from the same YAML config that already feeds `LocaleGenParams`. No CLI fl
 - `lib/src/model/message_format_param.dart`
 - `lib/src/model/message_format_ast.dart`
 - `lib/src/util/format/duration_format_util.dart` (template strings for the emitted runtime helper)
+- `lib/src/util/validation/cross_locale_validator.dart` — compares each non-default locale's MessageFormat AST against the default and emits warnings.
 
 **Modified files:**
 
@@ -223,21 +243,25 @@ Loaded from the same YAML config that already feeds `LocaleGenParams`. No CLI fl
 
 - `test/src/util/parser/message_format_parser_test.dart` — coverage for: simple placeholders; plural with `=N` and CLDR keywords; selectordinal; select with default branch; nested plural inside select; date/time/number/duration with each style; ICU escape sequences (`'{'`, `'}'`, `''`); malformed input throwing `MessageFormatParseException`.
 - `test/src/model/message_format_param_test.dart` — type inference, camelCase normalization, conflict detection.
+- `test/src/util/validation/cross_locale_validation_test.dart` — covers: matching name set + types passes silently; missing name in non-default locale warns; extra name in non-default locale warns; same name with different ICU node type warns; non-default locale that fails to parse produces a single warning without aborting.
 - `test/src/writor/flutter/flutter_generator_test.dart` — extended fixtures covering each ICU node type producing expected Dart.
 - `test/src/writor/dart/dart_generator_test.dart` — new file mirroring the Flutter cases without Flutter imports.
 - `test/assets/locale/` — new JSON fixtures with MessageFormat keys (using generic invented strings; no third-party copy).
 
 ## Error handling summary
 
-| Situation | Behavior |
-|---|---|
-| Malformed ICU template | Warning + default getter |
-| Mixed sprintf and ICU markers in same key | Warning + default getter |
-| Unknown date/time/number style | Warning + default getter |
-| Param type collision (same name, different ICU types) | Warning + default getter |
-| camelCase param name collision | Warning + default getter |
-| `messageFormatStrict: true` and key contains sprintf markers | Warning + default getter |
-| Runtime `MessageFormat.format` throws | Returns `'⚠key⚠'` (matches existing `_t` behavior) |
+| Situation                                                    | Behavior                                           |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| Malformed ICU template                                       | Warning + default getter                           |
+| Mixed sprintf and ICU markers in same key                    | Warning + default getter                           |
+| Unknown date/time/number style                               | Warning + default getter                           |
+| Param type collision (same name, different ICU types)        | Warning + default getter                           |
+| camelCase param name collision                               | Warning + default getter                           |
+| `messageFormatStrict: true` and key contains sprintf markers | Warning + default getter                           |
+| Non-default locale has different param name set              | Warning; default-language function still emitted   |
+| Non-default locale uses different ICU node type for a name   | Warning; default-language function still emitted   |
+| Non-default locale's translation fails to parse              | Warning for that locale; validation continues      |
+| Runtime `MessageFormat.format` throws                        | Returns `'⚠key⚠'` (matches existing `_t` behavior) |
 
 ## Documentation
 
@@ -247,6 +271,6 @@ Loaded from the same YAML config that already feeds `LocaleGenParams`. No CLI fl
 
 ## Out of scope
 
-- Validating that all locales declare the same parameter set — current behavior (default-language-only discovery) is preserved.
 - A migration tool from sprintf or JSON-object plurals to MessageFormat.
 - Removing or deprecating the legacy formats.
+- Cross-locale validation for sprintf or JSON-object plural keys — only MessageFormat keys are validated across locales.
