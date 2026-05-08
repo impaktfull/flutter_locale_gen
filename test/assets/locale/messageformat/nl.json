@@ -1,0 +1,7 @@
+{
+  "greeting": "Hallo, {name}!",
+  "cart_count": "{count, plural, one {# stuk} other {# stuks}}",
+  "order_placed": "Besteld op {placedAt, date, long} voor {total, number, currency}",
+  "race": "{d, duration, HH:mm:ss}",
+  "pronoun": "{gender, select, male {hij} female {zij} other {zij}}"
+}
