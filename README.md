@@ -176,6 +176,71 @@ The count argument *WILL NOT* be passed as an argument for string interpolation.
 
 Note that the "other" key is always required, the other keys are dependant on the language in question
 
+## MessageFormat (ICU) support
+
+In addition to sprintf-style placeholders (`%s`, `%d`, `%1$s`) and JSON-object plurals, you can use ICU MessageFormat directly inside string values. Detection is automatic per key — projects can mix all three styles.
+
+### Plain placeholders
+
+```json
+{
+  "greeting": "Hi, {name}!"
+}
+```
+
+generates:
+
+```dart
+String greeting({required String name});
+```
+
+### Plural
+
+```json
+{
+  "cart_count": "{count, plural, one {# item} other {# items}}"
+}
+```
+
+generates:
+
+```dart
+String cartCount({required num count});
+```
+
+### Select and selectordinal
+
+```json
+{
+  "pronoun": "{gender, select, male {he} female {she} other {they}}",
+  "rank": "{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}"
+}
+```
+
+### Number, date, time, duration
+
+```json
+{
+  "order_placed": "Order on {placedAt, date, short} for {total, number, currency}",
+  "race": "{d, duration, mm:ss}"
+}
+```
+
+generates Dart parameters typed as `DateTime`, `num`, and `Duration` respectively, with locale-aware formatting via `package:intl`.
+
+### Strict mode
+
+Add to your `pubspec.yaml` to make the generator warn whenever a sprintf marker appears in a project that should be MessageFormat-only:
+
+```yaml
+locale_gen:
+  message_format_strict: true
+```
+
+### Cross-locale validation
+
+When more than one language defines the same key, the generator warns if the placeholder names or ICU node types differ between locales. Generation continues — the warning helps surface translator typos like `{name}` vs `{naam}`.
+
 ### Working on mac?
 
 add this to you .bash_profile

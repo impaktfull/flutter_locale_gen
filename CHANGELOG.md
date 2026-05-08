@@ -1,3 +1,14 @@
+# 12.7.0
+
+## Feature
+
+- MessageFormat (ICU) support: JSON values like `{count, plural, one {# item} other {# items}}` and `Hi, {name}!` now generate type-safe Dart functions with named parameters.
+- ICU `select`, `selectordinal`, `number`, `date`, `time`, and `duration` arg types are supported, with locale-aware formatting via `package:intl`.
+- Cross-locale validation: the generator warns when a non-default locale uses a different placeholder name or ICU node type than the default language for the same key.
+- Optional `message_format_strict: true` config flag surfaces accidental sprintf usage in MessageFormat-only projects.
+- MessageFormat support also lands in the Dart (non-Flutter) writer, returning a `LocalizedValue` with one MessageFormat-interpolated string per locale.
+- The existing sprintf (`%s`, `%d`, `%1$s`) and JSON-object plural formats keep working unchanged; detection happens per key.
+
 # 12.6.0
 
 ## Feature
