@@ -333,4 +333,56 @@ locale_gen:
       expect(output, isNot(contains('String _mf(')));
     });
   });
+
+  group('LocaleGenFlutterGenerator buildMessageFormatFunction (free-tier)', () {
+    final mfParams = LocaleGenParams.fromYamlString('locale_gen', '''
+name: example
+locale_gen:
+  languages: ['en']
+''');
+    final generator = LocaleGenFlutterGenerator();
+
+    String generate(Map<String, dynamic> defaults) {
+      return generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+    }
+
+    test('placeholder generates a named-required String param', () {
+      final out = generate({'greeting': 'Hi, {name}!'});
+      expect(out, contains('String greeting({required String name})'));
+      expect(out, contains("LocalizationKeys.greeting"));
+      expect(out, contains("'name': name"));
+    });
+
+    test('camelCases uppercase names but preserves original key in args map', () {
+      final out = generate({'confirm_terms': 'See {SC} please'});
+      expect(out, contains('String confirmTerms({required String sc})'));
+      expect(out, contains("'SC': sc"));
+    });
+
+    test('plural generates a named-required num count param', () {
+      final out =
+          generate({'cart_count': '{count, plural, one {# item} other {# items}}'});
+      expect(out, contains('String cartCount({required num count})'));
+      expect(out, contains("'count': count"));
+    });
+
+    test('selectordinal generates a named-required num param', () {
+      final out = generate({
+        'rank': '{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}'
+      });
+      expect(out, contains('String rank({required num place})'));
+    });
+
+    test('select generates a named-required String param', () {
+      final out = generate({
+        'pronoun': '{gender, select, male {he} female {she} other {they}}'
+      });
+      expect(out, contains('String pronoun({required String gender})'));
+    });
+
+    test('multiple placeholders generate ordered named params', () {
+      final out = generate({'mix': 'A {first} and {second}.'});
+      expect(out, contains('String mix({required String first, required String second})'));
+    });
+  });
 }

@@ -1,5 +1,7 @@
 import 'package:locale_gen/src/model/locale_gen_params.dart';
 import 'package:locale_gen/src/model/plural.dart';
+import 'package:locale_gen/src/model/message_format_ast.dart';
+import 'package:locale_gen/src/model/message_format_param.dart';
 import 'package:locale_gen/src/util/case/case_util.dart';
 import 'package:locale_gen/src/extensions/list_extensions.dart';
 import 'package:locale_gen/src/util/documentation/documentation_util.dart';
@@ -395,5 +397,53 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       ..writeln(
           '  String get $camelCaseKey => _t(LocalizationKeys.$camelCaseKey);')
       ..writeln();
+  }
+
+  @override
+  void buildMessageFormatFunction(
+    StringBuffer sb,
+    LocaleGenParams params,
+    String key,
+    MessageFormatAst ast,
+    Map<String, MessageFormatParam> mfParams,
+    Map<String, Map<String, dynamic>> allTranslations,
+  ) {
+    final camelKey = CaseUtil.getCamelcase(key);
+    if (mfParams.isEmpty) {
+      sb
+        ..writeln(
+            '  String $camelKey() => _mf(LocalizationKeys.$camelKey, args: const {});')
+        ..writeln();
+      return;
+    }
+    final paramSignatures = mfParams.values
+        .map((p) => 'required ${_dartTypeFor(p.dartType)} ${p.dartName}')
+        .join(', ');
+    final argEntries = mfParams.values
+        .map((p) => "'${p.originalName}': ${_argExpression(p)}")
+        .join(', ');
+    sb
+      ..writeln(
+          '  String $camelKey({$paramSignatures}) => _mf(LocalizationKeys.$camelKey, args: {$argEntries});')
+      ..writeln();
+  }
+
+  static String _dartTypeFor(MessageFormatParamType type) {
+    switch (type) {
+      case MessageFormatParamType.string:
+        return 'String';
+      case MessageFormatParamType.num_:
+        return 'num';
+      case MessageFormatParamType.dateTime:
+        return 'DateTime';
+      case MessageFormatParamType.duration:
+        return 'Duration';
+    }
+  }
+
+  static String _argExpression(MessageFormatParam p) {
+    // Free-tier types (placeholder/plural/select/selectordinal) pass the value through directly.
+    // Task 13 will extend this for number/date/time, Task 14 for duration.
+    return p.dartName;
   }
 }
