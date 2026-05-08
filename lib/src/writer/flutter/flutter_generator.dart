@@ -8,6 +8,7 @@ import 'package:locale_gen/src/util/documentation/documentation_util.dart';
 import 'package:locale_gen/src/util/parser/locale_gen_parser.dart';
 import 'package:locale_gen/src/util/parser/message_format_parser.dart';
 import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
+import 'package:locale_gen/src/util/validation/cross_locale_validator.dart';
 import 'package:locale_gen/src/writer/core_generator.dart';
 
 const _durationHelperTemplate = r'''
@@ -117,6 +118,30 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         return false;
       }
     });
+    if (hasMessageFormat) {
+      defaultTranslations.forEach((key, dynamic value) {
+        if (value is! String) return;
+        if (TranslationStyleDetector.detect(value) !=
+            TranslationStyle.messageFormat) {
+          return;
+        }
+        final others = <String, String>{};
+        for (final entry in allTranslations.entries) {
+          if (entry.key == params.defaultLanguage) continue;
+          final v = entry.value[key];
+          if (v is String) others[entry.key] = v;
+        }
+        final warnings = CrossLocaleValidator.validateKey(
+          key: key,
+          defaultLanguage: params.defaultLanguage,
+          defaultValue: value,
+          otherLocales: others,
+        );
+        for (final w in warnings) {
+          print(w);
+        }
+      });
+    }
     final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")

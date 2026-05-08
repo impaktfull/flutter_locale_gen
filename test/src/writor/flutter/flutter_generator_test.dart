@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:locale_gen/locale_gen.dart';
 import 'package:locale_gen/src/writer/flutter/flutter_generator.dart';
 import 'package:test/test.dart';
@@ -457,6 +459,43 @@ locale_gen:
       final defaults = <String, dynamic>{'race': '{d, duration, mm:ss}'};
       final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
       expect(out, contains("_formatDuration(d, 'mm:ss')"));
+    });
+  });
+
+  group('LocaleGenFlutterGenerator cross-locale validation', () {
+    final mfParams = LocaleGenParams.fromYamlString('locale_gen', '''
+name: example
+locale_gen:
+  languages: ['en', 'nl']
+''');
+    final generator = LocaleGenFlutterGenerator();
+
+    String captureGenerate(Map<String, Map<String, dynamic>> all) {
+      final buf = StringBuffer();
+      runZoned(
+        () => generator.createLocalizationFile(mfParams, all['en']!, all),
+        zoneSpecification: ZoneSpecification(
+          print: (_, __, ___, line) => buf.writeln(line),
+        ),
+      );
+      return buf.toString();
+    }
+
+    test('warns when nl uses a different placeholder name than en', () {
+      final printed = captureGenerate({
+        'en': {'greeting': 'Hi, {name}!'},
+        'nl': {'greeting': 'Hallo, {naam}!'},
+      });
+      expect(printed, contains('greeting'));
+      expect(printed, contains('"nl"'));
+    });
+
+    test('does not warn when locales agree', () {
+      final printed = captureGenerate({
+        'en': {'greeting': 'Hi, {name}!'},
+        'nl': {'greeting': 'Hallo, {name}!'},
+      });
+      expect(printed, isNot(contains('Warning')));
     });
   });
 }
