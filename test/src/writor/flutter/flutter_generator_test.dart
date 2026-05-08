@@ -302,4 +302,35 @@ locale_gen:
       });
     });
   });
+
+  group('LocaleGenFlutterGenerator MessageFormat helpers', () {
+    final mfParams = LocaleGenParams.fromYamlString('locale_gen', '''
+name: example
+locale_gen:
+  languages: ['en']
+''');
+    final generator = LocaleGenFlutterGenerator();
+
+    test('emits _mf and _stripFormatSpecs when MessageFormat keys exist', () {
+      final defaults = <String, dynamic>{'greeting': 'Hi, {name}!'};
+      final all = <String, Map<String, dynamic>>{
+        'en': {'greeting': 'Hi, {name}!'},
+      };
+      final output = generator.createLocalizationFile(mfParams, defaults, all);
+      expect(output, contains("import 'package:intl/message_format.dart';"));
+      expect(output, contains('String _mf('));
+      expect(output, contains('String _stripFormatSpecs('));
+    });
+
+    test('does not emit MessageFormat helpers when no MessageFormat keys exist',
+        () {
+      final defaults = <String, dynamic>{'plain': 'hello world'};
+      final all = <String, Map<String, dynamic>>{
+        'en': {'plain': 'hello world'},
+      };
+      final output = generator.createLocalizationFile(mfParams, defaults, all);
+      expect(output, isNot(contains('package:intl/message_format.dart')));
+      expect(output, isNot(contains('String _mf(')));
+    });
+  });
 }

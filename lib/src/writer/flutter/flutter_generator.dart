@@ -4,6 +4,7 @@ import 'package:locale_gen/src/util/case/case_util.dart';
 import 'package:locale_gen/src/extensions/list_extensions.dart';
 import 'package:locale_gen/src/util/documentation/documentation_util.dart';
 import 'package:locale_gen/src/util/parser/locale_gen_parser.dart';
+import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 import 'package:locale_gen/src/writer/core_generator.dart';
 
 class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
@@ -37,12 +38,17 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       Map<String, Map<String, dynamic>> allTranslations) {
     final hasPlurals = defaultTranslations.values
         .any((dynamic element) => element is Map<String, dynamic>);
+    final hasMessageFormat = defaultTranslations.values.whereType<String>().any(
+        (v) =>
+            TranslationStyleDetector.detect(v) ==
+            TranslationStyle.messageFormat);
     final importPath = params.outputDir.replaceFirst('lib/', '');
     final sb = StringBuffer()
       ..writeln("import 'dart:convert';")
       ..writeln();
     [
-      if (hasPlurals) ...["import 'package:intl/intl.dart';"],
+      if (hasPlurals || hasMessageFormat) ...["import 'package:intl/intl.dart';"],
+      if (hasMessageFormat) ...["import 'package:intl/message_format.dart';"],
       "import 'package:sprintf/sprintf.dart';",
       "import 'package:flutter/services.dart';",
       "import 'package:flutter/widgets.dart';",
@@ -113,6 +119,30 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       ..writeln('    }')
       ..writeln('  }')
       ..writeln();
+    if (hasMessageFormat) {
+      sb
+        ..writeln(
+            '  String _mf(String key, {required Map<String, Object> args}) {')
+        ..writeln('    try {')
+        ..writeln(
+            '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
+        ..writeln('      if (value == null) return key;')
+        ..writeln('      final stripped = _stripFormatSpecs(value);')
+        ..writeln(
+            '      return MessageFormat(stripped, locale: locale?.toLanguageTag()).format(args);')
+        ..writeln('    } catch (e) {')
+        ..writeln("      return '⚠\$key⚠';")
+        ..writeln('    }')
+        ..writeln('  }')
+        ..writeln()
+        ..writeln('  String _stripFormatSpecs(String value) {')
+        ..writeln(
+            "    final regex = RegExp(r'\\{(\\w+)\\s*,\\s*(number|date|time|duration)(\\s*,[^{}]*)?\\}');")
+        ..writeln(
+            "    return value.replaceAllMapped(regex, (m) => '{\${m.group(1)}}');")
+        ..writeln('  }')
+        ..writeln();
+    }
     if (hasPlurals) {
       sb
         ..writeln(
