@@ -87,8 +87,72 @@ class MessageFormatParser {
       cursor.advance();
       return PlaceholderNode(name);
     }
-    throw MessageFormatParseException(
-        'Expected "}" after placeholder name "$name" at position ${cursor.position}');
+    if (after != ',') {
+      throw MessageFormatParseException(
+          'Expected "," or "}" after placeholder name "$name" at position ${cursor.position}');
+    }
+    cursor.advance(); // consume ','
+    cursor.skipWhitespace();
+    final argType = cursor.readIdentifier();
+    if (argType.isEmpty) {
+      throw MessageFormatParseException(
+          'Expected arg type after "," for placeholder "$name"');
+    }
+    cursor.skipWhitespace();
+    return _parseTypedPlaceholder(cursor, name, argType);
+  }
+
+  static MessageFormatNode _parseTypedPlaceholder(
+      _Cursor cursor, String name, String argType) {
+    switch (argType) {
+      case 'number':
+        return _parseScalarTyped(cursor, name, argType);
+      case 'date':
+        return _parseScalarTyped(cursor, name, argType);
+      case 'time':
+        return _parseScalarTyped(cursor, name, argType);
+      case 'duration':
+        return _parseScalarTyped(cursor, name, argType);
+      case 'plural':
+      case 'select':
+      case 'selectordinal':
+        throw MessageFormatParseException(
+            'Sub-message arg type "$argType" not yet supported in this parser stage');
+      default:
+        throw MessageFormatParseException(
+            'Unknown arg type "$argType" for placeholder "$name"');
+    }
+  }
+
+  static MessageFormatNode _parseScalarTyped(
+      _Cursor cursor, String name, String argType) {
+    String? style;
+    if (!cursor.isAtEnd && cursor.peek() == ',') {
+      cursor.advance();
+      cursor.skipWhitespace();
+      final styleBuffer = StringBuffer();
+      while (!cursor.isAtEnd && cursor.peek() != '}') {
+        styleBuffer.write(cursor.peek());
+        cursor.advance();
+      }
+      style = styleBuffer.toString().trim();
+      if (style.isEmpty) style = null;
+    }
+    if (cursor.isAtEnd) {
+      throw MessageFormatParseException('Unclosed "$argType" arg for "$name"');
+    }
+    cursor.expect('}');
+    switch (argType) {
+      case 'number':
+        return NumberNode(name: name, style: style);
+      case 'date':
+        return DateNode(name: name, style: style);
+      case 'time':
+        return TimeNode(name: name, style: style);
+      case 'duration':
+        return DurationNode(name: name, style: style);
+    }
+    throw StateError('unreachable');
   }
 }
 

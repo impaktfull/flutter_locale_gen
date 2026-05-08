@@ -54,4 +54,52 @@ void main() {
       );
     });
   });
+
+  group('MessageFormatParser typed scalars', () {
+    test('parses {n, number}', () {
+      final ast = MessageFormatParser.parse('{n, number}');
+      final node = ast.roots.first as NumberNode;
+      expect(node.name, 'n');
+      expect(node.style, isNull);
+    });
+
+    test('parses {n, number, percent}', () {
+      final ast = MessageFormatParser.parse('{n, number, percent}');
+      final node = ast.roots.first as NumberNode;
+      expect(node.name, 'n');
+      expect(node.style, 'percent');
+    });
+
+    test('parses {d, date, short}', () {
+      final ast = MessageFormatParser.parse('{d, date, short}');
+      final node = ast.roots.first as DateNode;
+      expect(node.name, 'd');
+      expect(node.style, 'short');
+    });
+
+    test('parses {t, time, medium}', () {
+      final ast = MessageFormatParser.parse('{t, time, medium}');
+      final node = ast.roots.first as TimeNode;
+      expect(node.style, 'medium');
+    });
+
+    test('parses {d, duration} with no style', () {
+      final ast = MessageFormatParser.parse('{d, duration}');
+      final node = ast.roots.first as DurationNode;
+      expect(node.style, isNull);
+    });
+
+    test('parses {d, duration, HH:mm:ss} preserving the custom pattern', () {
+      final ast = MessageFormatParser.parse('{d, duration, HH:mm:ss}');
+      final node = ast.roots.first as DurationNode;
+      expect(node.style, 'HH:mm:ss');
+    });
+
+    test('throws on unknown arg type', () {
+      expect(
+        () => MessageFormatParser.parse('{x, mystery}'),
+        throwsA(isA<MessageFormatParseException>()),
+      );
+    });
+  });
 }
