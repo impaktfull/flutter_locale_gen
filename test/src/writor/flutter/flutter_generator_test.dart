@@ -430,4 +430,33 @@ locale_gen:
       expect(out, contains('DateFormat.jms(locale?.toLanguageTag()).format(at)'));
     });
   });
+
+  group('LocaleGenFlutterGenerator duration support', () {
+    final mfParams = LocaleGenParams.fromYamlString('locale_gen', '''
+name: example
+locale_gen:
+  languages: ['en']
+''');
+    final generator = LocaleGenFlutterGenerator();
+
+    test('emits _formatDuration helper when duration is used', () {
+      final defaults = <String, dynamic>{'race': '{d, duration}'};
+      final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      expect(out, contains('String _formatDuration(Duration d, String? style)'));
+      expect(out, contains('String race({required Duration d})'));
+      expect(out, contains('_formatDuration(d, null)'));
+    });
+
+    test('does not emit _formatDuration when duration is not used', () {
+      final defaults = <String, dynamic>{'plain': 'hello'};
+      final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      expect(out, isNot(contains('_formatDuration')));
+    });
+
+    test('custom duration pattern is passed through to _formatDuration', () {
+      final defaults = <String, dynamic>{'race': '{d, duration, mm:ss}'};
+      final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      expect(out, contains("_formatDuration(d, 'mm:ss')"));
+    });
+  });
 }
