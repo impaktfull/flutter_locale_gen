@@ -324,6 +324,31 @@ locale_gen:
       expect(output, contains('String _stripFormatSpecs('));
     });
 
+    test(
+        'emits getMessageFormatTranslation escape hatch when MessageFormat keys exist',
+        () {
+      final defaults = <String, dynamic>{'greeting': 'Hi, {name}!'};
+      final all = <String, Map<String, dynamic>>{
+        'en': {'greeting': 'Hi, {name}!'},
+      };
+      final output = generator.createLocalizationFile(mfParams, defaults, all);
+      expect(
+          output,
+          contains(
+              'String getMessageFormatTranslation(String key, {required Map<String, Object> args}) => _mf(key, args: args);'));
+    });
+
+    test(
+        'does not emit getMessageFormatTranslation when no MessageFormat keys exist',
+        () {
+      final defaults = <String, dynamic>{'plain': 'hello world'};
+      final all = <String, Map<String, dynamic>>{
+        'en': {'plain': 'hello world'},
+      };
+      final output = generator.createLocalizationFile(mfParams, defaults, all);
+      expect(output, isNot(contains('getMessageFormatTranslation')));
+    });
+
     test('does not emit MessageFormat helpers when no MessageFormat keys exist',
         () {
       final defaults = <String, dynamic>{'plain': 'hello world'};

@@ -351,4 +351,6 @@ class Localization {
 
   String getTranslation(String key, {List<dynamic>? args}) => _t(key, args: args ?? <dynamic>[]);
 
+  String getMessageFormatTranslation(String key, {required Map<String, Object> args}) => _mf(key, args: args);
+
 }
