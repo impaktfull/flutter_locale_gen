@@ -385,4 +385,49 @@ locale_gen:
       expect(out, contains('String mix({required String first, required String second})'));
     });
   });
+
+  group('LocaleGenFlutterGenerator buildMessageFormatFunction (formatters)', () {
+    final mfParams = LocaleGenParams.fromYamlString('locale_gen', '''
+name: example
+locale_gen:
+  languages: ['en']
+''');
+    final generator = LocaleGenFlutterGenerator();
+
+    String generate(Map<String, dynamic> defaults) {
+      return generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+    }
+
+    test('number with no style uses NumberFormat.decimalPattern', () {
+      final out = generate({'count': 'Total {n, number}'});
+      expect(out, contains('String count({required num n})'));
+      expect(out, contains('NumberFormat.decimalPattern(locale?.toLanguageTag()).format(n)'));
+    });
+
+    test('number percent uses NumberFormat.percentPattern', () {
+      final out = generate({'rate': '{r, number, percent}'});
+      expect(out, contains('NumberFormat.percentPattern(locale?.toLanguageTag()).format(r)'));
+    });
+
+    test('number currency uses NumberFormat.simpleCurrency', () {
+      final out = generate({'price': '{p, number, currency}'});
+      expect(out, contains('NumberFormat.simpleCurrency(locale: locale?.toLanguageTag()).format(p)'));
+    });
+
+    test('date short uses DateFormat.yMd', () {
+      final out = generate({'placedAt': 'Placed {placedAt, date, short}'});
+      expect(out, contains('String placedAt({required DateTime placedAt})'));
+      expect(out, contains('DateFormat.yMd(locale?.toLanguageTag()).format(placedAt)'));
+    });
+
+    test('date custom skeleton passes through to DateFormat', () {
+      final out = generate({'when': '{when, date, yMMMd}'});
+      expect(out, contains("DateFormat('yMMMd', locale?.toLanguageTag()).format(when)"));
+    });
+
+    test('time medium uses DateFormat.jms', () {
+      final out = generate({'at': '{at, time, medium}'});
+      expect(out, contains('DateFormat.jms(locale?.toLanguageTag()).format(at)'));
+    });
+  });
 }

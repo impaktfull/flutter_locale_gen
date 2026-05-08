@@ -442,8 +442,48 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
   }
 
   static String _argExpression(MessageFormatParam p) {
-    // Free-tier types (placeholder/plural/select/selectordinal) pass the value through directly.
-    // Task 13 will extend this for number/date/time, Task 14 for duration.
-    return p.dartName;
+    const tag = 'locale?.toLanguageTag()';
+    switch (p.formatter) {
+      case MessageFormatFormatter.none:
+        return p.dartName;
+      case MessageFormatFormatter.numberDecimal:
+        return 'NumberFormat.decimalPattern($tag).format(${p.dartName})';
+      case MessageFormatFormatter.numberPercent:
+        return 'NumberFormat.percentPattern($tag).format(${p.dartName})';
+      case MessageFormatFormatter.numberCurrency:
+        return 'NumberFormat.simpleCurrency(locale: $tag).format(${p.dartName})';
+      case MessageFormatFormatter.numberCustom:
+        return "NumberFormat('${_escape(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
+      case MessageFormatFormatter.dateShort:
+        return 'DateFormat.yMd($tag).format(${p.dartName})';
+      case MessageFormatFormatter.dateMedium:
+        return 'DateFormat.yMMMd($tag).format(${p.dartName})';
+      case MessageFormatFormatter.dateLong:
+        return 'DateFormat.yMMMMd($tag).format(${p.dartName})';
+      case MessageFormatFormatter.dateFull:
+        return 'DateFormat.yMMMMEEEEd($tag).format(${p.dartName})';
+      case MessageFormatFormatter.dateCustom:
+        return "DateFormat('${_escape(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
+      case MessageFormatFormatter.timeShort:
+        return 'DateFormat.jm($tag).format(${p.dartName})';
+      case MessageFormatFormatter.timeMedium:
+      case MessageFormatFormatter.timeLong:
+      case MessageFormatFormatter.timeFull:
+        return 'DateFormat.jms($tag).format(${p.dartName})';
+      case MessageFormatFormatter.timeCustom:
+        return "DateFormat('${_escape(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
+      case MessageFormatFormatter.durationDefault:
+      case MessageFormatFormatter.durationMedium:
+        return '_formatDuration(${p.dartName}, null)';
+      case MessageFormatFormatter.durationShort:
+        return "_formatDuration(${p.dartName}, 'short')";
+      case MessageFormatFormatter.durationLong:
+        return "_formatDuration(${p.dartName}, 'long')";
+      case MessageFormatFormatter.durationCustom:
+        return "_formatDuration(${p.dartName}, '${_escape(p.formatterStyle ?? '')}')";
+    }
   }
+
+  static String _escape(String s) =>
+      s.replaceAll(r'\', r'\\').replaceAll("'", r"\'");
 }
