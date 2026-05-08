@@ -2,6 +2,11 @@ import 'package:locale_gen/locale_gen.dart';
 import 'package:locale_gen/src/extensions/null_extensions.dart';
 import 'package:locale_gen/src/locale_gen_constants.dart';
 import 'package:locale_gen/src/model/plural.dart';
+import 'package:locale_gen/src/model/message_format_ast.dart';
+import 'package:locale_gen/src/model/message_format_param.dart';
+import 'package:locale_gen/src/util/parser/message_format_parser.dart';
+import 'package:locale_gen/src/util/parser/message_format_param_extractor.dart';
+import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 import 'package:meta/meta.dart';
 
 abstract class LocaleGenCoreGenerator {
@@ -17,47 +22,75 @@ abstract class LocaleGenCoreGenerator {
       return;
     }
     try {
-      final Map<int, String> arguments;
-      Plural? plural;
-
-      // Plural
+      // JSON-object plural — unchanged path.
       if (value is Map<String, dynamic>) {
         if (value['other'] == null) {
           throw Exception('Other is required for plurals. Key: $key');
         }
-
-        plural = Plural.fromJson(value);
-        arguments = {};
-        plural.zero?.let((value) =>
-            arguments.addAll(_extractParameters(key: key, value: value)));
-        plural.one?.let((value) =>
-            arguments.addAll(_extractParameters(key: key, value: value)));
-        plural.two?.let((value) =>
-            arguments.addAll(_extractParameters(key: key, value: value)));
-        plural.few?.let((value) =>
-            arguments.addAll(_extractParameters(key: key, value: value)));
-        plural.many?.let((value) =>
-            arguments.addAll(_extractParameters(key: key, value: value)));
+        final plural = Plural.fromJson(value);
+        final arguments = <int, String>{};
+        plural.zero?.let((v) =>
+            arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.one?.let((v) =>
+            arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.two?.let((v) =>
+            arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.few?.let((v) =>
+            arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.many?.let((v) =>
+            arguments.addAll(_extractParameters(key: key, value: v)));
         arguments.addAll(_extractParameters(key: key, value: plural.other));
-      } else {
-        value as String;
-        arguments = _extractParameters(key: key, value: value);
-      }
-
-      if (arguments.isEmpty) {
-        if (plural != null) {
+        if (arguments.isEmpty) {
           buildDefaultPluralFunction(sb, params, key, plural, allTranslations);
         } else {
-          buildDefaultFunction(sb, params, key, allTranslations);
-        }
-      } else {
-        if (plural != null) {
           buildParameterizedPluralFunction(
               sb, params, key, plural, arguments, allTranslations);
-        } else {
-          buildParameterizedFunction(
-              sb, params, key, arguments, allTranslations);
         }
+        return;
+      }
+
+      // String value — choose between sprintf and MessageFormat per detection.
+      value as String;
+      final style = TranslationStyleDetector.detect(value);
+
+      if (style == TranslationStyle.both) {
+        print(
+            '[locale_gen] Warning: key "$key" contains both sprintf and MessageFormat markers; falling back to default getter.');
+        buildDefaultFunction(sb, params, key, allTranslations);
+        return;
+      }
+
+      if (params.messageFormatStrict && style == TranslationStyle.sprintf) {
+        print(
+            '[locale_gen] Warning: key "$key" uses sprintf markers but messageFormatStrict is enabled; falling back to default getter.');
+        buildDefaultFunction(sb, params, key, allTranslations);
+        return;
+      }
+
+      if (style == TranslationStyle.messageFormat) {
+        try {
+          final ast = MessageFormatParser.parse(value);
+          final mfParams = MessageFormatParamExtractor.extract(ast);
+          buildMessageFormatFunction(
+              sb, params, key, ast, mfParams, allTranslations);
+        } on MessageFormatParseException catch (e) {
+          print('[locale_gen] Warning: key "$key" failed to parse as '
+              'MessageFormat: ${e.message}. Falling back to default getter.');
+          buildDefaultFunction(sb, params, key, allTranslations);
+        } on MessageFormatParamConflictException catch (e) {
+          print('[locale_gen] Warning: key "$key" — ${e.message}. Falling back to default getter.');
+          buildDefaultFunction(sb, params, key, allTranslations);
+        }
+        return;
+      }
+
+      // Sprintf path — unchanged.
+      final arguments = _extractParameters(key: key, value: value);
+      if (arguments.isEmpty) {
+        buildDefaultFunction(sb, params, key, allTranslations);
+      } else {
+        buildParameterizedFunction(
+            sb, params, key, arguments, allTranslations);
       }
     } on Exception catch (e) {
       print(e);
@@ -100,6 +133,19 @@ abstract class LocaleGenCoreGenerator {
     Map<int, String> arguments,
     Map<String, Map<String, dynamic>> allTranslations,
   );
+
+  @protected
+  void buildMessageFormatFunction(
+    StringBuffer sb,
+    LocaleGenParams params,
+    String key,
+    MessageFormatAst ast,
+    Map<String, MessageFormatParam> mfParams,
+    Map<String, Map<String, dynamic>> allTranslations,
+  ) {
+    // Default: subclasses without MessageFormat support fall back.
+    buildDefaultFunction(sb, params, key, allTranslations);
+  }
 
   Map<int, String> _extractParameters(
       {required String key, required String value}) {
