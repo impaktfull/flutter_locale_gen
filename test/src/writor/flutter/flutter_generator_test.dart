@@ -403,33 +403,33 @@ locale_gen:
     test('number with no style uses NumberFormat.decimalPattern', () {
       final out = generate({'count': 'Total {n, number}'});
       expect(out, contains('String count({required num n})'));
-      expect(out, contains("NumberFormat.decimalPattern(locale?.toLanguageTag() ?? 'en').format(n)"));
+      expect(out, contains("NumberFormat.decimalPattern(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(n)"));
     });
 
     test('number percent uses NumberFormat.percentPattern', () {
       final out = generate({'rate': '{r, number, percent}'});
-      expect(out, contains("NumberFormat.percentPattern(locale?.toLanguageTag() ?? 'en').format(r)"));
+      expect(out, contains("NumberFormat.percentPattern(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(r)"));
     });
 
     test('number currency uses NumberFormat.simpleCurrency', () {
       final out = generate({'price': '{p, number, currency}'});
-      expect(out, contains("NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? 'en').format(p)"));
+      expect(out, contains("NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(p)"));
     });
 
     test('date short uses DateFormat.yMd', () {
       final out = generate({'placedAt': 'Placed {placedAt, date, short}'});
       expect(out, contains('String placedAt({required DateTime placedAt})'));
-      expect(out, contains("DateFormat.yMd(locale?.toLanguageTag() ?? 'en').format(placedAt)"));
+      expect(out, contains("DateFormat.yMd(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(placedAt)"));
     });
 
     test('date custom skeleton passes through to DateFormat', () {
       final out = generate({'when': '{when, date, yMMMd}'});
-      expect(out, contains("DateFormat('yMMMd', locale?.toLanguageTag() ?? 'en').format(when)"));
+      expect(out, contains("DateFormat('yMMMd', locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(when)"));
     });
 
     test('time medium uses DateFormat.jms', () {
       final out = generate({'at': '{at, time, medium}'});
-      expect(out, contains("DateFormat.jms(locale?.toLanguageTag() ?? 'en').format(at)"));
+      expect(out, contains("DateFormat.jms(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(at)"));
     });
   });
 

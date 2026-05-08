@@ -93,6 +93,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       "import 'package:flutter/services.dart';",
       "import 'package:flutter/widgets.dart';",
       "import 'package:${params.projectName}/${importPath}localization_keys.dart';",
+      if (hasMessageFormat) ...["import 'package:${params.projectName}/${importPath}localization_delegate.dart';"],
       "import 'package:${params.projectName}/${importPath}localization_overrides.dart';",
     ]
       ..sort((i1, i2) => i1.compareTo(i2))
@@ -169,7 +170,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         ..writeln('      if (value == null) return key;')
         ..writeln('      final stripped = _stripFormatSpecs(value);')
         ..writeln(
-            "      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? '${params.defaultLanguage}').format(args);")
+            "      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(args);")
         ..writeln('    } catch (e) {')
         ..writeln("      return '⚠\$key⚠';")
         ..writeln('    }')
@@ -461,7 +462,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         .map((p) => 'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
         .join(', ');
     final argEntries = mfParams.values
-        .map((p) => "'${p.originalName}': ${_argExpression(p, params.defaultLanguage)}")
+        .map((p) => "'${p.originalName}': ${_argExpression(p)}")
         .join(', ');
     sb
       ..writeln(
@@ -469,8 +470,8 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       ..writeln();
   }
 
-  static String _argExpression(MessageFormatParam p, String defaultLang) {
-    final tag = "locale?.toLanguageTag() ?? '$defaultLang'";
+  static String _argExpression(MessageFormatParam p) {
+    const tag = "locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()";
     switch (p.formatter) {
       case MessageFormatFormatter.none:
         return p.dartName;

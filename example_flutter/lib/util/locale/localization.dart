@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/message_format.dart';
+import 'package:locale_gen_example/util/locale/localization_delegate.dart';
 import 'package:locale_gen_example/util/locale/localization_keys.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
 import 'package:sprintf/sprintf.dart';
@@ -64,7 +65,7 @@ class Localization {
       final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
       final stripped = _stripFormatSpecs(value);
-      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? 'en').format(args);
+      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(args);
     } catch (e) {
       return '⚠$key⚠';
     }
@@ -313,7 +314,7 @@ class Localization {
   /// zh-Hans-CN: **'合计: {total, number, currency}'**
   ///
   /// fi-FI: **'Yhteensä: {total, number, currency}'**
-  String mfTotal({required num total}) => _mf(LocalizationKeys.mfTotal, args: {'total': NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? 'en').format(total)});
+  String mfTotal({required num total}) => _mf(LocalizationKeys.mfTotal, args: {'total': NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(total)});
 
   /// Translations:
   ///
@@ -324,7 +325,7 @@ class Localization {
   /// zh-Hans-CN: **'下单于 {placedAt, date, short}'**
   ///
   /// fi-FI: **'Tehty {placedAt, date, short}'**
-  String mfPlacedAt({required DateTime placedAt}) => _mf(LocalizationKeys.mfPlacedAt, args: {'placedAt': DateFormat.yMd(locale?.toLanguageTag() ?? 'en').format(placedAt)});
+  String mfPlacedAt({required DateTime placedAt}) => _mf(LocalizationKeys.mfPlacedAt, args: {'placedAt': DateFormat.yMd(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(placedAt)});
 
   /// Translations:
   ///
@@ -335,7 +336,7 @@ class Localization {
   /// zh-Hans-CN: **'会议时间 {at, time, short}'**
   ///
   /// fi-FI: **'Kokous klo {at, time, short}'**
-  String mfMeetingAt({required DateTime at}) => _mf(LocalizationKeys.mfMeetingAt, args: {'at': DateFormat.jm(locale?.toLanguageTag() ?? 'en').format(at)});
+  String mfMeetingAt({required DateTime at}) => _mf(LocalizationKeys.mfMeetingAt, args: {'at': DateFormat.jm(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(at)});
 
   /// Translations:
   ///
