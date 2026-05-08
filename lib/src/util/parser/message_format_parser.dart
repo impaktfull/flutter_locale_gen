@@ -106,18 +106,14 @@ class MessageFormatParser {
       _Cursor cursor, String name, String argType) {
     switch (argType) {
       case 'number':
-        return _parseScalarTyped(cursor, name, argType);
       case 'date':
-        return _parseScalarTyped(cursor, name, argType);
       case 'time':
-        return _parseScalarTyped(cursor, name, argType);
       case 'duration':
         return _parseScalarTyped(cursor, name, argType);
       case 'plural':
       case 'select':
       case 'selectordinal':
-        throw MessageFormatParseException(
-            'Sub-message arg type "$argType" not yet supported in this parser stage');
+        return _parseSubMessage(cursor, name, argType);
       default:
         throw MessageFormatParseException(
             'Unknown arg type "$argType" for placeholder "$name"');
@@ -154,6 +150,88 @@ class MessageFormatParser {
     }
     throw StateError('unreachable');
   }
+
+  static MessageFormatNode _parseSubMessage(
+      _Cursor cursor, String name, String argType) {
+    if (cursor.isAtEnd || cursor.peek() != ',') {
+      throw MessageFormatParseException(
+          'Expected "," before "$argType" branches for "$name"');
+    }
+    cursor.advance(); // consume ','
+    cursor.skipWhitespace();
+    final branches = <String, List<MessageFormatNode>>{};
+    while (!cursor.isAtEnd && cursor.peek() != '}') {
+      final key = _readBranchKey(cursor);
+      cursor.skipWhitespace();
+      if (cursor.isAtEnd || cursor.peek() != '{') {
+        throw MessageFormatParseException(
+            'Expected "{" after branch key "$key" in "$name"');
+      }
+      cursor.advance(); // consume '{'
+      final subNodes = _parseNodes(cursor, depth: 1);
+      if (cursor.isAtEnd || cursor.peek() != '}') {
+        throw MessageFormatParseException(
+            'Unclosed branch "$key" in "$name"');
+      }
+      cursor.advance(); // consume '}'
+      branches[key] = subNodes;
+      cursor.skipWhitespace();
+    }
+    if (cursor.isAtEnd) {
+      throw MessageFormatParseException('Unclosed "$argType" arg for "$name"');
+    }
+    cursor.expect('}');
+    if (!branches.containsKey('other')) {
+      throw MessageFormatParseException(
+          '"$argType" for "$name" must include an "other" branch');
+    }
+    switch (argType) {
+      case 'plural':
+        return PluralNode(name: name, branches: branches);
+      case 'select':
+        return SelectNode(name: name, branches: branches);
+      case 'selectordinal':
+        return SelectOrdinalNode(name: name, branches: branches);
+    }
+    throw StateError('unreachable');
+  }
+
+  static String _readBranchKey(_Cursor cursor) {
+    cursor.skipWhitespace();
+    if (cursor.isAtEnd) {
+      throw const MessageFormatParseException('Expected branch key, got end of input');
+    }
+    final start = cursor.position;
+    if (cursor.peek() == '=') {
+      cursor.advance();
+      while (!cursor.isAtEnd && _isDigit(cursor.peek())) {
+        cursor.advance();
+      }
+      return cursor.substringFrom(start);
+    }
+    while (!cursor.isAtEnd && _isBranchKeyChar(cursor.peek())) {
+      cursor.advance();
+    }
+    final key = cursor.substringFrom(start);
+    if (key.isEmpty) {
+      throw MessageFormatParseException(
+          'Expected branch key at position ${cursor.position}');
+    }
+    return key;
+  }
+
+  static bool _isDigit(String c) {
+    final code = c.codeUnitAt(0);
+    return code >= 0x30 && code <= 0x39;
+  }
+
+  static bool _isBranchKeyChar(String c) {
+    final code = c.codeUnitAt(0);
+    return (code >= 0x41 && code <= 0x5A) ||
+        (code >= 0x61 && code <= 0x7A) ||
+        (code >= 0x30 && code <= 0x39) ||
+        c == '_';
+  }
 }
 
 class _Cursor {
@@ -187,6 +265,8 @@ class _Cursor {
     }
     return _input.substring(start, _pos);
   }
+
+  String substringFrom(int start) => _input.substring(start, _pos);
 
   static bool _isWhitespace(String c) => c == ' ' || c == '\t' || c == '\n' || c == '\r';
 

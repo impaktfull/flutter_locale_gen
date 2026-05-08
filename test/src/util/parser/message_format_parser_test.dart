@@ -102,4 +102,63 @@ void main() {
       );
     });
   });
+
+  group('MessageFormatParser sub-messages', () {
+    test('parses a simple plural', () {
+      final ast = MessageFormatParser.parse(
+          '{count, plural, one {# item} other {# items}}');
+      final node = ast.roots.first as PluralNode;
+      expect(node.name, 'count');
+      expect(node.branches.keys, ['one', 'other']);
+      expect((node.branches['one']!.first as LiteralNode).text, '# item');
+      expect((node.branches['other']!.first as LiteralNode).text, '# items');
+    });
+
+    test('parses a plural with =N exact-match branches', () {
+      final ast = MessageFormatParser.parse(
+          '{n, plural, =0 {none} =1 {one} other {many}}');
+      final node = ast.roots.first as PluralNode;
+      expect(node.branches.keys, ['=0', '=1', 'other']);
+    });
+
+    test('parses a select with three branches', () {
+      final ast = MessageFormatParser.parse(
+          '{gender, select, male {he} female {she} other {they}}');
+      final node = ast.roots.first as SelectNode;
+      expect(node.branches.keys, ['male', 'female', 'other']);
+      expect((node.branches['female']!.first as LiteralNode).text, 'she');
+    });
+
+    test('parses a selectordinal', () {
+      final ast = MessageFormatParser.parse(
+          '{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}');
+      final node = ast.roots.first as SelectOrdinalNode;
+      expect(node.branches.length, 4);
+    });
+
+    test('parses a placeholder nested inside a plural branch', () {
+      final ast = MessageFormatParser.parse(
+          '{count, plural, one {# item for {name}} other {# items for {name}}}');
+      final node = ast.roots.first as PluralNode;
+      final oneBranch = node.branches['one']!;
+      expect(oneBranch.length, 3);
+      expect((oneBranch[0] as LiteralNode).text, '# item for ');
+      expect((oneBranch[1] as PlaceholderNode).name, 'name');
+      expect((oneBranch[2] as LiteralNode).text, '');
+    });
+
+    test('throws when plural has no other branch', () {
+      expect(
+        () => MessageFormatParser.parse('{count, plural, one {# item}}'),
+        throwsA(isA<MessageFormatParseException>()),
+      );
+    });
+
+    test('throws when select has no other branch', () {
+      expect(
+        () => MessageFormatParser.parse('{g, select, male {he} female {she}}'),
+        throwsA(isA<MessageFormatParseException>()),
+      );
+    });
+  });
 }
