@@ -7,68 +7,8 @@ import 'package:locale_gen/src/util/documentation/documentation_util.dart';
 import 'package:locale_gen/src/util/parser/message_format_parser.dart';
 import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 import 'package:locale_gen/src/util/validation/cross_locale_validator.dart';
+import 'package:locale_gen/src/util/format/message_format_util.dart';
 import 'package:locale_gen/src/writer/core_generator.dart';
-
-const _dartDurationHelperTemplate = r'''
-  String _formatDuration(Duration d, String? style) {
-    final h = d.inHours;
-    final m = d.inMinutes.remainder(60);
-    final s = d.inSeconds.remainder(60);
-    String pad(int n) => n.toString().padLeft(2, '0');
-    if (style == null || style == 'medium') {
-      return '${pad(h)}:${pad(m)}:${pad(s)}';
-    }
-    if (style == 'short') {
-      return '${pad(d.inMinutes)}:${pad(s)}';
-    }
-    if (style == 'long') {
-      final parts = <String>[];
-      if (h > 0) parts.add('${h}h');
-      if (m > 0) parts.add('${m}m');
-      if (s > 0 || parts.isEmpty) parts.add('${s}s');
-      return parts.join(' ');
-    }
-    final buf = StringBuffer();
-    var i = 0;
-    while (i < style.length) {
-      final c = style[i];
-      if (c == "'" && i + 1 < style.length) {
-        final end = style.indexOf("'", i + 1);
-        if (end == -1) {
-          buf.write(style.substring(i + 1));
-          break;
-        }
-        buf.write(style.substring(i + 1, end));
-        i = end + 1;
-        continue;
-      }
-      if (c == 'H') {
-        var n = 1;
-        while (i + n < style.length && style[i + n] == 'H') n++;
-        buf.write(h.toString().padLeft(n, '0'));
-        i += n;
-        continue;
-      }
-      if (c == 'm') {
-        var n = 1;
-        while (i + n < style.length && style[i + n] == 'm') n++;
-        buf.write(m.toString().padLeft(n, '0'));
-        i += n;
-        continue;
-      }
-      if (c == 's') {
-        var n = 1;
-        while (i + n < style.length && style[i + n] == 's') n++;
-        buf.write(s.toString().padLeft(n, '0'));
-        i += n;
-        continue;
-      }
-      buf.write(c);
-      i++;
-    }
-    return buf.toString();
-  }
-''';
 
 class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
   String createLocalizationFile(
@@ -92,7 +32,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       }
       try {
         final ast = MessageFormatParser.parse(v);
-        return _astContainsDuration(ast);
+        return messageFormatAstContainsDuration(ast);
       } on MessageFormatParseException {
         return false;
       }
@@ -194,7 +134,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
         ..writeln();
     }
     if (hasDuration) {
-      sb..write(_dartDurationHelperTemplate)..writeln();
+      sb..write(messageFormatDurationHelperTemplate)..writeln();
     }
     defaultTranslations.forEach((key, dynamic value) {
       DocumentationUtil.buildDocumentation(
@@ -291,7 +231,6 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       .replaceAll('\n', r'\n')
       .replaceAll('\r', r'\r')
       .replaceAll('"', r'\"')
-      .replaceAll('\$', r'\$')
       .replaceAll('\$', r'\$');
 
   @override
@@ -328,7 +267,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
   ) {
     final camelKey = CaseUtil.getCamelcase(key);
     final paramSignatures = mfParams.values
-        .map((p) => 'required ${_dartTypeFor(p.dartType)} ${p.dartName}')
+        .map((p) => 'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
         .join(', ');
     if (mfParams.isEmpty) {
       sb.writeln('  LocalizedValue get $camelKey => LocalizedValue(');
@@ -366,19 +305,6 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       ..writeln();
   }
 
-  static String _dartTypeFor(MessageFormatParamType type) {
-    switch (type) {
-      case MessageFormatParamType.string:
-        return 'String';
-      case MessageFormatParamType.num_:
-        return 'num';
-      case MessageFormatParamType.dateTime:
-        return 'DateTime';
-      case MessageFormatParamType.duration:
-        return 'Duration';
-    }
-  }
-
   static String _argExpressionForLocale(
       MessageFormatParam p, String localeTag) {
     final tag = "'$localeTag'";
@@ -392,7 +318,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       case MessageFormatFormatter.numberCurrency:
         return 'NumberFormat.simpleCurrency(locale: $tag).format(${p.dartName})';
       case MessageFormatFormatter.numberCustom:
-        return "NumberFormat('${_escape(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
+        return "NumberFormat('${escapeForSingleQuotedString(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
       case MessageFormatFormatter.dateShort:
         return 'DateFormat.yMd($tag).format(${p.dartName})';
       case MessageFormatFormatter.dateMedium:
@@ -402,7 +328,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       case MessageFormatFormatter.dateFull:
         return 'DateFormat.yMMMMEEEEd($tag).format(${p.dartName})';
       case MessageFormatFormatter.dateCustom:
-        return "DateFormat('${_escape(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
+        return "DateFormat('${escapeForSingleQuotedString(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
       case MessageFormatFormatter.timeShort:
         return 'DateFormat.jm($tag).format(${p.dartName})';
       case MessageFormatFormatter.timeMedium:
@@ -410,7 +336,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       case MessageFormatFormatter.timeFull:
         return 'DateFormat.jms($tag).format(${p.dartName})';
       case MessageFormatFormatter.timeCustom:
-        return "DateFormat('${_escape(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
+        return "DateFormat('${escapeForSingleQuotedString(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
       case MessageFormatFormatter.durationDefault:
       case MessageFormatFormatter.durationMedium:
         return '_formatDuration(${p.dartName}, null)';
@@ -419,35 +345,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       case MessageFormatFormatter.durationLong:
         return "_formatDuration(${p.dartName}, 'long')";
       case MessageFormatFormatter.durationCustom:
-        return "_formatDuration(${p.dartName}, '${_escape(p.formatterStyle ?? '')}')";
+        return "_formatDuration(${p.dartName}, '${escapeForSingleQuotedString(p.formatterStyle ?? '')}')";
     }
-  }
-
-  static String _escape(String s) =>
-      s.replaceAll(r'\', r'\\').replaceAll("'", r"\'");
-
-  static bool _astContainsDuration(MessageFormatAst ast) {
-    bool walk(MessageFormatNode node) {
-      switch (node) {
-        case DurationNode():
-          return true;
-        case PluralNode(:final branches):
-        case SelectOrdinalNode(:final branches):
-        case SelectNode(:final branches):
-          for (final list in branches.values) {
-            for (final n in list) {
-              if (walk(n)) return true;
-            }
-          }
-          return false;
-        default:
-          return false;
-      }
-    }
-
-    for (final n in ast.roots) {
-      if (walk(n)) return true;
-    }
-    return false;
   }
 }
