@@ -23,8 +23,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
 
     final hasMessageFormat =
         MessageFormatUtil.hasMessageFormatKeys(defaultTranslations);
-    final hasDuration =
-        MessageFormatUtil.hasDurationKeys(defaultTranslations);
+    final hasDuration = MessageFormatUtil.hasDurationKeys(defaultTranslations);
 
     if (hasMessageFormat) {
       defaultTranslations.forEach((key, dynamic value) {
@@ -292,5 +291,4 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       ..writeln('  );')
       ..writeln();
   }
-
 }

@@ -144,7 +144,8 @@ class MessageFormatUtil {
   /// duration arg type. Used to decide whether to emit `_formatDuration`.
   static bool hasDurationKeys(Map<String, dynamic> defaultTranslations) {
     return defaultTranslations.values.whereType<String>().any((v) {
-      if (TranslationStyleDetector.detect(v) != TranslationStyle.messageFormat) {
+      if (TranslationStyleDetector.detect(v) !=
+          TranslationStyle.messageFormat) {
         return false;
       }
       try {

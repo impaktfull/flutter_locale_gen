@@ -45,8 +45,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         .any((dynamic element) => element is Map<String, dynamic>);
     final hasMessageFormat =
         MessageFormatUtil.hasMessageFormatKeys(defaultTranslations);
-    final hasDuration =
-        MessageFormatUtil.hasDurationKeys(defaultTranslations);
+    final hasDuration = MessageFormatUtil.hasDurationKeys(defaultTranslations);
     if (hasMessageFormat) {
       defaultTranslations.forEach((key, dynamic value) {
         if (value is! String) return;
@@ -463,5 +462,4 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
           '  String $camelKey({$paramSignatures}) => _mf(LocalizationKeys.$camelKey, args: {$argEntries});')
       ..writeln();
   }
-
 }
