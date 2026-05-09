@@ -1,6 +1,10 @@
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:locale_gen_example_dart/util/locale/localization.dart';
 
 Future<void> main() async {
+  Intl.defaultLocale = 'en';
+  await initializeDateFormatting();
   final localization = Localization.instance;
 
   // List of translations to demonstrate (with demo arguments for parameterized examples)
