@@ -6,9 +6,9 @@ import 'package:locale_gen/src/util/case/case_util.dart';
 import 'package:locale_gen/src/extensions/list_extensions.dart';
 import 'package:locale_gen/src/util/documentation/documentation_util.dart';
 import 'package:locale_gen/src/util/parser/locale_gen_parser.dart';
-import 'package:locale_gen/src/util/parser/message_format_parser.dart';
 import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 import 'package:locale_gen/src/util/validation/cross_locale_validator.dart';
+import 'package:locale_gen/src/util/format/message_format_arg_expression_builder.dart';
 import 'package:locale_gen/src/util/format/message_format_util.dart';
 import 'package:locale_gen/src/writer/core_generator.dart';
 
@@ -43,22 +43,10 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       Map<String, Map<String, dynamic>> allTranslations) {
     final hasPlurals = defaultTranslations.values
         .any((dynamic element) => element is Map<String, dynamic>);
-    final hasMessageFormat = defaultTranslations.values.whereType<String>().any(
-        (v) =>
-            TranslationStyleDetector.detect(v) ==
-            TranslationStyle.messageFormat);
-    final hasDuration = defaultTranslations.values.whereType<String>().any((v) {
-      if (TranslationStyleDetector.detect(v) !=
-          TranslationStyle.messageFormat) {
-        return false;
-      }
-      try {
-        final ast = MessageFormatParser.parse(v);
-        return messageFormatAstContainsDuration(ast);
-      } on MessageFormatParseException {
-        return false;
-      }
-    });
+    final hasMessageFormat =
+        MessageFormatUtil.hasMessageFormatKeys(defaultTranslations);
+    final hasDuration =
+        MessageFormatUtil.hasDurationKeys(defaultTranslations);
     if (hasMessageFormat) {
       defaultTranslations.forEach((key, dynamic value) {
         if (value is! String) return;
@@ -181,16 +169,11 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         ..writeln('    }')
         ..writeln('  }')
         ..writeln()
-        ..writeln('  String _stripFormatSpecs(String value) {')
-        ..writeln(
-            "    final regex = RegExp(r'\\{(\\w+)\\s*,\\s*(number|date|time|duration)(\\s*,[^{}]*)?\\}');")
-        ..writeln(
-            "    return value.replaceAllMapped(regex, (m) => '{\${m.group(1)}}');")
-        ..writeln('  }')
+        ..write(MessageFormatUtil.stripFormatSpecsHelperTemplate)
         ..writeln();
       if (hasDuration) {
         sb
-          ..write(messageFormatDurationHelperTemplate)
+          ..write(MessageFormatUtil.durationHelperTemplate)
           ..writeln();
       }
     }
@@ -467,10 +450,13 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
     }
     final paramSignatures = mfParams.values
         .map((p) =>
-            'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
+            'required ${MessageFormatUtil.dartTypeFor(p.dartType)} ${p.dartName}')
         .join(', ');
+    const localeExpr =
+        "locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()";
     final argEntries = mfParams.values
-        .map((p) => "'${p.originalName}': ${_argExpression(p)}")
+        .map((p) =>
+            "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, localeExpr)}")
         .join(', ');
     sb
       ..writeln(
@@ -478,47 +464,4 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       ..writeln();
   }
 
-  static String _argExpression(MessageFormatParam p) {
-    const tag =
-        "locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()";
-    switch (p.formatter) {
-      case MessageFormatFormatter.none:
-        return p.dartName;
-      case MessageFormatFormatter.numberDecimal:
-        return 'NumberFormat.decimalPattern($tag).format(${p.dartName})';
-      case MessageFormatFormatter.numberPercent:
-        return 'NumberFormat.percentPattern($tag).format(${p.dartName})';
-      case MessageFormatFormatter.numberCurrency:
-        return 'NumberFormat.simpleCurrency(locale: $tag).format(${p.dartName})';
-      case MessageFormatFormatter.numberCustom:
-        return "NumberFormat('${escapeForSingleQuotedString(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
-      case MessageFormatFormatter.dateShort:
-        return 'DateFormat.yMd($tag).format(${p.dartName})';
-      case MessageFormatFormatter.dateMedium:
-        return 'DateFormat.yMMMd($tag).format(${p.dartName})';
-      case MessageFormatFormatter.dateLong:
-        return 'DateFormat.yMMMMd($tag).format(${p.dartName})';
-      case MessageFormatFormatter.dateFull:
-        return 'DateFormat.yMMMMEEEEd($tag).format(${p.dartName})';
-      case MessageFormatFormatter.dateCustom:
-        return "DateFormat('${escapeForSingleQuotedString(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
-      case MessageFormatFormatter.timeShort:
-        return 'DateFormat.jm($tag).format(${p.dartName})';
-      case MessageFormatFormatter.timeMedium:
-      case MessageFormatFormatter.timeLong:
-      case MessageFormatFormatter.timeFull:
-        return 'DateFormat.jms($tag).format(${p.dartName})';
-      case MessageFormatFormatter.timeCustom:
-        return "DateFormat('${escapeForSingleQuotedString(p.formatterStyle ?? '')}', $tag).format(${p.dartName})";
-      case MessageFormatFormatter.durationDefault:
-      case MessageFormatFormatter.durationMedium:
-        return '_formatDuration(${p.dartName}, null)';
-      case MessageFormatFormatter.durationShort:
-        return "_formatDuration(${p.dartName}, 'short')";
-      case MessageFormatFormatter.durationLong:
-        return "_formatDuration(${p.dartName}, 'long')";
-      case MessageFormatFormatter.durationCustom:
-        return "_formatDuration(${p.dartName}, '${escapeForSingleQuotedString(p.formatterStyle ?? '')}')";
-    }
-  }
 }
