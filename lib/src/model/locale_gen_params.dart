@@ -109,7 +109,8 @@ class LocaleGenParams {
     }
 
     final outputType = config['output_type'] as String?;
-    final messageFormatStrict = config['message_format_strict'] as bool? ?? false;
+    final messageFormatStrict =
+        config['message_format_strict'] as bool? ?? false;
 
     this.localeAssetsDir = localeAssetsDir;
     this.outputDir = outputDir;

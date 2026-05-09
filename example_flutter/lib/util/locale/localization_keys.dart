@@ -2,7 +2,6 @@
 //THIS FILE IS AUTO GENERATED. DO NOT EDIT//
 //============================================================//
 class LocalizationKeys {
-
   /// Translations:
   ///
   /// en:  **'Testing in English'**
@@ -189,5 +188,4 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'Kierrosaika: {d, duration, mm:ss}'**
   static const mfRace = 'mf_race';
-
 }

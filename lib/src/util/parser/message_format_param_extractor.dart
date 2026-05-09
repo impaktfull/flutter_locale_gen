@@ -17,16 +17,16 @@ class MessageFormatParamExtractor {
           _record(params, dartNameToOriginal, name,
               MessageFormatParamType.string, MessageFormatFormatter.none, null);
         case PluralNode(:final name, :final branches):
-          _record(params, dartNameToOriginal, name,
-              MessageFormatParamType.num_, MessageFormatFormatter.none, null);
+          _record(params, dartNameToOriginal, name, MessageFormatParamType.num_,
+              MessageFormatFormatter.none, null);
           for (final list in branches.values) {
             for (final n in list) {
               visit(n);
             }
           }
         case SelectOrdinalNode(:final name, :final branches):
-          _record(params, dartNameToOriginal, name,
-              MessageFormatParamType.num_, MessageFormatFormatter.none, null);
+          _record(params, dartNameToOriginal, name, MessageFormatParamType.num_,
+              MessageFormatFormatter.none, null);
           for (final list in branches.values) {
             for (final n in list) {
               visit(n);
@@ -42,8 +42,8 @@ class MessageFormatParamExtractor {
           }
         case NumberNode(:final name, :final style):
           final formatter = _numberFormatter(style);
-          _record(params, dartNameToOriginal, name,
-              MessageFormatParamType.num_, formatter, style);
+          _record(params, dartNameToOriginal, name, MessageFormatParamType.num_,
+              formatter, style);
         case DateNode(:final name, :final style):
           final formatter = _dateFormatter(style);
           _record(params, dartNameToOriginal, name,

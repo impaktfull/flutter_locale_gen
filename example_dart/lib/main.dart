@@ -23,7 +23,9 @@ Future<void> main() async {
     'mfPronoun': localization.mfPronoun(gender: 'female'),
     'mfRank': localization.mfRank(place: 2),
     'mfTotal': localization.mfTotal(total: 1234.56),
-    'mfPlacedAt': localization.mfPlacedAt(placedAt: DateTime(2024, 3, 11, 13, 37)),
+    'mfPlacedAt': localization.mfPlacedAt(
+      placedAt: DateTime(2024, 3, 11, 13, 37),
+    ),
     'mfMeetingAt': localization.mfMeetingAt(at: DateTime(2024, 3, 11, 15, 0)),
     'mfRace': localization.mfRace(d: const Duration(minutes: 2, seconds: 15)),
   };

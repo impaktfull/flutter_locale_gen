@@ -10,5 +10,6 @@ class LocaleGenConstants {
   /// Matches an unescaped `{` that begins an ICU placeholder, OR an ICU escape
   /// sequence (`'{'`, `'}'`, `''`). Used to detect whether a translation is
   /// MessageFormat-aware vs sprintf-only.
-  static final messageFormatMarkerRegex = RegExp(r"(\{[A-Za-z_])|('\{')|('\}')|('')");
+  static final messageFormatMarkerRegex =
+      RegExp(r"(\{[A-Za-z_])|('\{')|('\}')|('')");
 }

@@ -324,7 +324,6 @@ locale_gen:
       expect(output, contains('String _stripFormatSpecs('));
     });
 
-
     test('does not emit MessageFormat helpers when no MessageFormat keys exist',
         () {
       final defaults = <String, dynamic>{'plain': 'hello world'};
@@ -346,7 +345,8 @@ locale_gen:
     final generator = LocaleGenFlutterGenerator();
 
     String generate(Map<String, dynamic> defaults) {
-      return generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      return generator
+          .createLocalizationFile(mfParams, defaults, {'en': defaults});
     }
 
     test('placeholder generates a named-required String param', () {
@@ -356,40 +356,45 @@ locale_gen:
       expect(out, contains("'name': name"));
     });
 
-    test('camelCases uppercase names but preserves original key in args map', () {
+    test('camelCases uppercase names but preserves original key in args map',
+        () {
       final out = generate({'confirm_terms': 'See {SC} please'});
       expect(out, contains('String confirmTerms({required String sc})'));
       expect(out, contains("'SC': sc"));
     });
 
     test('plural generates a named-required num count param', () {
-      final out =
-          generate({'cart_count': '{count, plural, one {# item} other {# items}}'});
+      final out = generate(
+          {'cart_count': '{count, plural, one {# item} other {# items}}'});
       expect(out, contains('String cartCount({required num count})'));
       expect(out, contains("'count': count"));
     });
 
     test('selectordinal generates a named-required num param', () {
       final out = generate({
-        'rank': '{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}'
+        'rank':
+            '{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}'
       });
       expect(out, contains('String rank({required num place})'));
     });
 
     test('select generates a named-required String param', () {
-      final out = generate({
-        'pronoun': '{gender, select, male {he} female {she} other {they}}'
-      });
+      final out = generate(
+          {'pronoun': '{gender, select, male {he} female {she} other {they}}'});
       expect(out, contains('String pronoun({required String gender})'));
     });
 
     test('multiple placeholders generate ordered named params', () {
       final out = generate({'mix': 'A {first} and {second}.'});
-      expect(out, contains('String mix({required String first, required String second})'));
+      expect(
+          out,
+          contains(
+              'String mix({required String first, required String second})'));
     });
   });
 
-  group('LocaleGenFlutterGenerator buildMessageFormatFunction (formatters)', () {
+  group('LocaleGenFlutterGenerator buildMessageFormatFunction (formatters)',
+      () {
     final mfParams = LocaleGenParams.fromYamlString('locale_gen', '''
 name: example
 locale_gen:
@@ -398,39 +403,58 @@ locale_gen:
     final generator = LocaleGenFlutterGenerator();
 
     String generate(Map<String, dynamic> defaults) {
-      return generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      return generator
+          .createLocalizationFile(mfParams, defaults, {'en': defaults});
     }
 
     test('number with no style uses NumberFormat.decimalPattern', () {
       final out = generate({'count': 'Total {n, number}'});
       expect(out, contains('String count({required num n})'));
-      expect(out, contains("NumberFormat.decimalPattern(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(n)"));
+      expect(
+          out,
+          contains(
+              "NumberFormat.decimalPattern(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(n)"));
     });
 
     test('number percent uses NumberFormat.percentPattern', () {
       final out = generate({'rate': '{r, number, percent}'});
-      expect(out, contains("NumberFormat.percentPattern(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(r)"));
+      expect(
+          out,
+          contains(
+              "NumberFormat.percentPattern(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(r)"));
     });
 
     test('number currency uses NumberFormat.simpleCurrency', () {
       final out = generate({'price': '{p, number, currency}'});
-      expect(out, contains("NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(p)"));
+      expect(
+          out,
+          contains(
+              "NumberFormat.simpleCurrency(locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(p)"));
     });
 
     test('date short uses DateFormat.yMd', () {
       final out = generate({'placedAt': 'Placed {placedAt, date, short}'});
       expect(out, contains('String placedAt({required DateTime placedAt})'));
-      expect(out, contains("DateFormat.yMd(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(placedAt)"));
+      expect(
+          out,
+          contains(
+              "DateFormat.yMd(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(placedAt)"));
     });
 
     test('date custom skeleton passes through to DateFormat', () {
       final out = generate({'when': '{when, date, yMMMd}'});
-      expect(out, contains("DateFormat('yMMMd', locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(when)"));
+      expect(
+          out,
+          contains(
+              "DateFormat('yMMMd', locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(when)"));
     });
 
     test('time medium uses DateFormat.jms', () {
       final out = generate({'at': '{at, time, medium}'});
-      expect(out, contains("DateFormat.jms(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(at)"));
+      expect(
+          out,
+          contains(
+              "DateFormat.jms(locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(at)"));
     });
   });
 
@@ -444,21 +468,25 @@ locale_gen:
 
     test('emits _formatDuration helper when duration is used', () {
       final defaults = <String, dynamic>{'race': '{d, duration}'};
-      final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
-      expect(out, contains('String _formatDuration(Duration d, String? style)'));
+      final out = generator
+          .createLocalizationFile(mfParams, defaults, {'en': defaults});
+      expect(
+          out, contains('String _formatDuration(Duration d, String? style)'));
       expect(out, contains('String race({required Duration d})'));
       expect(out, contains('_formatDuration(d, null)'));
     });
 
     test('does not emit _formatDuration when duration is not used', () {
       final defaults = <String, dynamic>{'plain': 'hello'};
-      final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      final out = generator
+          .createLocalizationFile(mfParams, defaults, {'en': defaults});
       expect(out, isNot(contains('_formatDuration')));
     });
 
     test('custom duration pattern is passed through to _formatDuration', () {
       final defaults = <String, dynamic>{'race': '{d, duration, mm:ss}'};
-      final out = generator.createLocalizationFile(mfParams, defaults, {'en': defaults});
+      final out = generator
+          .createLocalizationFile(mfParams, defaults, {'en': defaults});
       expect(out, contains("_formatDuration(d, 'mm:ss')"));
     });
   });

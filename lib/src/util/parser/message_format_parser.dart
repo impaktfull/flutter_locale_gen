@@ -62,7 +62,9 @@ class MessageFormatParser {
     final text = literal.toString();
     if (text.isNotEmpty) {
       nodes.add(LiteralNode(text));
-    } else if (nodes.isNotEmpty && nodes.last is! LiteralNode && hasSeenNonEmptyLiteral) {
+    } else if (nodes.isNotEmpty &&
+        nodes.last is! LiteralNode &&
+        hasSeenNonEmptyLiteral) {
       // Add trailing empty literal only if we've seen actual content
       nodes.add(const LiteralNode(''));
     } else if (nodes.isEmpty) {
@@ -83,8 +85,7 @@ class MessageFormatParser {
     }
     cursor.skipWhitespace();
     if (cursor.isAtEnd) {
-      throw MessageFormatParseException(
-          'Unclosed placeholder for "$name"');
+      throw MessageFormatParseException('Unclosed placeholder for "$name"');
     }
     final after = cursor.peek();
     if (after == '}') {
@@ -206,8 +207,7 @@ class MessageFormatParser {
       cursor.advance(); // consume '{'
       final subNodes = _parseNodes(cursor, depth: 1);
       if (cursor.isAtEnd || cursor.peek() != '}') {
-        throw MessageFormatParseException(
-            'Unclosed branch "$key" in "$name"');
+        throw MessageFormatParseException('Unclosed branch "$key" in "$name"');
       }
       cursor.advance(); // consume '}'
       branches[key] = subNodes;
@@ -235,7 +235,8 @@ class MessageFormatParser {
   static String _readBranchKey(_Cursor cursor) {
     cursor.skipWhitespace();
     if (cursor.isAtEnd) {
-      throw const MessageFormatParseException('Expected branch key, got end of input');
+      throw const MessageFormatParseException(
+          'Expected branch key, got end of input');
     }
     final start = cursor.position;
     if (cursor.peek() == '=') {
@@ -282,8 +283,7 @@ class _Cursor {
 
   void expect(String char) {
     if (isAtEnd || _input[_pos] != char) {
-      throw MessageFormatParseException(
-          'Expected "$char" at position $_pos');
+      throw MessageFormatParseException('Expected "$char" at position $_pos');
     }
     _pos++;
   }
@@ -304,7 +304,8 @@ class _Cursor {
 
   String substringFrom(int start) => _input.substring(start, _pos);
 
-  static bool _isWhitespace(String c) => c == ' ' || c == '\t' || c == '\n' || c == '\r';
+  static bool _isWhitespace(String c) =>
+      c == ' ' || c == '\t' || c == '\n' || c == '\r';
 
   static bool _isIdentifierChar(String c) {
     final code = c.codeUnitAt(0);

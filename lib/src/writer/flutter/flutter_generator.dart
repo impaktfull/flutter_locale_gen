@@ -48,7 +48,8 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
             TranslationStyleDetector.detect(v) ==
             TranslationStyle.messageFormat);
     final hasDuration = defaultTranslations.values.whereType<String>().any((v) {
-      if (TranslationStyleDetector.detect(v) != TranslationStyle.messageFormat) {
+      if (TranslationStyleDetector.detect(v) !=
+          TranslationStyle.messageFormat) {
         return false;
       }
       try {
@@ -87,13 +88,17 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       ..writeln("import 'dart:convert';")
       ..writeln();
     [
-      if (hasPlurals || hasMessageFormat) ...["import 'package:intl/intl.dart';"],
+      if (hasPlurals || hasMessageFormat) ...[
+        "import 'package:intl/intl.dart';"
+      ],
       if (hasMessageFormat) ...["import 'package:intl/message_format.dart';"],
       "import 'package:sprintf/sprintf.dart';",
       "import 'package:flutter/services.dart';",
       "import 'package:flutter/widgets.dart';",
       "import 'package:${params.projectName}/${importPath}localization_keys.dart';",
-      if (hasMessageFormat) ...["import 'package:${params.projectName}/${importPath}localization_delegate.dart';"],
+      if (hasMessageFormat) ...[
+        "import 'package:${params.projectName}/${importPath}localization_delegate.dart';"
+      ],
       "import 'package:${params.projectName}/${importPath}localization_overrides.dart';",
     ]
       ..sort((i1, i2) => i1.compareTo(i2))
@@ -184,7 +189,9 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         ..writeln('  }')
         ..writeln();
       if (hasDuration) {
-        sb..write(messageFormatDurationHelperTemplate)..writeln();
+        sb
+          ..write(messageFormatDurationHelperTemplate)
+          ..writeln();
       }
     }
     if (hasPlurals) {
@@ -459,7 +466,8 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
       return;
     }
     final paramSignatures = mfParams.values
-        .map((p) => 'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
+        .map((p) =>
+            'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
         .join(', ');
     final argEntries = mfParams.values
         .map((p) => "'${p.originalName}': ${_argExpression(p)}")
@@ -471,7 +479,8 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
   }
 
   static String _argExpression(MessageFormatParam p) {
-    const tag = "locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()";
+    const tag =
+        "locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()";
     switch (p.formatter) {
       case MessageFormatFormatter.none:
         return p.dartName;

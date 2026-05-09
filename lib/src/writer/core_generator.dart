@@ -29,16 +29,16 @@ abstract class LocaleGenCoreGenerator {
         }
         final plural = Plural.fromJson(value);
         final arguments = <int, String>{};
-        plural.zero?.let((v) =>
-            arguments.addAll(_extractParameters(key: key, value: v)));
-        plural.one?.let((v) =>
-            arguments.addAll(_extractParameters(key: key, value: v)));
-        plural.two?.let((v) =>
-            arguments.addAll(_extractParameters(key: key, value: v)));
-        plural.few?.let((v) =>
-            arguments.addAll(_extractParameters(key: key, value: v)));
-        plural.many?.let((v) =>
-            arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.zero?.let(
+            (v) => arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.one?.let(
+            (v) => arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.two?.let(
+            (v) => arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.few?.let(
+            (v) => arguments.addAll(_extractParameters(key: key, value: v)));
+        plural.many?.let(
+            (v) => arguments.addAll(_extractParameters(key: key, value: v)));
         arguments.addAll(_extractParameters(key: key, value: plural.other));
         if (arguments.isEmpty) {
           buildDefaultPluralFunction(sb, params, key, plural, allTranslations);
@@ -78,7 +78,8 @@ abstract class LocaleGenCoreGenerator {
               'MessageFormat: ${e.message}. Falling back to default getter.');
           buildDefaultFunction(sb, params, key, allTranslations);
         } on MessageFormatParamConflictException catch (e) {
-          print('[locale_gen] Warning: key "$key" — ${e.message}. Falling back to default getter.');
+          print(
+              '[locale_gen] Warning: key "$key" — ${e.message}. Falling back to default getter.');
           buildDefaultFunction(sb, params, key, allTranslations);
         }
         return;
@@ -89,8 +90,7 @@ abstract class LocaleGenCoreGenerator {
       if (arguments.isEmpty) {
         buildDefaultFunction(sb, params, key, allTranslations);
       } else {
-        buildParameterizedFunction(
-            sb, params, key, arguments, allTranslations);
+        buildParameterizedFunction(sb, params, key, arguments, allTranslations);
       }
     } on Exception catch (e) {
       print(e);

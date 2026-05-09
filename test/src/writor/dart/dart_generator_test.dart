@@ -17,7 +17,8 @@ locale_gen:
       return generator.createLocalizationFile(params, all['en']!, all);
     }
 
-    test('emits _mf and message_format import when MessageFormat keys exist', () {
+    test('emits _mf and message_format import when MessageFormat keys exist',
+        () {
       final out = generate({
         'en': {'greeting': 'Hi, {name}!'},
         'nl': {'greeting': 'Hallo, {name}!'},
@@ -42,8 +43,14 @@ locale_gen:
         'en': {'greeting': 'Hi, {name}!'},
         'nl': {'greeting': 'Hallo, {name}!'},
       });
-      expect(out, contains("en: _mf(\"Hi, {name}!\", args: {'name': name}, locale: 'en')"));
-      expect(out, contains("nl: _mf(\"Hallo, {name}!\", args: {'name': name}, locale: 'nl')"));
+      expect(
+          out,
+          contains(
+              "en: _mf(\"Hi, {name}!\", args: {'name': name}, locale: 'en')"));
+      expect(
+          out,
+          contains(
+              "nl: _mf(\"Hallo, {name}!\", args: {'name': name}, locale: 'nl')"));
     });
 
     test('plural generates a num count param returning LocalizedValue', () {
@@ -55,12 +62,14 @@ locale_gen:
       expect(out, contains("args: {'count': count}"));
     });
 
-    test('camelCases uppercase names but preserves original key in args map', () {
+    test('camelCases uppercase names but preserves original key in args map',
+        () {
       final out = generate({
         'en': {'confirm_terms': 'See {SC} please'},
         'nl': {'confirm_terms': 'Zie {SC} aub'},
       });
-      expect(out, contains('LocalizedValue confirmTerms({required String sc})'));
+      expect(
+          out, contains('LocalizedValue confirmTerms({required String sc})'));
       expect(out, contains("'SC': sc"));
     });
 
@@ -69,7 +78,8 @@ locale_gen:
         'en': {'race': '{d, duration}'},
         'nl': {'race': '{d, duration}'},
       });
-      expect(out, contains('String _formatDuration(Duration d, String? style)'));
+      expect(
+          out, contains('String _formatDuration(Duration d, String? style)'));
       expect(out, contains('LocalizedValue race({required Duration d})'));
       expect(out, contains('_formatDuration(d, null)'));
     });
@@ -79,7 +89,8 @@ locale_gen:
         'en': {'placedAt': 'Placed {placedAt, date, short}'},
         'nl': {'placedAt': 'Geplaatst {placedAt, date, short}'},
       });
-      expect(out, contains('LocalizedValue placedAt({required DateTime placedAt})'));
+      expect(out,
+          contains('LocalizedValue placedAt({required DateTime placedAt})'));
       expect(out, contains("DateFormat.yMd('en').format(placedAt)"));
       expect(out, contains("DateFormat.yMd('nl').format(placedAt)"));
     });

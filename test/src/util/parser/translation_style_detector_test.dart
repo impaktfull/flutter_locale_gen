@@ -28,8 +28,7 @@ void main() {
           TranslationStyle.both);
     });
 
-    test('escaped opening brace alone is still messageFormat detection',
-        () {
+    test('escaped opening brace alone is still messageFormat detection', () {
       // '{' is an ICU escape — treat as messageFormat-aware string.
       expect(TranslationStyleDetector.detect("price '{'5}"),
           TranslationStyle.messageFormat);

@@ -14,16 +14,22 @@ locale_gen:
 ''');
 
     final en = json.decode(
-        File('test/assets/locale/messageformat/en.json').readAsStringSync()) as Map<String, dynamic>;
+            File('test/assets/locale/messageformat/en.json').readAsStringSync())
+        as Map<String, dynamic>;
     final nl = json.decode(
-        File('test/assets/locale/messageformat/nl.json').readAsStringSync()) as Map<String, dynamic>;
+            File('test/assets/locale/messageformat/nl.json').readAsStringSync())
+        as Map<String, dynamic>;
 
     final generator = LocaleGenFlutterGenerator();
-    final out = generator.createLocalizationFile(params, en, {'en': en, 'nl': nl});
+    final out =
+        generator.createLocalizationFile(params, en, {'en': en, 'nl': nl});
 
     expect(out, contains('String greeting({required String name})'));
     expect(out, contains('String cartCount({required num count})'));
-    expect(out, contains('String orderPlaced({required DateTime placedAt, required num total})'));
+    expect(
+        out,
+        contains(
+            'String orderPlaced({required DateTime placedAt, required num total})'));
     expect(out, contains('String race({required Duration d})'));
     expect(out, contains('String pronoun({required String gender})'));
 

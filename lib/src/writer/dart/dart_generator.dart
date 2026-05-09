@@ -27,7 +27,8 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
             TranslationStyle.messageFormat);
 
     final hasDuration = defaultTranslations.values.whereType<String>().any((v) {
-      if (TranslationStyleDetector.detect(v) != TranslationStyle.messageFormat) {
+      if (TranslationStyleDetector.detect(v) !=
+          TranslationStyle.messageFormat) {
         return false;
       }
       try {
@@ -134,7 +135,9 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
         ..writeln();
     }
     if (hasDuration) {
-      sb..write(messageFormatDurationHelperTemplate)..writeln();
+      sb
+        ..write(messageFormatDurationHelperTemplate)
+        ..writeln();
     }
     defaultTranslations.forEach((key, dynamic value) {
       DocumentationUtil.buildDocumentation(
@@ -269,7 +272,8 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
   ) {
     final camelKey = CaseUtil.getCamelcase(key);
     final paramSignatures = mfParams.values
-        .map((p) => 'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
+        .map((p) =>
+            'required ${dartTypeForMessageFormatParam(p.dartType)} ${p.dartName}')
         .join(', ');
     if (mfParams.isEmpty) {
       sb.writeln('  LocalizedValue get $camelKey => LocalizedValue(');

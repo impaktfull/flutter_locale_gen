@@ -33,8 +33,10 @@ class CrossLocaleValidator {
       }
       final localeNodes = _collectNamedNodes(ast);
 
-      final missing = defaultNodes.keys.toSet().difference(localeNodes.keys.toSet());
-      final extra = localeNodes.keys.toSet().difference(defaultNodes.keys.toSet());
+      final missing =
+          defaultNodes.keys.toSet().difference(localeNodes.keys.toSet());
+      final extra =
+          localeNodes.keys.toSet().difference(defaultNodes.keys.toSet());
       if (missing.isNotEmpty || extra.isNotEmpty) {
         final defaultNames = defaultNodes.keys.toList()..sort();
         final localeNames = localeNodes.keys.toList()..sort();
@@ -60,7 +62,8 @@ class CrossLocaleValidator {
     return warnings;
   }
 
-  static Map<String, MessageFormatNode> _collectNamedNodes(MessageFormatAst ast) {
+  static Map<String, MessageFormatNode> _collectNamedNodes(
+      MessageFormatAst ast) {
     final result = <String, MessageFormatNode>{};
     void visit(MessageFormatNode node) {
       switch (node) {

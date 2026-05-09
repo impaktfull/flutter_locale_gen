@@ -21,13 +21,17 @@ class HomeScreen extends StatelessWidget {
               type: ImpaktfullUiButtonType.primary,
               fullWidth: true,
               title: 'System Language (Not translated)',
-              onAsyncTap: Provider.of<LocaleViewModel>(context).onSwitchToSystemLanguage,
+              onAsyncTap: Provider.of<LocaleViewModel>(
+                context,
+              ).onSwitchToSystemLanguage,
             ),
             ImpaktfullUiButton(
               type: ImpaktfullUiButtonType.primary,
               fullWidth: true,
               title: 'English (Not translated)',
-              onAsyncTap: Provider.of<LocaleViewModel>(context).onSwitchToEnglish,
+              onAsyncTap: Provider.of<LocaleViewModel>(
+                context,
+              ).onSwitchToEnglish,
             ),
             ImpaktfullUiButton(
               type: ImpaktfullUiButtonType.primary,
@@ -45,13 +49,17 @@ class HomeScreen extends StatelessWidget {
               type: ImpaktfullUiButtonType.primary,
               fullWidth: true,
               title: 'zh-Hans-CN (Not translated)',
-              onAsyncTap: Provider.of<LocaleViewModel>(context).onSwitchToZHHansCN,
+              onAsyncTap: Provider.of<LocaleViewModel>(
+                context,
+              ).onSwitchToZHHansCN,
             ),
             ImpaktfullUiButton(
               type: ImpaktfullUiButtonType.secondary,
               fullWidth: true,
               title: 'show translation keys',
-              onAsyncTap: Provider.of<LocaleViewModel>(context).showTranslationKeys,
+              onAsyncTap: Provider.of<LocaleViewModel>(
+                context,
+              ).showTranslationKeys,
             ),
             const SizedBox(height: 22),
             SizedBox(

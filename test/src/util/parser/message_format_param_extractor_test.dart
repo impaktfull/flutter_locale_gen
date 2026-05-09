@@ -85,8 +85,7 @@ void main() {
     });
 
     test('throws when same param appears with incompatible Dart types', () {
-      final ast = MessageFormatParser.parse(
-          '{x, number} and {x, date, short}');
+      final ast = MessageFormatParser.parse('{x, number} and {x, date, short}');
       expect(
         () => MessageFormatParamExtractor.extract(ast),
         throwsA(isA<MessageFormatParamConflictException>()),
