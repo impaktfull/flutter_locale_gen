@@ -16,17 +16,17 @@ Dart tool that will convert your default locale json to dart code.
 
 [![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
 
-```
+```yaml
 dependencies:
   sprintf: ^6.0.2
 
-dev-dependencies:
+dev_dependencies:
   locale_gen: <latest-version>
 ```
 
 ### Add config to pubspec
 
-Add your locale folder to the assets to make use all your translations are loaded.
+Add your locale folder to the assets so all your translations are loaded at runtime:
 
 ```yaml
 flutter:
@@ -34,16 +34,18 @@ flutter:
     - assets/locale/
 ```
 
-Add the local_gen config to generate your dart code from json files
+Add a `locale_gen:` block to your `pubspec.yaml`. All keys other than `languages` are optional — defaults are shown below.
 
 ```yaml
 locale_gen:
-  default_language: "nl"
-  languages: ["en", "nl"]
-  locale_assets_path: "assets/locale/" #This is the location where your json files should be saved.
-  assets_path: "assets/locale/" #This is the location where your json files are located in your flutter app.
-  output_path: "lib/util/locale/" #This is the location where your localization files will be created in your flutter app.
-  doc_languages: ["en"] #Only generate docs for the given languages. Defaults to all languages. An empty list will skip doc generation
+  languages: ["en", "nl"]                # Required: all supported languages.
+  default_language: "en"                 # Default: "en" if present in `languages`, otherwise the first entry.
+  output_type: "flutter"                 # Default: "flutter". Use "dart" for non-Flutter projects (returns a LocalizedValue per key).
+  output_path: "lib/util/locale/"        # Where generated Dart files are written. Must start with `lib/`.
+  assets_path: "assets/locale/"          # Where the JSON files live in your app's asset bundle (loaded at runtime).
+  locale_assets_path: "assets/locale/"   # Where the JSON files live on disk (read by the generator).
+  doc_languages: ["en"]                  # Languages to include in dartdoc comments above each getter. Default: all `languages`. Empty list disables doc comments.
+  message_format_strict: false           # When true, sprintf markers in a MessageFormat-aware project emit a warning. See "MessageFormat (ICU) support → Strict mode".
 ```
 
 ### Run package with Flutter
@@ -72,52 +74,84 @@ dart pub run locale_gen:format
 
 ### Custom asset bundle
 
-Since version _10.0.0_ you can specify the bundle to load the assets from in the `load` function.
-This can be used as an alternative to overriding translations, fetching them from the network, ...
+Since version _10.0.0_ you can specify the bundle to load the assets from in the `load` function. This can be used as an alternative to overriding translations, fetching them from the network, etc.
 
-### Arguments
+## Arguments
 
-Arguments are supported as of 0.1.0
+Translations can take typed sprintf-style arguments. Three primitive types are supported: `String`, `int`, and `double`. (Available since 0.1.0; `int`/`double` distinction since 8.0.0 — earlier versions used `num`.)
 
-You can pass a String, an integer or a double to as an argument. (int and double since 8.0.0, num before that)
+### String — `%s` / `%1$s`
 
-Since 8.0.0 you can use more specifications from C's sprintf to apply format to numbers. If any modifier is causing a mismatch, please create a ticket
-
-Formatting for String: %1$s
-Formatting for int: %1$d
-Formatting for double: %1$f
-
-The number in between % and $ indicate the index of the argument. It is possible to place an argument in 1 language first but in another second:
-
-ex (Grammatically incorrect but it makes my point):
-
-```
-nl '%1$s, ik woon in %2$s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
-
-fr 'I live in %2$s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't knew that KOEN?
+```json
+{
+  "greeting": "Hi %1$s!"
+}
 ```
 
-_Note:_ As of 6.0.0 non-positional arguments are also supported. You **cannot** use both positional and non-positional arguments in the same string.
-Example:
+generates:
 
-```
-'%s, ik woon in %s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
+```dart
+String greeting(String arg1);
 ```
 
-### Plurals
+### int — `%d` / `%1$d`
+
+```json
+{
+  "items_count": "You have %1$d items"
+}
+```
+
+generates:
+
+```dart
+String itemsCount(int arg1);
+```
+
+### double — `%f` / `%1$f`
+
+```json
+{
+  "balance": "Your balance is %1$.02f"
+}
+```
+
+generates:
+
+```dart
+String balance(double arg1);
+```
+
+The `.02f` modifier follows the [sprintf](https://pub.dev/packages/sprintf) package's format specifiers and controls precision. Other sprintf modifiers work too — open an issue if any cause a mismatch.
+
+### Positional vs non-positional
+
+**Positional** uses `%<index>$<type>`, where the number between `%` and `$` is the argument index. This lets translators reorder arguments per language:
+
+```json
+{
+  "intro_en": "I live in %2$s. Did you know that %1$s?",
+  "intro_nl": "%1$s, ik woon in %2$s. Wist je dat niet?"
+}
+```
+
+**Non-positional** uses `%<type>` and arguments are taken in declaration order (supported since 6.0.0):
+
+```json
+{
+  "intro": "%s, ik woon in %s. Wist je dat niet?"
+}
+```
+
+You **cannot** mix positional and non-positional markers in the same string.
+
+For named parameters, gendered text, locale-aware date/number/duration formatting, or inline plurals, see [MessageFormat (ICU) support](#messageformat-icu-support) below.
+
+## Plurals
 
 Plurals are best expressed using ICU MessageFormat — see [MessageFormat → Plural](#plural) below.
 
 > Extra support: locale_gen also supports a legacy JSON-object plural format for backwards compatibility. See [doc/deprecation/json-object-plurals.md](doc/deprecation/json-object-plurals.md) for details.
-
-## Migration guides
-
-When upgrading across a major version, see the relevant guide:
-
-| From   | To      | Guide                                                |
-| ------ | ------- | ---------------------------------------------------- |
-| <7.0.0 | >=7.0.0 | [doc/migrations/7.0.0.md](doc/migrations/7.0.0.md) |
-| <9.0.0 | >=9.0.0 | [doc/migrations/9.0.0.md](doc/migrations/9.0.0.md) |
 
 ## MessageFormat (ICU) support
 
@@ -196,3 +230,12 @@ If `Localization.locale` is `null` at runtime, MessageFormat substitution and lo
 
 - impaktfull_translations
 - icapps_translations
+
+## Migration guides
+
+When upgrading across a major version, see the relevant guide:
+
+| From   | To      | Guide                                                |
+| ------ | ------- | ---------------------------------------------------- |
+| <7.0.0 | >=7.0.0 | [doc/migrations/7.0.0.md](doc/migrations/7.0.0.md)   |
+| <9.0.0 | >=9.0.0 | [doc/migrations/9.0.0.md](doc/migrations/9.0.0.md)   |
