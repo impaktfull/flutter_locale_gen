@@ -108,7 +108,7 @@ Example:
 
 Plurals are best expressed using ICU MessageFormat — see [MessageFormat → Plural](#plural) below.
 
-> Extra support: locale_gen also supports a legacy JSON-object plural format for backwards compatibility. See [docs/deprecation/json-object-plurals.md](docs/deprecation/json-object-plurals.md) for details.
+> Extra support: locale_gen also supports a legacy JSON-object plural format for backwards compatibility. See [doc/deprecation/json-object-plurals.md](doc/deprecation/json-object-plurals.md) for details.
 
 ## Migration guides
 
@@ -116,8 +116,8 @@ When upgrading across a major version, see the relevant guide:
 
 | From   | To      | Guide                                                |
 | ------ | ------- | ---------------------------------------------------- |
-| <7.0.0 | >=7.0.0 | [docs/migrations/7.0.0.md](docs/migrations/7.0.0.md) |
-| <9.0.0 | >=9.0.0 | [docs/migrations/9.0.0.md](docs/migrations/9.0.0.md) |
+| <7.0.0 | >=7.0.0 | [doc/migrations/7.0.0.md](doc/migrations/7.0.0.md) |
+| <9.0.0 | >=9.0.0 | [doc/migrations/9.0.0.md](doc/migrations/9.0.0.md) |
 
 ## MessageFormat (ICU) support
 
