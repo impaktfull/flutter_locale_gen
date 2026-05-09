@@ -14,3 +14,5 @@ cd ..
 cd example_flutter
 dart run locale_gen
 cd ..
+
+./tool/format.sh
