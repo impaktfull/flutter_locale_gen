@@ -1,8 +1,41 @@
+import 'package:locale_gen/src/model/locale_gen_params.dart';
 import 'package:locale_gen/src/model/message_format_ast.dart';
 import 'package:locale_gen/src/util/parser/message_format_parser.dart';
+import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 
 class CrossLocaleValidator {
   const CrossLocaleValidator._();
+
+  /// Runs cross-locale validation across all MessageFormat keys in
+  /// [defaultTranslations] and prints each warning via `print`.
+  static void validateAndPrint({
+    required LocaleGenParams params,
+    required Map<String, dynamic> defaultTranslations,
+    required Map<String, Map<String, dynamic>> allTranslations,
+  }) {
+    defaultTranslations.forEach((key, dynamic value) {
+      if (value is! String) return;
+      if (TranslationStyleDetector.detect(value) !=
+          TranslationStyle.messageFormat) {
+        return;
+      }
+      final others = <String, String>{};
+      for (final entry in allTranslations.entries) {
+        if (entry.key == params.defaultLanguage) continue;
+        final v = entry.value[key];
+        if (v is String) others[entry.key] = v;
+      }
+      final warnings = validateKey(
+        key: key,
+        defaultLanguage: params.defaultLanguage,
+        defaultValue: value,
+        otherLocales: others,
+      );
+      for (final w in warnings) {
+        print(w);
+      }
+    });
+  }
 
   static List<String> validateKey({
     required String key,
