@@ -9,22 +9,6 @@
       "program": "lib/main.dart"
     },
     {
-      "name": "example_flutter (profile)",
-      "request": "launch",
-      "type": "dart",
-      "cwd": "example_flutter",
-      "program": "lib/main.dart",
-      "flutterMode": "profile"
-    },
-    {
-      "name": "example_flutter (release)",
-      "request": "launch",
-      "type": "dart",
-      "cwd": "example_flutter",
-      "program": "lib/main.dart",
-      "flutterMode": "release"
-    },
-    {
       "name": "example_dart",
       "request": "launch",
       "type": "dart",
