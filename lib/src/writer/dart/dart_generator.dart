@@ -168,11 +168,12 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       final variableName = locale.replaceAll('-', '');
       final escapedValue = value
           .toString()
+          .replaceAll(r'\', r'\\')
           .replaceAll('\n', r'\n')
           .replaceAll('\r', r'\r')
           .replaceAll('"', r'\"')
           .replaceAll('\$', r'\$');
-      sb.writeln('    $variableName: _t(r"$escapedValue"),');
+      sb.writeln('    $variableName: _t("$escapedValue"),');
     }
     sb
       ..writeln('  );')
@@ -211,7 +212,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       }
       final variableName = locale.replaceAll('-', '');
       final escapedValue = _getEscapedValue(value);
-      sb.write('    $variableName: _t(r"$escapedValue", args: <dynamic> [');
+      sb.write('    $variableName: _t("$escapedValue", args: <dynamic> [');
       iterationIndex = 0;
       indexToReplacement.forEach((index, match) {
         if (iterationIndex++ != 0) {
@@ -228,6 +229,7 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
 
   String _getEscapedValue(value) => value
       .toString()
+      .replaceAll(r'\', r'\\')
       .replaceAll('\n', r'\n')
       .replaceAll('\r', r'\r')
       .replaceAll('"', r'\"')
@@ -290,14 +292,14 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       final escapedTemplate = _getEscapedValue(template);
       if (mfParams.isEmpty) {
         sb.writeln(
-            '    $variableName: _mf(r"$escapedTemplate", args: const {}, locale: \'$locale\'),');
+            '    $variableName: _mf("$escapedTemplate", args: const {}, locale: \'$locale\'),');
       } else {
         final argEntries = mfParams.values
             .map((p) =>
                 "'${p.originalName}': ${_argExpressionForLocale(p, locale)}")
             .join(', ');
         sb.writeln(
-            '    $variableName: _mf(r"$escapedTemplate", args: {$argEntries}, locale: \'$locale\'),');
+            '    $variableName: _mf("$escapedTemplate", args: {$argEntries}, locale: \'$locale\'),');
       }
     }
     sb

@@ -42,8 +42,8 @@ locale_gen:
         'en': {'greeting': 'Hi, {name}!'},
         'nl': {'greeting': 'Hallo, {name}!'},
       });
-      expect(out, contains("en: _mf(r\"Hi, {name}!\", args: {'name': name}, locale: 'en')"));
-      expect(out, contains("nl: _mf(r\"Hallo, {name}!\", args: {'name': name}, locale: 'nl')"));
+      expect(out, contains("en: _mf(\"Hi, {name}!\", args: {'name': name}, locale: 'en')"));
+      expect(out, contains("nl: _mf(\"Hallo, {name}!\", args: {'name': name}, locale: 'nl')"));
     });
 
     test('plural generates a num count param returning LocalizedValue', () {
