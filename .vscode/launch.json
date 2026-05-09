@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "example_flutter",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "example_flutter",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "example_dart",
+      "request": "launch",
+      "type": "dart",
+      "cwd": "example_dart",
+      "program": "lib/main.dart"
+    }
+  ]
+}

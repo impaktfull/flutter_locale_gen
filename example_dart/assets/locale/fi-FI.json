@@ -7,5 +7,13 @@
   "test_new_line": "Lisää\nLisää napauttamalla\n\n%1$s %2$d %1$s",
   "test_new_line_carriage_return": "Carriage\r\nReturn",
   "test_non_positional": "Testataan ei-positiaalista argumenttia %s ja %f",
-  "welcome_message": "Lisää napauttamalla"
+  "welcome_message": "Lisää napauttamalla",
+  "mf_greeting": "Hei, {name}!",
+  "mf_cart_count": "{count, plural, one {# tuote} other {# tuotetta}}",
+  "mf_pronoun": "{gender, select, male {hän} female {hän} other {he}}",
+  "mf_rank": "{place, selectordinal, other {#.}}",
+  "mf_total": "Yhteensä: {total, number, currency}",
+  "mf_placed_at": "Tehty {placedAt, date, short}",
+  "mf_meeting_at": "Kokous klo {at, time, short}",
+  "mf_race": "Kierrosaika: {d, duration, mm:ss}"
 }
