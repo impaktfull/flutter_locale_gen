@@ -15,10 +15,11 @@ Dart tool that will convert your default locale json to dart code.
 ### Add dependency to pubspec
 
 [![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
+
 ```
 dependencies:
   sprintf: ^6.0.2
-  
+
 dev-dependencies:
   locale_gen: <latest-version>
 ```
@@ -26,6 +27,7 @@ dev-dependencies:
 ### Add config to pubspec
 
 Add your locale folder to the assets to make use all your translations are loaded.
+
 ```yaml
 flutter:
   assets:
@@ -33,14 +35,15 @@ flutter:
 ```
 
 Add the local_gen config to generate your dart code from json files
+
 ```yaml
 locale_gen:
-  default_language: 'nl'
-  languages: ['en', 'nl']
-  locale_assets_path: 'assets/locale/' #This is the location where your json files should be saved.
-  assets_path: 'assets/locale/' #This is the location where your json files are located in your flutter app.
-  output_path: 'lib/util/locale/' #This is the location where your localization files will be created in your flutter app.
-  doc_languages: ['en'] #Only generate docs for the given languages. Defaults to all languages. An empty list will skip doc generation
+  default_language: "nl"
+  languages: ["en", "nl"]
+  locale_assets_path: "assets/locale/" #This is the location where your json files should be saved.
+  assets_path: "assets/locale/" #This is the location where your json files are located in your flutter app.
+  output_path: "lib/util/locale/" #This is the location where your localization files will be created in your flutter app.
+  doc_languages: ["en"] #Only generate docs for the given languages. Defaults to all languages. An empty list will skip doc generation
 ```
 
 ### Run package with Flutter
@@ -68,7 +71,8 @@ dart pub run locale_gen:format
 ```
 
 ### Custom asset bundle
-Since version *10.0.0* you can specify the bundle to load the assets from in the `load` function.
+
+Since version _10.0.0_ you can specify the bundle to load the assets from in the `load` function.
 This can be used as an alternative to overriding translations, fetching them from the network, ...
 
 ### Arguments
@@ -93,39 +97,25 @@ nl '%1$s, ik woon in %2$s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wis
 fr 'I live in %2$s. You didn't knew that %1$s?" => I live in ANTWERP. You didn't knew that KOEN?
 ```
 
-*Note:* As of 6.0.0 non-positional arguments are also supported. You **cannot** use both positional and non-positional arguments in the same string.
+_Note:_ As of 6.0.0 non-positional arguments are also supported. You **cannot** use both positional and non-positional arguments in the same string.
 Example:
+
 ```
 '%s, ik woon in %s. Wist je dat niet?' => KOEN, ik woon in ANTWERPEN. Wist je dat niet?
 ```
 
 ### Plurals
 
-Since 8.0.0 plurals are supported. To specify a plural, you can use the following syntax in the json file:
+Plurals are best expressed using ICU MessageFormat — see [MessageFormat → Plural](#plural) below.
 
-```json
-{
-  "example_plural": {
-    "zero": "You have no items",
-    "one": "You have %1$d item",
-    "two": "You have 2 items, party!",
-    "few": "You have a few items, nice!",
-    "many": "You have many items, fantastic!",
-    "other": "You have %1$d items"
-  }
-}
-```
-This will generate functions where you pass the number of items as an argument. The function will then return the correct translation based on the number of items.
-The count argument *WILL NOT* be passed as an argument for string interpolation.
-
-Note that the "other" key is always required, the other keys are dependant on the language in question
+> Extra support: locale_gen also supports a legacy JSON-object plural format for backwards compatibility. See [docs/deprecation/json-object-plurals.md](docs/deprecation/json-object-plurals.md) for details.
 
 ## Migration guides
 
 When upgrading across a major version, see the relevant guide:
 
-| From | To | Guide |
-| --- | --- | --- |
+| From   | To      | Guide                                                |
+| ------ | ------- | ---------------------------------------------------- |
 | <7.0.0 | >=7.0.0 | [docs/migrations/7.0.0.md](docs/migrations/7.0.0.md) |
 | <9.0.0 | >=9.0.0 | [docs/migrations/9.0.0.md](docs/migrations/9.0.0.md) |
 
@@ -202,30 +192,7 @@ If `Localization.locale` is `null` at runtime, MessageFormat substitution and lo
 
 - The dynamic `getTranslation(key, args:)` method on `Localization` is sprintf-only; calling it with a MessageFormat key returns the raw template (`"Hi, {name}!"`) without substitution. For MessageFormat keys, use the generated typed function (e.g., `Localization.of(context).greeting(name: 'Alice')`).
 
-### Working on mac?
-
-add this to you .bash_profile
-
-```shell
-flutterlocalegen(){
- flutter packages get && flutter packages pub run locale_gen
-}
-```
-
-now you can use the locale_gen with a single command.
-
-```shell
-flutterlocalegen
-```
-
-## Example
-This repo contains an example how to use this package.
-
-Packages used:
- - flutter_localizations
- - shared_preferences
- - provider
- - kiwi
-
 ## Other packges based on locale_gen
- - icapps_translations
+
+- impaktfull_translations
+- icapps_translations
