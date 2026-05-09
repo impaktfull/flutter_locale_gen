@@ -67,65 +67,9 @@ flutter packages pub run locale_gen:format
 dart pub run locale_gen:format
 ```
 
-### Migration steps <9.0.0 to >=9.0.0
-With version 9.0.0 of local gen you no longer have static access to the translations, instead you can now manually manage the different localization instances. You can for example store a localization instance as a static. This way you can use it largely the same way as before. Example from the example project:
-
-```dart
-class LocaleViewModel with ChangeNotifier {
-  static final Localization localizationInstance = Localization();
-  ...
-
-  Future<void> init(){
-    await Localization.load(
-      locale: locale,
-      localizationOverrides: customLocalizationOverrides,
-    );
-    notifyListeners();
-  }
-```
-
-You can then access this localizationInstance anywhere in the project like:
-```dart
-LocaleViewModel.localizationInstance.translation1;
-LocaleViewModel.localizationInstance.translation2;
-LocaleViewModel.localizationInstance.translation3;
-```
-
 ### Custom asset bundle
 Since version *10.0.0* you can specify the bundle to load the assets from in the `load` function.
 This can be used as an alternative to overriding translations, fetching them from the network, ...
-
-### Migration steps <7.0.0 to >=7.0.0
-With the newest version of locale_gen the context no longer needs to be provided when accessing the translations. This means there are a couple of breaking changes.
-
-The first one is that you can now directly get the translation from the Localization object without having to pass the context, so instead of:
-
-```dart
-Localization.of(context).translation;
-```
-
-you can now do
-
-```dart
-Localization.translation;
-```
-
-The second breaking change is how you initialize/change the locale. Before you could do this by changing the localizationDelegate that is passed to the materialApp, but now you just call the load function of the Localization object. So instead of:
-
-```dart
-      localeDelegate = LocalizationDelegate(
-        newLocale: locale,
-        localizationOverrides: customLocalizationOverrides,
-      );
-```
-you now do:
-
-```dart
-await Localization.load(
-      locale: locale,
-      localizationOverrides: customLocalizationOverrides,
-    );
-```
 
 ### Arguments
 
@@ -175,6 +119,15 @@ This will generate functions where you pass the number of items as an argument. 
 The count argument *WILL NOT* be passed as an argument for string interpolation.
 
 Note that the "other" key is always required, the other keys are dependant on the language in question
+
+## Migration guides
+
+When upgrading across a major version, see the relevant guide:
+
+| From | To | Guide |
+| --- | --- | --- |
+| <7.0.0 | >=7.0.0 | [docs/migrations/7.0.0.md](docs/migrations/7.0.0.md) |
+| <9.0.0 | >=9.0.0 | [docs/migrations/9.0.0.md](docs/migrations/9.0.0.md) |
 
 ## MessageFormat (ICU) support
 
