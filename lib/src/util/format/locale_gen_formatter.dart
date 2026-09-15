@@ -12,7 +12,9 @@ class LocaleGenFormatter {
   static void format(LocaleGenParams params) {
     const jsonEncoder = JsonEncoder.withIndent('  ');
     for (final language in params.languages) {
-      final path = '${params.assetsDir}$language.json';
+      // locale_assets_path, where the files are on disk. assets_path is their
+      // location in the app's asset bundle, which can be a different folder.
+      final path = '${params.localeAssetsDir}$language.json';
       print('Formatting $path');
       final file = File(join(Directory.current.path, path));
       final content = file.readAsStringSync();
