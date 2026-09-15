@@ -111,4 +111,70 @@ void main() {
       );
     });
   });
+
+  group('MessageFormatArgExpressionBuilder.entries', () {
+    MessageFormatParam param(
+      MessageFormatFormatter formatter,
+      String? style, [
+      List<MessageFormatParam> otherFormats = const [],
+    ]) =>
+        MessageFormatParam(
+          originalName: 'placed_at',
+          dartName: 'placedAt',
+          dartType: MessageFormatParamType.dateTime,
+          formatter: formatter,
+          formatterStyle: style,
+          otherFormats: otherFormats,
+        );
+
+    test('passes a single format under the name', () {
+      expect(
+        MessageFormatArgExpressionBuilder.entries(
+            param(MessageFormatFormatter.dateMedium, 'medium'), locale),
+        ["'placed_at': DateFormat.yMMMd('en').format(placedAt)"],
+      );
+    });
+
+    test('passes an unformatted value as it is', () {
+      expect(
+        MessageFormatArgExpressionBuilder.entries(
+            param(MessageFormatFormatter.none, null), locale),
+        ["'placed_at': placedAt"],
+      );
+    });
+
+    test('passes every other format under its format key', () {
+      expect(
+        MessageFormatArgExpressionBuilder.entries(
+          param(MessageFormatFormatter.dateMedium, 'medium',
+              [param(MessageFormatFormatter.timeShort, 'short')]),
+          locale,
+        ),
+        [
+          "'placed_at': DateFormat.yMMMd('en').format(placedAt)",
+          "'placed_at|time|short': DateFormat.jm('en').format(placedAt)",
+        ],
+      );
+    });
+
+    test('keeps the name for the raw value when the param is also unformatted',
+        () {
+      // A plural or a plain placeholder needs the value itself, so every
+      // format moves to its format key.
+      expect(
+        MessageFormatArgExpressionBuilder.entries(
+          param(MessageFormatFormatter.dateMedium, 'medium', [
+            param(MessageFormatFormatter.none, null),
+            param(MessageFormatFormatter.timeShort, 'short'),
+          ]),
+          locale,
+        ),
+        [
+          "'placed_at': placedAt",
+          "'placed_at|date|medium': DateFormat.yMMMd('en').format(placedAt)",
+          "'placed_at|time|short': DateFormat.jm('en').format(placedAt)",
+        ],
+      );
+    });
+  });
 }

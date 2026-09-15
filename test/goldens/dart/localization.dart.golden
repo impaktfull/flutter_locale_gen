@@ -34,16 +34,23 @@ class Localization {
 
   String _mf(String template, {required Map<String, Object> args, required String locale}) {
     try {
-      final stripped = _stripFormatSpecs(template);
-      return MessageFormat(stripped, locale: locale).format(args);
+      final resolvedArgs = <String, Object>{...args};
+      final resolved = _resolveFormatSpecs(template, args, resolvedArgs);
+      return MessageFormat(resolved, locale: locale).format(resolvedArgs);
     } catch (e) {
       return '⚠$template⚠';
     }
   }
 
-  String _stripFormatSpecs(String value) {
-    final regex = RegExp(r'\{(\w+)\s*,\s*(number|date|time|duration)(\s*,[^{}]*)?\}');
-    return value.replaceAllMapped(regex, (m) => '{${m.group(1)}}');
+  String _resolveFormatSpecs(String value, Map<String, Object> args, Map<String, Object> resolvedArgs) {
+    final regex = RegExp(r'\{(\w+)\s*,\s*(number|date|time|duration)\s*(?:,([^{}]*))?\}');
+    var index = 0;
+    return value.replaceAllMapped(regex, (m) {
+      final name = m.group(1)!;
+      final placeholder = '${name}__${index++}';
+      resolvedArgs[placeholder] = args['$name|${m.group(2)}|${m.group(3)?.trim() ?? ''}'] ?? args[name]!;
+      return '{$placeholder}';
+    });
   }
 
   String _formatDuration(Duration d, String? style) {
@@ -229,6 +236,16 @@ class Localization {
   LocalizedValue meetingAt({required DateTime at}) => LocalizedValue(
     en: _mf("Meeting at {at, time, short}", args: {'at': DateFormat.jm('en').format(at)}, locale: 'en'),
     nl: _mf("Vergadering om {at, time, short}", args: {'at': DateFormat.jm('nl').format(at)}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Placed on {placedAt, date, medium} at {placedAt, time, short}'**
+  ///
+  /// nl:  **'Geplaatst op {placedAt, date, medium} om {placedAt, time, short}'**
+  LocalizedValue placedAtTime({required DateTime placedAt}) => LocalizedValue(
+    en: _mf("Placed on {placedAt, date, medium} at {placedAt, time, short}", args: {'placedAt': DateFormat.yMMMd('en').format(placedAt), 'placedAt|time|short': DateFormat.jm('en').format(placedAt)}, locale: 'en'),
+    nl: _mf("Geplaatst op {placedAt, date, medium} om {placedAt, time, short}", args: {'placedAt': DateFormat.yMMMd('nl').format(placedAt), 'placedAt|time|short': DateFormat.jm('nl').format(placedAt)}, locale: 'nl'),
   );
 
   /// Translations:

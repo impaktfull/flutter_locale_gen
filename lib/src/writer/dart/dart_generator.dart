@@ -83,15 +83,17 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
         ..writeln(
             '  String _mf(String template, {required Map<String, Object> args, required String locale}) {')
         ..writeln('    try {')
-        ..writeln('      final stripped = _stripFormatSpecs(template);')
+        ..writeln('      final resolvedArgs = <String, Object>{...args};')
         ..writeln(
-            '      return MessageFormat(stripped, locale: locale).format(args);')
+            '      final resolved = _resolveFormatSpecs(template, args, resolvedArgs);')
+        ..writeln(
+            '      return MessageFormat(resolved, locale: locale).format(resolvedArgs);')
         ..writeln('    } catch (e) {')
         ..writeln("      return '⚠\$template⚠';")
         ..writeln('    }')
         ..writeln('  }')
         ..writeln()
-        ..write(MessageFormatUtil.stripFormatSpecsHelperTemplate)
+        ..write(MessageFormatUtil.formatSpecsHelperTemplate)
         ..writeln();
     }
     if (hasDuration) {
@@ -227,8 +229,8 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
       }
       final escapedTemplate = _getEscapedValue(template);
       final argEntries = mfParams.values
-          .map((p) =>
-              "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, "'$locale'")}")
+          .expand(
+              (p) => MessageFormatArgExpressionBuilder.entries(p, "'$locale'"))
           .join(', ');
       final args = mfParams.isEmpty ? 'const {}' : '{$argEntries}';
       values.add(

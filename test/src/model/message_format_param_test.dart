@@ -25,4 +25,68 @@ void main() {
     expect(
         exception.toString(), 'MessageFormatParamConflictException: two types');
   });
+
+  test('MessageFormatParam has no other formats by default', () {
+    const param = MessageFormatParam(
+      originalName: 'n',
+      dartName: 'n',
+      dartType: MessageFormatParamType.num_,
+      formatter: MessageFormatFormatter.none,
+    );
+
+    expect(param.otherFormats, isEmpty);
+  });
+
+  group('MessageFormatParam.formatKey', () {
+    MessageFormatParam format(MessageFormatFormatter formatter,
+            [String? style]) =>
+        MessageFormatParam(
+          originalName: 'placed_at',
+          dartName: 'placedAt',
+          dartType: MessageFormatParamType.dateTime,
+          formatter: formatter,
+          formatterStyle: style,
+        );
+
+    test('joins the name, the ICU type and the style', () {
+      expect(format(MessageFormatFormatter.dateMedium, 'medium').formatKey,
+          'placed_at|date|medium');
+    });
+
+    test('leaves the style empty when there is none', () {
+      expect(format(MessageFormatFormatter.numberDecimal).formatKey,
+          'placed_at|number|');
+    });
+
+    test('uses the ICU type of every formatter', () {
+      expect(
+        {
+          for (final formatter in MessageFormatFormatter.values)
+            formatter: format(formatter).formatKey.split('|')[1],
+        },
+        {
+          MessageFormatFormatter.none: '',
+          MessageFormatFormatter.numberDecimal: 'number',
+          MessageFormatFormatter.numberPercent: 'number',
+          MessageFormatFormatter.numberCurrency: 'number',
+          MessageFormatFormatter.numberCustom: 'number',
+          MessageFormatFormatter.dateShort: 'date',
+          MessageFormatFormatter.dateMedium: 'date',
+          MessageFormatFormatter.dateLong: 'date',
+          MessageFormatFormatter.dateFull: 'date',
+          MessageFormatFormatter.dateCustom: 'date',
+          MessageFormatFormatter.timeShort: 'time',
+          MessageFormatFormatter.timeMedium: 'time',
+          MessageFormatFormatter.timeLong: 'time',
+          MessageFormatFormatter.timeFull: 'time',
+          MessageFormatFormatter.timeCustom: 'time',
+          MessageFormatFormatter.durationDefault: 'duration',
+          MessageFormatFormatter.durationShort: 'duration',
+          MessageFormatFormatter.durationMedium: 'duration',
+          MessageFormatFormatter.durationLong: 'duration',
+          MessageFormatFormatter.durationCustom: 'duration',
+        },
+      );
+    });
+  });
 }

@@ -42,18 +42,31 @@ class Localization {
     required String locale,
   }) {
     try {
-      final stripped = _stripFormatSpecs(template);
-      return MessageFormat(stripped, locale: locale).format(args);
+      final resolvedArgs = <String, Object>{...args};
+      final resolved = _resolveFormatSpecs(template, args, resolvedArgs);
+      return MessageFormat(resolved, locale: locale).format(resolvedArgs);
     } catch (e) {
       return '⚠$template⚠';
     }
   }
 
-  String _stripFormatSpecs(String value) {
+  String _resolveFormatSpecs(
+    String value,
+    Map<String, Object> args,
+    Map<String, Object> resolvedArgs,
+  ) {
     final regex = RegExp(
-      r'\{(\w+)\s*,\s*(number|date|time|duration)(\s*,[^{}]*)?\}',
+      r'\{(\w+)\s*,\s*(number|date|time|duration)\s*(?:,([^{}]*))?\}',
     );
-    return value.replaceAllMapped(regex, (m) => '{${m.group(1)}}');
+    var index = 0;
+    return value.replaceAllMapped(regex, (m) {
+      final name = m.group(1)!;
+      final placeholder = '${name}__${index++}';
+      resolvedArgs[placeholder] =
+          args['$name|${m.group(2)}|${m.group(3)?.trim() ?? ''}'] ??
+          args[name]!;
+      return '{$placeholder}';
+    });
   }
 
   String _formatDuration(Duration d, String? style) {

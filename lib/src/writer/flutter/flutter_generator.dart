@@ -136,15 +136,17 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
         ..writeln(
             '      final value = (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;')
         ..writeln('      if (value == null) return key;')
-        ..writeln('      final stripped = _stripFormatSpecs(value);')
+        ..writeln('      final resolvedArgs = <String, Object>{...args};')
         ..writeln(
-            "      return MessageFormat(stripped, locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(args);")
+            '      final resolved = _resolveFormatSpecs(value, args, resolvedArgs);')
+        ..writeln(
+            "      return MessageFormat(resolved, locale: locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()).format(resolvedArgs);")
         ..writeln('    } catch (e) {')
         ..writeln("      return '⚠\$key⚠';")
         ..writeln('    }')
         ..writeln('  }')
         ..writeln()
-        ..write(MessageFormatUtil.stripFormatSpecsHelperTemplate)
+        ..write(MessageFormatUtil.formatSpecsHelperTemplate)
         ..writeln();
       if (hasDuration) {
         sb
@@ -386,8 +388,7 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
     const localeExpr =
         "locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()";
     final argEntries = mfParams.values
-        .map((p) =>
-            "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, localeExpr)}")
+        .expand((p) => MessageFormatArgExpressionBuilder.entries(p, localeExpr))
         .join(', ');
     sb
       ..writeln(

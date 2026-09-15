@@ -162,7 +162,7 @@ Placeholders and formatted values can be used inside plural and select branches:
 String summary({required num count, required DateTime placedAt});
 ```
 
-A name used twice must have the same type both times, and two names must not become the same Dart name (`placed_at` and `placedAt`). Either mistake prints a warning and generates a plain getter.
+A name can be used more than once, also in different formats: `"Placed on {placedAt, date, medium} at {placedAt, time, short}"` generates one `DateTime placedAt` parameter and renders both the date and the time. Every use must need the same Dart type (`{n, number}` and `{n, date}` conflict), and two names must not become the same Dart name (`placed_at` and `placedAt`). Either mistake prints a warning and generates a plain getter.
 
 ### Escaping
 

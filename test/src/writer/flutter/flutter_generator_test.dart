@@ -313,7 +313,7 @@ locale_gen:
 ''');
     final generator = LocaleGenFlutterGenerator();
 
-    test('emits _mf and _stripFormatSpecs when MessageFormat keys exist', () {
+    test('emits _mf and _resolveFormatSpecs when MessageFormat keys exist', () {
       final defaults = <String, dynamic>{'greeting': 'Hi, {name}!'};
       final all = <String, Map<String, dynamic>>{
         'en': {'greeting': 'Hi, {name}!'},
@@ -321,7 +321,31 @@ locale_gen:
       final output = generator.createLocalizationFile(mfParams, defaults, all);
       expect(output, contains("import 'package:intl/message_format.dart';"));
       expect(output, contains('String _mf('));
-      expect(output, contains('String _stripFormatSpecs('));
+      expect(output, contains('String _resolveFormatSpecs('));
+      expect(
+          output,
+          contains(
+              '      final resolved = _resolveFormatSpecs(value, args, resolvedArgs);'));
+    });
+
+    test('passes each format of a param used in several formats', () {
+      final defaults = <String, dynamic>{
+        'placed':
+            'Placed on {placedAt, date, medium} at {placedAt, time, short}',
+      };
+      const locale =
+          'locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()';
+
+      final output = generator
+          .createLocalizationFile(mfParams, defaults, {'en': defaults});
+
+      expect(
+        output,
+        contains('  String placed({required DateTime placedAt}) => '
+            '_mf(LocalizationKeys.placed, args: {'
+            "'placedAt': DateFormat.yMMMd($locale).format(placedAt), "
+            "'placedAt|time|short': DateFormat.jm($locale).format(placedAt)});"),
+      );
     });
 
     test('does not emit MessageFormat helpers when no MessageFormat keys exist',
