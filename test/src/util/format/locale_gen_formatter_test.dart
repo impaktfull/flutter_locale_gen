@@ -45,7 +45,10 @@ locale_gen:
       ]);
     });
 
-    test('formats the files in assets_path, not locale_assets_path', () {
+    test('formats the files on disk in locale_assets_path, not assets_path',
+        () {
+      // assets_path is where the files are in the app's asset bundle, which
+      // can be a different folder than the one the generator reads from.
       final project = TestProject()
         ..writeFile('assets/i18n/en.json', '{"b": "B", "a": "A"}')
         ..writeFile('translations/en.json', '{"b": "B", "a": "A"}');
@@ -57,11 +60,12 @@ locale_gen:
   locale_assets_path: translations
 ''');
 
-      project.run(() => LocaleGenFormatter.format(params));
+      final printed = project.run(() => LocaleGenFormatter.format(params));
 
-      expect(project.readFile('assets/i18n/en.json'),
+      expect(project.readFile('translations/en.json'),
           '{\n  "a": "A",\n  "b": "B"\n}');
-      expect(project.readFile('translations/en.json'), '{"b": "B", "a": "A"}');
+      expect(project.readFile('assets/i18n/en.json'), '{"b": "B", "a": "A"}');
+      expect(printed, ['Formatting translations/en.json', 'Formatting done!']);
     });
   });
 }

@@ -22,8 +22,8 @@ locale_gen:
 | `default_language`      | `en` if it is in `languages`, otherwise the first entry | The language every other language is compared against. Its keys decide which getters and functions are generated. Must be in `languages`. |
 | `output_type`           | `flutter`                                            | `flutter` or `dart`. See [Flutter or Dart output?](../README.md#flutter-or-dart-output). Any other value falls back to `flutter`. |
 | `output_path`           | `lib/util/locale/`                                   | Where the generated files are written. Must start with `lib/`, because the generated files import each other through `package:` imports. |
-| `assets_path`           | `assets/locale/`                                     | Flutter writer: where the JSON files live in your **asset bundle**. The generated `Localization.load` reads `<assets_path><language>.json`. Also the folder `locale_gen:format` formats. |
-| `locale_assets_path`    | `assets/locale/`                                     | Where the JSON files live **on disk**, read by the generator. Only different from `assets_path` when another tool or package puts your translations in the bundle. |
+| `assets_path`           | `assets/locale/`                                     | Flutter writer: where the JSON files live in your **asset bundle**. The generated `Localization.load` reads `<assets_path><language>.json`. |
+| `locale_assets_path`    | `assets/locale/`                                     | Where the JSON files live **on disk**, read by the generator and rewritten by `locale_gen:format`. Only different from `assets_path` when another tool or package puts your translations in the bundle. |
 | `doc_languages`         | all `languages`                                      | Which translations appear in the doc comment above every generated member. `[]` disables doc comments. Every entry must be in `languages`. |
 | `message_format_strict` | `false`                                              | When `true`, a key that uses sprintf markers (`%s`, `%1$d`) prints a warning and is generated as a plain getter. Use it to keep an ICU-only project ICU-only. See [Translation formats](translation-formats.md#strict-mode). |
 
@@ -44,13 +44,12 @@ Generation prints the default and supported languages, any [warnings](translatio
 
 ### Formatting
 
-`dart run locale_gen:format` rewrites `<assets_path><language>.json` for every language:
+`dart run locale_gen:format` rewrites `<locale_assets_path><language>.json` for every language:
 
 - keys are sorted alphabetically,
 - keys are converted to snake_case (`welcomeBack` becomes `welcome_back`),
 - the file is indented with two spaces.
 
-It formats `assets_path`, not `locale_assets_path`. If the two differ in your project, format the files in `locale_assets_path` another way.
 
 ## Keys and generated names
 
