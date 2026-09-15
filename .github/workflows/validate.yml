@@ -1,0 +1,84 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+# A new push to the same ref supersedes older runs instead of queueing them.
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Flutter (and its bundled Dart) because `example_flutter` is analyzed
+      # too. Pinned so `dart format` output does not drift with every release.
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.9
+
+      # Every package, not only the root: `flutter analyze` walks into the
+      # examples, and an example without `pub get` reports hundreds of errors.
+      - name: Install dependencies
+        run: |
+          dart pub get
+          (cd example_dart && dart pub get)
+          (cd example_flutter && flutter pub get)
+
+      - name: Format
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Publish dry run
+        run: dart pub publish --dry-run
+
+  # locale_gen runs on the developer's machine, so it has to behave the same on
+  # every OS. Windows once generated `assets\locale/` into the asset key
+  # (#89): regenerating the examples on each OS and diffing against the
+  # checked-in code catches any platform-specific output.
+  generate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # The generator writes `\n`. Without this, Windows checks the examples
+      # out with `\r\n` and every generated file looks changed.
+      - name: Keep LF line endings
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.9
+
+      - name: Install dependencies
+        run: |
+          dart pub get
+          (cd example_dart && dart pub get)
+          (cd example_flutter && flutter pub get)
+
+      - name: Test
+        run: dart test
+
+      - name: Generated example code is up to date
+        run: |
+          (cd example_dart && dart run locale_gen)
+          (cd example_flutter && dart run locale_gen)
+          dart format example_dart example_flutter
+          git diff --exit-code -- example_dart example_flutter

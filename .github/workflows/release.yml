@@ -1,0 +1,24 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          # A PAT, not GITHUB_TOKEN. pub.dev only accepts a publish from a
+          # workflow that was triggered by a tag push, and a tag pushed with
+          # GITHUB_TOKEN triggers no workflows at all, so `publish.yml` would
+          # never run. The PAT also makes `validate.yml` run on the release PR.
+          token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
