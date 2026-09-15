@@ -73,15 +73,23 @@ abstract final class MessageFormatUtil {
   }
 ''';
 
-  /// Raw Dart source for the `_stripFormatSpecs` helper emitted into generated
-  /// localizations when any key uses MessageFormat. The runtime `MessageFormat`
-  /// class doesn't parse `number/date/time/duration` arg types — this helper
-  /// rewrites those down to plain `{name}` so they can be substituted with
-  /// pre-formatted values.
-  static const stripFormatSpecsHelperTemplate = r'''
-  String _stripFormatSpecs(String value) {
-    final regex = RegExp(r'\{(\w+)\s*,\s*(number|date|time|duration)(\s*,[^{}]*)?\}');
-    return value.replaceAllMapped(regex, (m) => '{${m.group(1)}}');
+  /// Raw Dart source for the `_resolveFormatSpecs` helper emitted into
+  /// generated localizations when any key uses MessageFormat. The runtime
+  /// `MessageFormat` class doesn't parse `number/date/time/duration` arg
+  /// types, so this helper gives each of them a placeholder of its own, filled
+  /// with the value the generated code pre-formatted for it: the one under its
+  /// format key (`name|type|style`, see `MessageFormatParam.formatKey`), or
+  /// else the one under its name.
+  static const formatSpecsHelperTemplate = r'''
+  String _resolveFormatSpecs(String value, Map<String, Object> args, Map<String, Object> resolvedArgs) {
+    final regex = RegExp(r'\{(\w+)\s*,\s*(number|date|time|duration)\s*(?:,([^{}]*))?\}');
+    var index = 0;
+    return value.replaceAllMapped(regex, (m) {
+      final name = m.group(1)!;
+      final placeholder = '${name}__${index++}';
+      resolvedArgs[placeholder] = args['$name|${m.group(2)}|${m.group(3)?.trim() ?? ''}'] ?? args[name]!;
+      return '{$placeholder}';
+    });
   }
 ''';
 

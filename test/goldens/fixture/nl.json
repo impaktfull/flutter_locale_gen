@@ -15,6 +15,7 @@
   "share": "{share, number, percent} klaar",
   "placed_at": "Geplaatst op {placedAt, date, medium}",
   "meeting_at": "Vergadering om {at, time, short}",
+  "placed_at_time": "Geplaatst op {placedAt, date, medium} om {placedAt, time, short}",
   "lap_time": "Rondetijd: {lap, duration, mm:ss}",
   "quote": "Het is ''hier''"
 }

@@ -127,8 +127,10 @@ void main() {
     test('define the helpers the generated code calls', () {
       expect(MessageFormatUtil.durationHelperTemplate,
           contains('String _formatDuration(Duration d, String? style)'));
-      expect(MessageFormatUtil.stripFormatSpecsHelperTemplate,
-          contains('String _stripFormatSpecs(String value)'));
+      expect(
+          MessageFormatUtil.formatSpecsHelperTemplate,
+          contains('String _resolveFormatSpecs(String value, '
+              'Map<String, Object> args, Map<String, Object> resolvedArgs)'));
     });
   });
 }

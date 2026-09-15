@@ -10,6 +10,27 @@ import 'package:locale_gen/src/util/format/message_format_util.dart';
 /// for the Flutter writer, or a literal like `"'en'"` for the per-locale Dart
 /// writer.
 abstract final class MessageFormatArgExpressionBuilder {
+  /// The `'key': expression` entries [p] adds to the args of a message.
+  ///
+  /// A param used in one format is passed under its name, pre-formatted. Its
+  /// [MessageFormatParam.otherFormats] are passed under their
+  /// [MessageFormatParam.formatKey], where the generated `_resolveFormatSpecs`
+  /// looks them up. When the param is also used unformatted, in a plural or a
+  /// plain placeholder, the name holds the value itself and every format goes
+  /// under its format key.
+  static List<String> entries(MessageFormatParam p, String localeExpr) {
+    final formats = [p, ...p.otherFormats];
+    final formatted = formats
+        .where((format) => format.formatter != MessageFormatFormatter.none)
+        .toList();
+    final isUsedUnformatted = formatted.length != formats.length;
+    return [
+      "'${p.originalName}': ${isUsedUnformatted ? p.dartName : build(p, localeExpr)}",
+      for (final format in isUsedUnformatted ? formatted : p.otherFormats)
+        "'${format.formatKey}': ${build(format, localeExpr)}",
+    ];
+  }
+
   static String build(MessageFormatParam p, String localeExpr) {
     switch (p.formatter) {
       case MessageFormatFormatter.none:

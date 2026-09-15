@@ -51,6 +51,9 @@ placed_at
 meeting_at
   en: Meeting at 2:30 PM
   nl: Vergadering om 14:30
+placed_at_time
+  en: Placed on Sep 15, 2026 at 2:30 PM
+  nl: Geplaatst op 15 sep 2026 om 14:30
 lap_time
   en: Lap time: 01:42
   nl: Rondetijd: 01:42

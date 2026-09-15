@@ -248,6 +248,33 @@ locale_gen:
       );
     });
 
+    test('passes each format of a param used in several formats', () {
+      final result = generate({
+        'en': {
+          'placed':
+              'Placed on {placedAt, date, medium} at {placedAt, time, short}',
+        },
+        'nl': {
+          'placed':
+              'Geplaatst op {placedAt, date, medium} om {placedAt, time, short}',
+        },
+      });
+
+      expect(
+        result.output,
+        contains(
+            '    en: _mf("Placed on {placedAt, date, medium} at {placedAt, time, short}", '
+            "args: {'placedAt': DateFormat.yMMMd('en').format(placedAt), "
+            "'placedAt|time|short': DateFormat.jm('en').format(placedAt)}, "
+            "locale: 'en'),"),
+      );
+      expect(
+        result.output,
+        contains(
+            '      final resolved = _resolveFormatSpecs(template, args, resolvedArgs);'),
+      );
+    });
+
     test('its plural builders throw an ArgumentError', () {
       final all = {'en': <String, dynamic>{}, 'nl': <String, dynamic>{}};
       expect(

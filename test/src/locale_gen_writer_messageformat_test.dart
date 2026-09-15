@@ -34,7 +34,7 @@ locale_gen:
     expect(out, contains('String pronoun({required String gender})'));
 
     expect(out, contains('String _mf('));
-    expect(out, contains('String _stripFormatSpecs('));
+    expect(out, contains('String _resolveFormatSpecs('));
     expect(out, contains('String _formatDuration('));
     expect(out, contains("import 'package:intl/message_format.dart';"));
   });

@@ -72,23 +72,36 @@ class Localization {
       final value =
           (_localisedOverrideValues[key] ?? _localisedValues[key]) as String?;
       if (value == null) return key;
-      final stripped = _stripFormatSpecs(value);
+      final resolvedArgs = <String, Object>{...args};
+      final resolved = _resolveFormatSpecs(value, args, resolvedArgs);
       return MessageFormat(
-        stripped,
+        resolved,
         locale:
             locale?.toLanguageTag() ??
             LocalizationDelegate.defaultLocale.toLanguageTag(),
-      ).format(args);
+      ).format(resolvedArgs);
     } catch (e) {
       return '⚠$key⚠';
     }
   }
 
-  String _stripFormatSpecs(String value) {
+  String _resolveFormatSpecs(
+    String value,
+    Map<String, Object> args,
+    Map<String, Object> resolvedArgs,
+  ) {
     final regex = RegExp(
-      r'\{(\w+)\s*,\s*(number|date|time|duration)(\s*,[^{}]*)?\}',
+      r'\{(\w+)\s*,\s*(number|date|time|duration)\s*(?:,([^{}]*))?\}',
     );
-    return value.replaceAllMapped(regex, (m) => '{${m.group(1)}}');
+    var index = 0;
+    return value.replaceAllMapped(regex, (m) {
+      final name = m.group(1)!;
+      final placeholder = '${name}__${index++}';
+      resolvedArgs[placeholder] =
+          args['$name|${m.group(2)}|${m.group(3)?.trim() ?? ''}'] ??
+          args[name]!;
+      return '{$placeholder}';
+    });
   }
 
   String _formatDuration(Duration d, String? style) {

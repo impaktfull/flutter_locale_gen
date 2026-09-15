@@ -82,6 +82,7 @@ Future<void> main() async {
     'share': l.share(share: 0.42),
     'placed_at': l.placedAt(placedAt: DateTime(2026, 9, 15)),
     'meeting_at': l.meetingAt(at: DateTime(2026, 9, 15, 14, 30)),
+    'placed_at_time': l.placedAtTime(placedAt: DateTime(2026, 9, 15, 14, 30)),
     'lap_time': l.lapTime(lap: const Duration(minutes: 1, seconds: 42)),
     'quote': l.quote,
   };

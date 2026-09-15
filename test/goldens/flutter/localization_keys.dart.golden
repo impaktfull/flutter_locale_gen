@@ -96,6 +96,13 @@ class LocalizationKeys {
 
   /// Translations:
   ///
+  /// en:  **'Placed on {placedAt, date, medium} at {placedAt, time, short}'**
+  ///
+  /// nl:  **'Geplaatst op {placedAt, date, medium} om {placedAt, time, short}'**
+  static const placedAtTime = 'placed_at_time';
+
+  /// Translations:
+  ///
   /// en:  **'Lap time: {lap, duration, mm:ss}'**
   ///
   /// nl:  **'Rondetijd: {lap, duration, mm:ss}'**

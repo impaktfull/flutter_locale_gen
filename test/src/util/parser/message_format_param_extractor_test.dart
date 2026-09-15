@@ -106,6 +106,48 @@ void main() {
     });
   });
 
+  group('MessageFormatParamExtractor with a param in several formats', () {
+    MessageFormatParam extractSingle(String message) =>
+        MessageFormatParamExtractor.extract(MessageFormatParser.parse(message))
+            .values
+            .single;
+
+    test('keeps the first format and lists the others', () {
+      final param = extractSingle('{d, date, medium} at {d, time, short}');
+      expect(param.formatter, MessageFormatFormatter.dateMedium);
+      expect(param.formatterStyle, 'medium');
+      expect(
+        param.otherFormats.map((f) => (f.formatter, f.formatterStyle)),
+        [(MessageFormatFormatter.timeShort, 'short')],
+      );
+    });
+
+    test('lists a repeated format once', () {
+      final param = extractSingle(
+          '{d, time, short} to {d, date} or {d, time, short} and {d, date}');
+      expect(param.otherFormats.map((f) => f.formatter),
+          [MessageFormatFormatter.dateShort]);
+    });
+
+    test('lists a format used next to an unformatted use', () {
+      final param =
+          extractSingle('{n, plural, other {#}} ({n, number, percent})');
+      expect(param.formatter, MessageFormatFormatter.none);
+      expect(param.otherFormats.map((f) => f.formatter),
+          [MessageFormatFormatter.numberPercent]);
+    });
+
+    test('keeps the names and the type in every format', () {
+      final other = extractSingle('{placed_at, date} {placed_at, time}')
+          .otherFormats
+          .single;
+      expect(other.originalName, 'placed_at');
+      expect(other.dartName, 'placedAt');
+      expect(other.dartType, MessageFormatParamType.dateTime);
+      expect(other.otherFormats, isEmpty);
+    });
+  });
+
   group('MessageFormatParamExtractor formatters', () {
     final formatters = {
       '{v, number}': (MessageFormatFormatter.numberDecimal, null),
