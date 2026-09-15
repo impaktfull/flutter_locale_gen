@@ -214,17 +214,10 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
     Map<String, MessageFormatParam> mfParams,
     Map<String, Map<String, dynamic>> allTranslations,
   ) {
-    final camelKey = CaseUtil.getCamelcase(key);
-    final paramSignatures = mfParams.values
-        .map((p) =>
-            'required ${MessageFormatUtil.dartTypeFor(p.dartType)} ${p.dartName}')
-        .join(', ');
-    if (mfParams.isEmpty) {
-      sb.writeln('  LocalizedValue get $camelKey => LocalizedValue(');
-    } else {
-      sb.writeln(
-          '  LocalizedValue $camelKey({$paramSignatures}) => LocalizedValue(');
-    }
+    // Every value is built before anything is written: a language whose value
+    // is not a String throws, and must not leave half a function behind for
+    // the fallback getter to be appended to.
+    final values = <String>[];
     for (final locale in params.languages) {
       final variableName = locale.replaceAll('-', '');
       final template = _requireLocaleValue(allTranslations, locale, key);
@@ -233,18 +226,24 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
             'Key $key in locale $locale is not a String for MessageFormat');
       }
       final escapedTemplate = _getEscapedValue(template);
-      if (mfParams.isEmpty) {
-        sb.writeln(
-            '    $variableName: _mf("$escapedTemplate", args: const {}, locale: \'$locale\'),');
-      } else {
-        final argEntries = mfParams.values
-            .map((p) =>
-                "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, "'$locale'")}")
-            .join(', ');
-        sb.writeln(
-            '    $variableName: _mf("$escapedTemplate", args: {$argEntries}, locale: \'$locale\'),');
-      }
+      final argEntries = mfParams.values
+          .map((p) =>
+              "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, "'$locale'")}")
+          .join(', ');
+      final args = mfParams.isEmpty ? 'const {}' : '{$argEntries}';
+      values.add(
+          '    $variableName: _mf("$escapedTemplate", args: $args, locale: \'$locale\'),');
     }
+
+    final camelKey = CaseUtil.getCamelcase(key);
+    final paramSignatures = mfParams.values
+        .map((p) =>
+            'required ${MessageFormatUtil.dartTypeFor(p.dartType)} ${p.dartName}')
+        .join(', ');
+    final member =
+        mfParams.isEmpty ? 'get $camelKey' : '$camelKey({$paramSignatures})';
+    sb.writeln('  LocalizedValue $member => LocalizedValue(');
+    values.forEach(sb.writeln);
     sb
       ..writeln('  );')
       ..writeln();
