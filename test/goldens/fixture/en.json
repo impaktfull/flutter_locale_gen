@@ -1,0 +1,20 @@
+{
+  "title": "Settings",
+  "multiline": "Line one\nLine \"two\" costs $5",
+  "welcome_back": "Welcome back %1$s, you have %2$d messages",
+  "paid": "You paid %s for %.2f",
+  "hours": {
+    "one": "%1$d hour",
+    "other": "%1$d hours"
+  },
+  "greeting": "Hi, {name}!",
+  "cart_count": "{count, plural, =0 {Your cart is empty} one {# item} other {# items}}",
+  "pronoun": "{gender, select, male {he} female {she} other {they}}",
+  "rank": "{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}",
+  "total": "Total: {total, number, currency}",
+  "share": "{share, number, percent} done",
+  "placed_at": "Placed on {placedAt, date, medium}",
+  "meeting_at": "Meeting at {at, time, short}",
+  "lap_time": "Lap time: {lap, duration, mm:ss}",
+  "quote": "It''s here"
+}

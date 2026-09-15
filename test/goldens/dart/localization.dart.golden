@@ -1,0 +1,254 @@
+import 'package:intl/intl.dart';
+import 'package:intl/message_format.dart';
+import 'package:sprintf/sprintf.dart';
+
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+
+class LocalizedValue {
+  final String en;
+  final String nl;
+
+  LocalizedValue({
+    required this.en,
+    required this.nl,
+  });
+}
+
+class Localization {
+  static Localization? _instance;
+
+  static Localization get instance => _instance ??= Localization._();
+
+  Localization._();
+
+  String _t(String value, {List<dynamic>? args}) {
+    try {
+      if (args == null || args.isEmpty) return value;
+      return sprintf(value, args);
+    } catch (e) {
+      return '⚠$value⚠';
+    }
+  }
+
+  String _mf(String template, {required Map<String, Object> args, required String locale}) {
+    try {
+      final stripped = _stripFormatSpecs(template);
+      return MessageFormat(stripped, locale: locale).format(args);
+    } catch (e) {
+      return '⚠$template⚠';
+    }
+  }
+
+  String _stripFormatSpecs(String value) {
+    final regex = RegExp(r'\{(\w+)\s*,\s*(number|date|time|duration)(\s*,[^{}]*)?\}');
+    return value.replaceAllMapped(regex, (m) => '{${m.group(1)}}');
+  }
+
+  String _formatDuration(Duration d, String? style) {
+    final h = d.inHours;
+    final m = d.inMinutes.remainder(60);
+    final s = d.inSeconds.remainder(60);
+    String pad(int n) => n.toString().padLeft(2, '0');
+    if (style == null || style == 'medium') {
+      return '${pad(h)}:${pad(m)}:${pad(s)}';
+    }
+    if (style == 'short') {
+      return '${pad(d.inMinutes)}:${pad(s)}';
+    }
+    if (style == 'long') {
+      final parts = <String>[];
+      if (h > 0) parts.add('${h}h');
+      if (m > 0) parts.add('${m}m');
+      if (s > 0 || parts.isEmpty) parts.add('${s}s');
+      return parts.join(' ');
+    }
+    final buf = StringBuffer();
+    var i = 0;
+    while (i < style.length) {
+      final c = style[i];
+      if (c == "'" && i + 1 < style.length) {
+        final end = style.indexOf("'", i + 1);
+        if (end == -1) {
+          buf.write(style.substring(i + 1));
+          break;
+        }
+        buf.write(style.substring(i + 1, end));
+        i = end + 1;
+        continue;
+      }
+      if (c == 'H') {
+        var n = 1;
+        while (i + n < style.length && style[i + n] == 'H') {
+          n++;
+        }
+        buf.write(h.toString().padLeft(n, '0'));
+        i += n;
+        continue;
+      }
+      if (c == 'm') {
+        var n = 1;
+        while (i + n < style.length && style[i + n] == 'm') {
+          n++;
+        }
+        buf.write(m.toString().padLeft(n, '0'));
+        i += n;
+        continue;
+      }
+      if (c == 's') {
+        var n = 1;
+        while (i + n < style.length && style[i + n] == 's') {
+          n++;
+        }
+        buf.write(s.toString().padLeft(n, '0'));
+        i += n;
+        continue;
+      }
+      buf.write(c);
+      i++;
+    }
+    return buf.toString();
+  }
+
+  /// Translations:
+  ///
+  /// en:  **'Settings'**
+  ///
+  /// nl:  **'Instellingen'**
+  LocalizedValue get title => LocalizedValue(
+    en: _t("Settings"),
+    nl: _t("Instellingen"),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Line one\nLine "two" costs $5'**
+  ///
+  /// nl:  **'Lijn een\nLijn "twee" kost $5'**
+  LocalizedValue get multiline => LocalizedValue(
+    en: _t("Line one\nLine \"two\" costs \$5"),
+    nl: _t("Lijn een\nLijn \"twee\" kost \$5"),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Welcome back [arg1 string], you have [arg2 number] messages'**
+  ///
+  /// nl:  **'Welkom terug [arg1 string], je hebt [arg2 number] berichten'**
+  LocalizedValue welcomeBack(String arg1, int arg2) => LocalizedValue(
+    en: _t("Welcome back %1\$s, you have %2\$d messages", args: <dynamic> [arg1, arg2]),
+    nl: _t("Welkom terug %1\$s, je hebt %2\$d berichten", args: <dynamic> [arg1, arg2]),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'You paid %s for %.2f'**
+  ///
+  /// nl:  **'Je betaalde %s voor %.2f'**
+  LocalizedValue paid(String arg1, double arg2) => LocalizedValue(
+    en: _t("You paid %s for %.2f", args: <dynamic> [arg1, arg2]),
+    nl: _t("Je betaalde %s voor %.2f", args: <dynamic> [arg1, arg2]),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Hi, {name}!'**
+  ///
+  /// nl:  **'Hallo, {name}!'**
+  LocalizedValue greeting({required String name}) => LocalizedValue(
+    en: _mf("Hi, {name}!", args: {'name': name}, locale: 'en'),
+    nl: _mf("Hallo, {name}!", args: {'name': name}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'{count, plural, =0 {Your cart is empty} one {# item} other {# items}}'**
+  ///
+  /// nl:  **'{count, plural, =0 {Je winkelmand is leeg} one {# stuk} other {# stuks}}'**
+  LocalizedValue cartCount({required num count}) => LocalizedValue(
+    en: _mf("{count, plural, =0 {Your cart is empty} one {# item} other {# items}}", args: {'count': count}, locale: 'en'),
+    nl: _mf("{count, plural, =0 {Je winkelmand is leeg} one {# stuk} other {# stuks}}", args: {'count': count}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'{gender, select, male {he} female {she} other {they}}'**
+  ///
+  /// nl:  **'{gender, select, male {hij} female {zij} other {zij}}'**
+  LocalizedValue pronoun({required String gender}) => LocalizedValue(
+    en: _mf("{gender, select, male {he} female {she} other {they}}", args: {'gender': gender}, locale: 'en'),
+    nl: _mf("{gender, select, male {hij} female {zij} other {zij}}", args: {'gender': gender}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}'**
+  ///
+  /// nl:  **'{place, selectordinal, other {#e}}'**
+  LocalizedValue rank({required num place}) => LocalizedValue(
+    en: _mf("{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}", args: {'place': place}, locale: 'en'),
+    nl: _mf("{place, selectordinal, other {#e}}", args: {'place': place}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Total: {total, number, currency}'**
+  ///
+  /// nl:  **'Totaal: {total, number, currency}'**
+  LocalizedValue total({required num total}) => LocalizedValue(
+    en: _mf("Total: {total, number, currency}", args: {'total': NumberFormat.simpleCurrency(locale: 'en').format(total)}, locale: 'en'),
+    nl: _mf("Totaal: {total, number, currency}", args: {'total': NumberFormat.simpleCurrency(locale: 'nl').format(total)}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'{share, number, percent} done'**
+  ///
+  /// nl:  **'{share, number, percent} klaar'**
+  LocalizedValue share({required num share}) => LocalizedValue(
+    en: _mf("{share, number, percent} done", args: {'share': NumberFormat.percentPattern('en').format(share)}, locale: 'en'),
+    nl: _mf("{share, number, percent} klaar", args: {'share': NumberFormat.percentPattern('nl').format(share)}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Placed on {placedAt, date, medium}'**
+  ///
+  /// nl:  **'Geplaatst op {placedAt, date, medium}'**
+  LocalizedValue placedAt({required DateTime placedAt}) => LocalizedValue(
+    en: _mf("Placed on {placedAt, date, medium}", args: {'placedAt': DateFormat.yMMMd('en').format(placedAt)}, locale: 'en'),
+    nl: _mf("Geplaatst op {placedAt, date, medium}", args: {'placedAt': DateFormat.yMMMd('nl').format(placedAt)}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Meeting at {at, time, short}'**
+  ///
+  /// nl:  **'Vergadering om {at, time, short}'**
+  LocalizedValue meetingAt({required DateTime at}) => LocalizedValue(
+    en: _mf("Meeting at {at, time, short}", args: {'at': DateFormat.jm('en').format(at)}, locale: 'en'),
+    nl: _mf("Vergadering om {at, time, short}", args: {'at': DateFormat.jm('nl').format(at)}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'Lap time: {lap, duration, mm:ss}'**
+  ///
+  /// nl:  **'Rondetijd: {lap, duration, mm:ss}'**
+  LocalizedValue lapTime({required Duration lap}) => LocalizedValue(
+    en: _mf("Lap time: {lap, duration, mm:ss}", args: {'lap': _formatDuration(lap, 'mm:ss')}, locale: 'en'),
+    nl: _mf("Rondetijd: {lap, duration, mm:ss}", args: {'lap': _formatDuration(lap, 'mm:ss')}, locale: 'nl'),
+  );
+
+  /// Translations:
+  ///
+  /// en:  **'It''s here'**
+  ///
+  /// nl:  **'Het is ''hier'''**
+  LocalizedValue get quote => LocalizedValue(
+    en: _mf("It''s here", args: const {}, locale: 'en'),
+    nl: _mf("Het is ''hier''", args: const {}, locale: 'nl'),
+  );
+
+}

@@ -6,7 +6,8 @@ import 'package:locale_gen/src/writer/core_writer.dart';
 import 'package:path/path.dart';
 
 class LocaleGenWriter {
-  const LocaleGenWriter._();
+  // Public API: keeps the class uninstantiable without changing its modifiers.
+  const LocaleGenWriter._(); // coverage:ignore-line
 
   static void write(LocaleGenParams params) {
     print('Default language: ${params.defaultLanguage}');

@@ -1,0 +1,111 @@
+//============================================================//
+//THIS FILE IS AUTO GENERATED. DO NOT EDIT//
+//============================================================//
+class LocalizationKeys {
+
+  /// Translations:
+  ///
+  /// en:  **'Settings'**
+  ///
+  /// nl:  **'Instellingen'**
+  static const title = 'title';
+
+  /// Translations:
+  ///
+  /// en:  **'Line one\nLine "two" costs $5'**
+  ///
+  /// nl:  **'Lijn een\nLijn "twee" kost $5'**
+  static const multiline = 'multiline';
+
+  /// Translations:
+  ///
+  /// en:  **'Welcome back [arg1 string], you have [arg2 number] messages'**
+  ///
+  /// nl:  **'Welkom terug [arg1 string], je hebt [arg2 number] berichten'**
+  static const welcomeBack = 'welcome_back';
+
+  /// Translations:
+  ///
+  /// en:  **'You paid %s for %.2f'**
+  ///
+  /// nl:  **'Je betaalde %s voor %.2f'**
+  static const paid = 'paid';
+
+  /// Translations:
+  ///
+  /// en:  **'{one: [arg1 number] hour, other: [arg1 number] hours}'**
+  ///
+  /// nl:  **'{one: [arg1 number] uur, other: [arg1 number] uren}'**
+  static const hours = 'hours';
+
+  /// Translations:
+  ///
+  /// en:  **'Hi, {name}!'**
+  ///
+  /// nl:  **'Hallo, {name}!'**
+  static const greeting = 'greeting';
+
+  /// Translations:
+  ///
+  /// en:  **'{count, plural, =0 {Your cart is empty} one {# item} other {# items}}'**
+  ///
+  /// nl:  **'{count, plural, =0 {Je winkelmand is leeg} one {# stuk} other {# stuks}}'**
+  static const cartCount = 'cart_count';
+
+  /// Translations:
+  ///
+  /// en:  **'{gender, select, male {he} female {she} other {they}}'**
+  ///
+  /// nl:  **'{gender, select, male {hij} female {zij} other {zij}}'**
+  static const pronoun = 'pronoun';
+
+  /// Translations:
+  ///
+  /// en:  **'{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}'**
+  ///
+  /// nl:  **'{place, selectordinal, other {#e}}'**
+  static const rank = 'rank';
+
+  /// Translations:
+  ///
+  /// en:  **'Total: {total, number, currency}'**
+  ///
+  /// nl:  **'Totaal: {total, number, currency}'**
+  static const total = 'total';
+
+  /// Translations:
+  ///
+  /// en:  **'{share, number, percent} done'**
+  ///
+  /// nl:  **'{share, number, percent} klaar'**
+  static const share = 'share';
+
+  /// Translations:
+  ///
+  /// en:  **'Placed on {placedAt, date, medium}'**
+  ///
+  /// nl:  **'Geplaatst op {placedAt, date, medium}'**
+  static const placedAt = 'placed_at';
+
+  /// Translations:
+  ///
+  /// en:  **'Meeting at {at, time, short}'**
+  ///
+  /// nl:  **'Vergadering om {at, time, short}'**
+  static const meetingAt = 'meeting_at';
+
+  /// Translations:
+  ///
+  /// en:  **'Lap time: {lap, duration, mm:ss}'**
+  ///
+  /// nl:  **'Rondetijd: {lap, duration, mm:ss}'**
+  static const lapTime = 'lap_time';
+
+  /// Translations:
+  ///
+  /// en:  **'It''s here'**
+  ///
+  /// nl:  **'Het is ''hier'''**
+  static const quote = 'quote';
+
+}

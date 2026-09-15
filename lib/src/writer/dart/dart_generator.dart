@@ -137,29 +137,19 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
     Map<String, Map<String, dynamic>> allTranslations,
   ) {
     final camelCaseKey = CaseUtil.getCamelcase(key);
-    sb.write('  LocalizedValue $camelCaseKey(');
-    var iterationIndex = 0;
-    indexToReplacement.forEach((index, match) {
-      final argument = getArgument(key, match, index);
-      sb.write(argument);
-      if (iterationIndex++ != indexToReplacement.length - 1) {
-        sb.write(', ');
-      }
-    });
-    sb.writeln(') => LocalizedValue(');
+    final parameters = indexToReplacement.entries
+        .map((entry) => getArgument(entry.value, entry.key))
+        .join(', ');
+    final arguments =
+        indexToReplacement.keys.map((index) => 'arg$index').join(', ');
+    sb.writeln(
+        '  LocalizedValue $camelCaseKey($parameters) => LocalizedValue(');
     for (final locale in params.languages) {
       final value = _requireLocaleValue(allTranslations, locale, key);
       final variableName = locale.replaceAll('-', '');
       final escapedValue = _getEscapedValue(value);
-      sb.write('    $variableName: _t("$escapedValue", args: <dynamic> [');
-      iterationIndex = 0;
-      indexToReplacement.forEach((index, match) {
-        if (iterationIndex++ != 0) {
-          sb.write(', ');
-        }
-        sb.write('arg$index');
-      });
-      sb.writeln(']),');
+      sb.writeln(
+          '    $variableName: _t("$escapedValue", args: <dynamic> [$arguments]),');
     }
     sb
       ..writeln('  );')
@@ -224,17 +214,10 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
     Map<String, MessageFormatParam> mfParams,
     Map<String, Map<String, dynamic>> allTranslations,
   ) {
-    final camelKey = CaseUtil.getCamelcase(key);
-    final paramSignatures = mfParams.values
-        .map((p) =>
-            'required ${MessageFormatUtil.dartTypeFor(p.dartType)} ${p.dartName}')
-        .join(', ');
-    if (mfParams.isEmpty) {
-      sb.writeln('  LocalizedValue get $camelKey => LocalizedValue(');
-    } else {
-      sb.writeln(
-          '  LocalizedValue $camelKey({$paramSignatures}) => LocalizedValue(');
-    }
+    // Every value is built before anything is written: a language whose value
+    // is not a String throws, and must not leave half a function behind for
+    // the fallback getter to be appended to.
+    final values = <String>[];
     for (final locale in params.languages) {
       final variableName = locale.replaceAll('-', '');
       final template = _requireLocaleValue(allTranslations, locale, key);
@@ -243,18 +226,24 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
             'Key $key in locale $locale is not a String for MessageFormat');
       }
       final escapedTemplate = _getEscapedValue(template);
-      if (mfParams.isEmpty) {
-        sb.writeln(
-            '    $variableName: _mf("$escapedTemplate", args: const {}, locale: \'$locale\'),');
-      } else {
-        final argEntries = mfParams.values
-            .map((p) =>
-                "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, "'$locale'")}")
-            .join(', ');
-        sb.writeln(
-            '    $variableName: _mf("$escapedTemplate", args: {$argEntries}, locale: \'$locale\'),');
-      }
+      final argEntries = mfParams.values
+          .map((p) =>
+              "'${p.originalName}': ${MessageFormatArgExpressionBuilder.build(p, "'$locale'")}")
+          .join(', ');
+      final args = mfParams.isEmpty ? 'const {}' : '{$argEntries}';
+      values.add(
+          '    $variableName: _mf("$escapedTemplate", args: $args, locale: \'$locale\'),');
     }
+
+    final camelKey = CaseUtil.getCamelcase(key);
+    final paramSignatures = mfParams.values
+        .map((p) =>
+            'required ${MessageFormatUtil.dartTypeFor(p.dartType)} ${p.dartName}')
+        .join(', ');
+    final member =
+        mfParams.isEmpty ? 'get $camelKey' : '$camelKey({$paramSignatures})';
+    sb.writeln('  LocalizedValue $member => LocalizedValue(');
+    values.forEach(sb.writeln);
     sb
       ..writeln('  );')
       ..writeln();

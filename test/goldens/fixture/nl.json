@@ -1,0 +1,20 @@
+{
+  "title": "Instellingen",
+  "multiline": "Lijn een\nLijn \"twee\" kost $5",
+  "welcome_back": "Welkom terug %1$s, je hebt %2$d berichten",
+  "paid": "Je betaalde %s voor %.2f",
+  "hours": {
+    "one": "%1$d uur",
+    "other": "%1$d uren"
+  },
+  "greeting": "Hallo, {name}!",
+  "cart_count": "{count, plural, =0 {Je winkelmand is leeg} one {# stuk} other {# stuks}}",
+  "pronoun": "{gender, select, male {hij} female {zij} other {zij}}",
+  "rank": "{place, selectordinal, other {#e}}",
+  "total": "Totaal: {total, number, currency}",
+  "share": "{share, number, percent} klaar",
+  "placed_at": "Geplaatst op {placedAt, date, medium}",
+  "meeting_at": "Vergadering om {at, time, short}",
+  "lap_time": "Rondetijd: {lap, duration, mm:ss}",
+  "quote": "Het is ''hier''"
+}

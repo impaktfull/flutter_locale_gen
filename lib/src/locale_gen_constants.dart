@@ -1,6 +1,4 @@
-class LocaleGenConstants {
-  const LocaleGenConstants._();
-
+abstract final class LocaleGenConstants {
   static final positionalFormatRegex = RegExp(r'\%(\d*)\$[\\.]?[\d+]*([sdf])');
   static final normalFormatRegex = RegExp(r'\%[\\.]?[\d+]*([sdf])');
   static const regexIndexGroupIndex = 1;

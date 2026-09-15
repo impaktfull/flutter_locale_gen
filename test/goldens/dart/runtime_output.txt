@@ -1,0 +1,59 @@
+title
+  en: Settings
+  nl: Instellingen
+multiline
+  en: Line one
+Line "two" costs $5
+  nl: Lijn een
+Lijn "twee" kost $5
+welcome_back
+  en: Welcome back Koen, you have 3 messages
+  nl: Welkom terug Koen, je hebt 3 berichten
+paid
+  en: You paid Koen for 2.50
+  nl: Je betaalde Koen voor 2.50
+greeting
+  en: Hi, Koen!
+  nl: Hallo, Koen!
+cart_count 0
+  en: Your cart is empty
+  nl: Je winkelmand is leeg
+cart_count 1
+  en: 1 item
+  nl: 1 stuk
+cart_count 3
+  en: 3 items
+  nl: 3 stuks
+pronoun female
+  en: she
+  nl: zij
+rank 1
+  en: 1st
+  nl: 1e
+rank 2
+  en: 2nd
+  nl: 2e
+rank 3
+  en: 3rd
+  nl: 3e
+rank 4
+  en: 4th
+  nl: 4e
+total
+  en: Total: $1,234.50
+  nl: Totaal: € 1.234,50
+share
+  en: 42% done
+  nl: 42% klaar
+placed_at
+  en: Placed on Sep 15, 2026
+  nl: Geplaatst op 15 sep 2026
+meeting_at
+  en: Meeting at 2:30 PM
+  nl: Vergadering om 14:30
+lap_time
+  en: Lap time: 01:42
+  nl: Rondetijd: 01:42
+quote
+  en: It's here
+  nl: Het is 'hier'

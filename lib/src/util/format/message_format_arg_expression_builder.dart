@@ -9,9 +9,7 @@ import 'package:locale_gen/src/util/format/message_format_util.dart';
 /// `"locale?.toLanguageTag() ?? LocalizationDelegate.defaultLocale.toLanguageTag()"`
 /// for the Flutter writer, or a literal like `"'en'"` for the per-locale Dart
 /// writer.
-class MessageFormatArgExpressionBuilder {
-  const MessageFormatArgExpressionBuilder._();
-
+abstract final class MessageFormatArgExpressionBuilder {
   static String build(MessageFormatParam p, String localeExpr) {
     switch (p.formatter) {
       case MessageFormatFormatter.none:
