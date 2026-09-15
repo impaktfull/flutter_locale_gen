@@ -1,6 +1,8 @@
 import 'package:locale_gen/locale_gen.dart';
 import 'package:test/test.dart';
 
+import '../../helpers/test_project.dart';
+
 void main() {
   group('Parse parameters', () {
     group('Test invalid spec', () {
@@ -158,6 +160,48 @@ locale_gen:
 ''';
       final params = LocaleGenParams.fromYamlString('locale_gen', yaml);
       expect(params.messageFormatStrict, isTrue);
+    });
+  });
+
+  group('LocaleGenParams(programName)', () {
+    test('reads the pubspec.yaml in the current directory', () {
+      final project = TestProject()..writeFile('pubspec.yaml', '''
+name: my_app
+locale_gen:
+  languages: ['nl', 'fr']
+''');
+
+      late LocaleGenParams params;
+      project.run(() => params = LocaleGenParams('locale_gen'));
+
+      expect(params.projectName, 'my_app');
+      expect(params.languages, ['nl', 'fr']);
+      expect(params.defaultLanguage, 'nl',
+          reason: 'without en, the first language is the default');
+    });
+
+    test('fails without a pubspec.yaml in the current directory', () {
+      final project = TestProject();
+
+      expect(
+        () => project.run(() => LocaleGenParams('locale_gen')),
+        throwsA(isA<Exception>().having(
+          (e) => e.toString(),
+          'message',
+          'Exception: This program should be run from the root of a flutter/dart project',
+        )),
+      );
+    });
+
+    test('uses English and the defaults without a locale_gen section', () {
+      final params = LocaleGenParams.fromYamlString('locale_gen', 'name: app');
+
+      expect(params.languages, ['en']);
+      expect(params.defaultLanguage, 'en');
+      expect(params.docLanguages, ['en']);
+      expect(params.outputType.name, 'flutter');
+      expect(params.outputDir, 'lib/util/locale/');
+      expect(params.messageFormatStrict, isFalse);
     });
   });
 }

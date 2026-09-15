@@ -99,5 +99,54 @@ void main() {
         throwsA(isA<MessageFormatParamConflictException>()),
       );
     });
+
+    test('a repeated param with the same type is one param', () {
+      final ast = MessageFormatParser.parse('{name} and {name}');
+      expect(MessageFormatParamExtractor.extract(ast).keys, ['name']);
+    });
+  });
+
+  group('MessageFormatParamExtractor formatters', () {
+    final formatters = {
+      '{v, number}': (MessageFormatFormatter.numberDecimal, null),
+      '{v, number, percent}': (MessageFormatFormatter.numberPercent, 'percent'),
+      '{v, number, currency}': (
+        MessageFormatFormatter.numberCurrency,
+        'currency'
+      ),
+      '{v, number, #,##0.0}': (MessageFormatFormatter.numberCustom, '#,##0.0'),
+      '{v, date}': (MessageFormatFormatter.dateShort, null),
+      '{v, date, short}': (MessageFormatFormatter.dateShort, 'short'),
+      '{v, date, medium}': (MessageFormatFormatter.dateMedium, 'medium'),
+      '{v, date, long}': (MessageFormatFormatter.dateLong, 'long'),
+      '{v, date, full}': (MessageFormatFormatter.dateFull, 'full'),
+      '{v, date, dd/MM}': (MessageFormatFormatter.dateCustom, 'dd/MM'),
+      '{v, time}': (MessageFormatFormatter.timeShort, null),
+      '{v, time, short}': (MessageFormatFormatter.timeShort, 'short'),
+      '{v, time, medium}': (MessageFormatFormatter.timeMedium, 'medium'),
+      '{v, time, long}': (MessageFormatFormatter.timeLong, 'long'),
+      '{v, time, full}': (MessageFormatFormatter.timeFull, 'full'),
+      '{v, time, HH:mm}': (MessageFormatFormatter.timeCustom, 'HH:mm'),
+      '{v, duration}': (MessageFormatFormatter.durationMedium, null),
+      '{v, duration, medium}': (
+        MessageFormatFormatter.durationMedium,
+        'medium'
+      ),
+      '{v, duration, short}': (MessageFormatFormatter.durationShort, 'short'),
+      '{v, duration, long}': (MessageFormatFormatter.durationLong, 'long'),
+      '{v, duration, mm:ss}': (MessageFormatFormatter.durationCustom, 'mm:ss'),
+    };
+
+    formatters.forEach((input, expected) {
+      final (formatter, style) = expected;
+      test('$input uses ${formatter.name}', () {
+        final param = MessageFormatParamExtractor.extract(
+                MessageFormatParser.parse(input))
+            .values
+            .single;
+        expect(param.formatter, formatter);
+        expect(param.formatterStyle, style);
+      });
+    });
   });
 }

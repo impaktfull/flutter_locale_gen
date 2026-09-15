@@ -38,6 +38,10 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
+      # Every file has a mirrored test file and every line in lib/ is covered.
+      - name: Test with 100% coverage
+        run: dart run tool/coverage.dart
+
       - name: Publish dry run
         run: dart pub publish --dry-run
 

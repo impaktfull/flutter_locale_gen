@@ -86,4 +86,11 @@ void main() {
       expect((ast.roots.first as LiteralNode).text, 'hello, ');
     });
   });
+
+  test('MessageFormatParseException describes the problem', () {
+    const exception = MessageFormatParseException('Unclosed placeholder');
+    expect(exception.message, 'Unclosed placeholder');
+    expect(exception.toString(),
+        'MessageFormatParseException: Unclosed placeholder');
+  });
 }

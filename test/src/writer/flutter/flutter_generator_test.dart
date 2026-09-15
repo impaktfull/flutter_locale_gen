@@ -527,4 +527,24 @@ locale_gen:
       expect(printed, isNot(contains('Warning')));
     });
   });
+
+  group('LocaleGenFlutterGenerator MessageFormat without parameters', () {
+    test('generates a function without arguments', () {
+      final params = LocaleGenParams.fromYamlString('locale_gen', '''
+name: example
+locale_gen:
+  languages: ['en']
+''');
+      final defaults = <String, dynamic>{'quote': "It''s here"};
+
+      final out = LocaleGenFlutterGenerator()
+          .createLocalizationFile(params, defaults, {'en': defaults});
+
+      expect(
+        out,
+        contains(
+            '  String quote() => _mf(LocalizationKeys.quote, args: const {});'),
+      );
+    });
+  });
 }

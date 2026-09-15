@@ -183,5 +183,71 @@ void main() {
       final ast = MessageFormatParser.parse("don't");
       expect((ast.roots.first as LiteralNode).text, "don't");
     });
+
+    test('an apostrophe at the end of the input is literal', () {
+      final ast = MessageFormatParser.parse("the students'");
+      expect((ast.roots.first as LiteralNode).text, "the students'");
+    });
+
+    test('a doubled apostrophe inside a quoted block is an apostrophe', () {
+      final ast = MessageFormatParser.parse("'{''}'");
+      expect((ast.roots.first as LiteralNode).text, "{'}");
+    });
+  });
+
+  group('MessageFormatParser edge cases', () {
+    test('an empty string is one empty literal', () {
+      final ast = MessageFormatParser.parse('');
+      expect(ast.roots, hasLength(1));
+      expect((ast.roots.first as LiteralNode).text, '');
+    });
+
+    test('adjacent placeholders are separated by an empty literal', () {
+      final ast = MessageFormatParser.parse('{a}{b}');
+      expect(ast.roots, hasLength(3));
+      expect((ast.roots[0] as PlaceholderNode).name, 'a');
+      expect((ast.roots[1] as LiteralNode).text, '');
+      expect((ast.roots[2] as PlaceholderNode).name, 'b');
+    });
+
+    test('whitespace around names, types and branches is ignored', () {
+      final ast = MessageFormatParser.parse(
+          '{ count ,  plural ,  =10 {ten}   other {# more} }');
+      final node = ast.roots.first as PluralNode;
+      expect(node.name, 'count');
+      expect(node.branches.keys, ['=10', 'other']);
+    });
+  });
+
+  group('MessageFormatParser errors', () {
+    Matcher throwsParseError(String message) =>
+        throwsA(isA<MessageFormatParseException>()
+            .having((e) => e.message, 'message', message));
+
+    final errors = {
+      'hi name}': 'Unmatched closing brace at position 7',
+      'hi {}': 'Empty placeholder name at position 4',
+      'hi {name': 'Unclosed placeholder for "name"',
+      'hi {name x}':
+          'Expected "," or "}" after placeholder name "name" at position 9',
+      '{name,}': 'Expected arg type after "," for placeholder "name"',
+      '{x, mystery}': 'Unknown arg type "mystery" for placeholder "x"',
+      '{n, number': 'Unclosed "number" arg for "n"',
+      '{n, number, currency': 'Unclosed "number" arg for "n"',
+      '{n, number x}': 'Expected "}" at position 11',
+      '{n, plural}': 'Expected "," before "plural" branches for "n"',
+      '{n, plural, one x}': 'Expected "{" after branch key "one" in "n"',
+      '{n, plural, other {abc': 'Unclosed branch "other" in "n"',
+      '{n, plural, other {a}': 'Unclosed "plural" arg for "n"',
+      '{n, plural, !{a}}': 'Expected branch key at position 12',
+      '{n, plural, one {a}}': '"plural" for "n" must include an "other" branch',
+    };
+
+    errors.forEach((input, message) {
+      test(input, () {
+        expect(
+            () => MessageFormatParser.parse(input), throwsParseError(message));
+      });
+    });
   });
 }

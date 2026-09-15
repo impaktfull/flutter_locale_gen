@@ -20,12 +20,69 @@ dart pub get
 (cd example_dart && dart pub get)
 (cd example_flutter && flutter pub get)
 
-dart test                  # unit tests
+dart test                  # all tests
+dart run tool/coverage.dart  # all tests, plus the 100% coverage gate CI runs
 flutter analyze            # the package and both examples
 ./tool/translations.sh     # regenerate both examples with your changes, then format
 ```
 
 A change to the generator usually changes the generated code in the examples. Run `./tool/translations.sh` and commit the result: CI fails when the checked-in example code is out of date.
+
+## How it works
+
+```
+bin/locale_gen.dart
+  └─ LocaleGenParams('locale_gen')          reads the locale_gen: section of pubspec.yaml
+  └─ LocaleGenWriter.write(params)          reads <locale_assets_path>/<language>.json
+       └─ LocaleGenCoreWriter.fromType(output_type)
+            ├─ LocaleGenFlutterWriter  ─► LocaleGenFlutterGenerator   4 files
+            └─ LocaleGenDartWriter     ─► LocaleGenDartGenerator      1 file
+
+For every key, LocaleGenCoreGenerator.buildTranslationFunction picks a builder:
+  TranslationStyleDetector ─┬─ plain text        ─► buildDefaultFunction
+                            ├─ sprintf           ─► buildParameterizedFunction
+                            ├─ JSON-object plural ─► build(Parameterized)PluralFunction
+                            └─ MessageFormat     ─► MessageFormatParser
+                                                     ─► MessageFormatParamExtractor
+                                                     ─► buildMessageFormatFunction
+```
+
+Generators only build strings, and writers only write files, so almost everything is tested without touching the file system.
+
+## Tests and TDD
+
+Every change starts with a failing test. CI enforces 100% line coverage and one test file per source file, so there is always an obvious place for that test.
+
+| Where                                         | What it tests |
+| --------------------------------------------- | ------------- |
+| `test/src/**/<name>_test.dart`                | The file with the same path in `lib/src/`. `tool/coverage.dart` fails when one is missing |
+| `test/bin/<name>_test.dart`                   | The command in `bin/`, run against a throwaway project |
+| `test/locale_gen_test.dart`                   | **The public API.** Every exported signature, and a `LocaleGenParams` subclass used the way impaktfull_translations and icapps_translations use it |
+| `test/golden_test.dart`                       | The complete generated code for both writers, compared with `test/goldens/` |
+| `test/generated_dart_runtime_test.dart`       | Runs generated Dart code and snapshots what every format renders to |
+
+Helpers in `test/helpers/`:
+
+- `TestProject` creates a temporary project and runs code with it as the current directory, capturing what is printed. Use it for anything that reads or writes files. It is safe with tests running in parallel.
+- `expectGolden` compares output with a file in `test/goldens/`.
+
+### When the generated code changes
+
+`test/golden_test.dart` fails and shows the difference. Review it; when the new output is what you intended, update the goldens and commit them with your change:
+
+```shell
+UPDATE_GOLDENS=true dart test test/golden_test.dart test/generated_dart_runtime_test.dart
+```
+
+To cover a new translation format, add it to `test/goldens/fixture/*.json` first.
+
+### Keeping the public API stable
+
+The public API is what `lib/locale_gen.dart` exports, the `locale_gen:` options in `pubspec.yaml`, the `bin/` commands and the shape of the generated code. New features go in `lib/src/`: a new format is a new branch in `buildTranslationFunction` with its own builder, a new output is a new `LocaleGenCoreWriter`. Adding an option or a generated member is fine. If `test/locale_gen_test.dart` or an existing golden has to change in a way that breaks users, the change is breaking: use `feat!:` and add a migration guide.
+
+### Lines that can never run
+
+Remove them instead of testing around them. The only exception is a line that exists for the type system, such as the private constructors of the exported `LocaleGenWriter` and `LocaleGenFormatter`: mark those with `// coverage:ignore-line` and a comment saying why.
 
 ## Commits and pull requests
 
