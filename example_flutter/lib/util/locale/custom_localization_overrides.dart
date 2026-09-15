@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:locale_gen_example/util/locale/localization_overrides.dart';
+import 'package:locale_gen_example/util/logger/logger.dart';
 
 class CustomLocalizationOverrideManager extends LocalizationOverrides {
   var _translations = <Locale, Map<String, dynamic>>{};
 
   @override
   Future<void> refreshOverrideLocalizations() async {
-    print('FETCHING LATEST TRANSLATIONS');
+    LocaleGenLogger.log('FETCHING LATEST TRANSLATIONS');
     await Future<void>.delayed(const Duration(seconds: 5));
     _translations = {
       const Locale('en'): <String, dynamic>{
@@ -16,7 +17,7 @@ class CustomLocalizationOverrideManager extends LocalizationOverrides {
         'test': 'Testing in Nederlands (override)',
       },
     };
-    print('GOT THE LATEST TRANSLATIONS');
+    LocaleGenLogger.log('GOT THE LATEST TRANSLATIONS');
   }
 
   @override

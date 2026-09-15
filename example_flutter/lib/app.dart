@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:impaktfull_ui/impaktfull_ui.dart';
 import 'package:locale_gen_example/repository/locale_repository.dart';
 import 'package:locale_gen_example/screen/home_screen.dart';
 import 'package:locale_gen_example/util/locale/localization_delegate.dart';
@@ -13,9 +14,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<LocaleViewModel>(
       child: Consumer<LocaleViewModel>(
-        builder: (context, viewModel, child) => MaterialApp(
+        builder: (context, viewModel, child) => ImpaktfullUiApp(
           title: 'Locale Gen',
-          theme: ThemeData(primarySwatch: Colors.red),
           localizationsDelegates: [
             viewModel.localeDelegate,
             GlobalWidgetsLocalizations.delegate,

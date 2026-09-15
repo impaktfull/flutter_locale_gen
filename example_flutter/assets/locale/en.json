@@ -10,5 +10,13 @@
   "test_plural": {
     "one": "%d hour",
     "other": "%d hours"
-  }
+  },
+  "mf_greeting": "Hi, {name}!",
+  "mf_cart_count": "{count, plural, one {# item} other {# items}}",
+  "mf_pronoun": "{gender, select, male {he} female {she} other {they}}",
+  "mf_rank": "{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+  "mf_total": "Total: {total, number, currency}",
+  "mf_placed_at": "Placed on {placedAt, date, short}",
+  "mf_meeting_at": "Meeting at {at, time, short}",
+  "mf_race": "Lap time: {d, duration, mm:ss}"
 }

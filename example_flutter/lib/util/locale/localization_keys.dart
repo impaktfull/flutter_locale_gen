@@ -100,4 +100,92 @@ class LocalizationKeys {
   ///
   /// fi-FI: **'{one: %d tunti, other: %d tuntia}'**
   static const testPlural = 'test_plural';
+
+  /// Translations:
+  ///
+  /// en:  **'Hi, {name}!'**
+  ///
+  /// nl:  **'Hallo, {name}!'**
+  ///
+  /// zh-Hans-CN: **'你好, {name}!'**
+  ///
+  /// fi-FI: **'Hei, {name}!'**
+  static const mfGreeting = 'mf_greeting';
+
+  /// Translations:
+  ///
+  /// en:  **'{count, plural, one {# item} other {# items}}'**
+  ///
+  /// nl:  **'{count, plural, one {# stuk} other {# stuks}}'**
+  ///
+  /// zh-Hans-CN: **'{count, plural, other {# 件}}'**
+  ///
+  /// fi-FI: **'{count, plural, one {# tuote} other {# tuotetta}}'**
+  static const mfCartCount = 'mf_cart_count';
+
+  /// Translations:
+  ///
+  /// en:  **'{gender, select, male {he} female {she} other {they}}'**
+  ///
+  /// nl:  **'{gender, select, male {hij} female {zij} other {zij}}'**
+  ///
+  /// zh-Hans-CN: **'{gender, select, male {他} female {她} other {他们}}'**
+  ///
+  /// fi-FI: **'{gender, select, male {hän} female {hän} other {he}}'**
+  static const mfPronoun = 'mf_pronoun';
+
+  /// Translations:
+  ///
+  /// en:  **'{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}'**
+  ///
+  /// nl:  **'{place, selectordinal, other {#e}}'**
+  ///
+  /// zh-Hans-CN: **'{place, selectordinal, other {第#}}'**
+  ///
+  /// fi-FI: **'{place, selectordinal, other {#.}}'**
+  static const mfRank = 'mf_rank';
+
+  /// Translations:
+  ///
+  /// en:  **'Total: {total, number, currency}'**
+  ///
+  /// nl:  **'Totaal: {total, number, currency}'**
+  ///
+  /// zh-Hans-CN: **'合计: {total, number, currency}'**
+  ///
+  /// fi-FI: **'Yhteensä: {total, number, currency}'**
+  static const mfTotal = 'mf_total';
+
+  /// Translations:
+  ///
+  /// en:  **'Placed on {placedAt, date, short}'**
+  ///
+  /// nl:  **'Geplaatst op {placedAt, date, short}'**
+  ///
+  /// zh-Hans-CN: **'下单于 {placedAt, date, short}'**
+  ///
+  /// fi-FI: **'Tehty {placedAt, date, short}'**
+  static const mfPlacedAt = 'mf_placed_at';
+
+  /// Translations:
+  ///
+  /// en:  **'Meeting at {at, time, short}'**
+  ///
+  /// nl:  **'Vergadering om {at, time, short}'**
+  ///
+  /// zh-Hans-CN: **'会议时间 {at, time, short}'**
+  ///
+  /// fi-FI: **'Kokous klo {at, time, short}'**
+  static const mfMeetingAt = 'mf_meeting_at';
+
+  /// Translations:
+  ///
+  /// en:  **'Lap time: {d, duration, mm:ss}'**
+  ///
+  /// nl:  **'Rondetijd: {d, duration, mm:ss}'**
+  ///
+  /// zh-Hans-CN: **'圈速: {d, duration, mm:ss}'**
+  ///
+  /// fi-FI: **'Kierrosaika: {d, duration, mm:ss}'**
+  static const mfRace = 'mf_race';
 }

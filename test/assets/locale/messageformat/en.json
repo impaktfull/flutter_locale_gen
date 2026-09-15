@@ -1,0 +1,7 @@
+{
+  "greeting": "Hi, {name}!",
+  "cart_count": "{count, plural, one {# item} other {# items}}",
+  "order_placed": "Order on {placedAt, date, short} for {total, number, currency}",
+  "race": "{d, duration, mm:ss}",
+  "pronoun": "{gender, select, male {he} female {she} other {they}}"
+}

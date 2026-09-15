@@ -11,5 +11,13 @@
     "one": "%d uur",
     "other": "%d uren"
   },
-  "welcome_message": "Hallo daar"
+  "welcome_message": "Hallo daar",
+  "mf_greeting": "Hallo, {name}!",
+  "mf_cart_count": "{count, plural, one {# stuk} other {# stuks}}",
+  "mf_pronoun": "{gender, select, male {hij} female {zij} other {zij}}",
+  "mf_rank": "{place, selectordinal, other {#e}}",
+  "mf_total": "Totaal: {total, number, currency}",
+  "mf_placed_at": "Geplaatst op {placedAt, date, short}",
+  "mf_meeting_at": "Vergadering om {at, time, short}",
+  "mf_race": "Rondetijd: {d, duration, mm:ss}"
 }

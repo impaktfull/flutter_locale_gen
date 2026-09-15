@@ -123,4 +123,27 @@ void main() {
       });
     });
   });
+
+  group('LocaleGenParams messageFormatStrict', () {
+    test('defaults to false when not set', () {
+      const yaml = '''
+name: example
+locale_gen:
+  languages: ['en']
+''';
+      final params = LocaleGenParams.fromYamlString('locale_gen', yaml);
+      expect(params.messageFormatStrict, isFalse);
+    });
+
+    test('reads true when set in pubspec', () {
+      const yaml = '''
+name: example
+locale_gen:
+  languages: ['en']
+  message_format_strict: true
+''';
+      final params = LocaleGenParams.fromYamlString('locale_gen', yaml);
+      expect(params.messageFormatStrict, isTrue);
+    });
+  });
 }

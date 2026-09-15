@@ -9,5 +9,13 @@
   "test_non_positional": "测试非位置参数 %s 和 %f",
   "test_plural": {
     "other": "%d 小时"
-  }
+  },
+  "mf_greeting": "你好, {name}!",
+  "mf_cart_count": "{count, plural, other {# 件}}",
+  "mf_pronoun": "{gender, select, male {他} female {她} other {他们}}",
+  "mf_rank": "{place, selectordinal, other {第#}}",
+  "mf_total": "合计: {total, number, currency}",
+  "mf_placed_at": "下单于 {placedAt, date, short}",
+  "mf_meeting_at": "会议时间 {at, time, short}",
+  "mf_race": "圈速: {d, duration, mm:ss}"
 }
