@@ -4,7 +4,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:locale_gen_example/app.dart';
 
 /// Walks the example app through every locale so
-/// `tool/docs_media/record_flutter_example.sh` can record it for the README.
+/// `tool/docs_media/record_flutter_example.dart` can record it for the README.
 ///
 /// The START/END markers tell the recording script when to capture.
 void main() {

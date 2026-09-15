@@ -74,14 +74,15 @@ The versions up to 13.0.0-alpha.2 were released by hand. `bootstrap-sha` in `rel
 
 The GIF, the still and the code images in `assets/` are generated, so they can be refreshed after a change instead of going stale.
 
-```shell
-# Code and terminal images in assets/docs/. Needs Dart and Google Chrome.
-# Every generated line and terminal line in them comes from a real run of this checkout.
-python3 tool/docs_media/render_snippets.py
+Run both from the repository root:
 
-# assets/example.gif and assets/example.png. Needs a booted iOS simulator,
-# Flutter and python3 with Pillow (pip install pillow).
-./tool/docs_media/record_flutter_example.sh
+```shell
+# Code and terminal images in assets/docs/. Needs Google Chrome.
+# Every generated line and terminal line in them comes from a real run of this checkout.
+dart run tool/docs_media/render_snippets.dart
+
+# assets/example.gif and assets/example.png. Needs Flutter and a booted iOS simulator.
+dart run tool/docs_media/record_flutter_example.dart
 ```
 
 The recording drives `example_flutter/integration_test/docs_media_test.dart` through every language while screenshots are taken. Change the app, or that test, to change what the recording shows. Close other apps on the simulator first: iOS otherwise shows a "◀ previous app" breadcrumb in the status bar of the recording.
