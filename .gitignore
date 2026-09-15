@@ -53,7 +53,10 @@ analysis_benchmark.json
 .pub-cache/
 .pub/
 build/
-flutter_*.png
+# Anchored to the root, where `flutter screenshot` writes flutter_01.png. The
+# unanchored template rule also matched assets/docs/flutter_writer.png, so the
+# README's screenshot was never committed and rendered as a broken image.
+/flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
