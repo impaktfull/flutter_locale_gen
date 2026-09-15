@@ -1,16 +1,10 @@
 import 'package:locale_gen/src/model/message_format_ast.dart';
 
-class MessageFormatParser {
-  const MessageFormatParser._();
-
+abstract final class MessageFormatParser {
   static MessageFormatAst parse(String input) {
-    final cursor = _Cursor(input);
-    final nodes = _parseNodes(cursor, depth: 0);
-    if (!cursor.isAtEnd) {
-      throw MessageFormatParseException(
-          'Unexpected character at position ${cursor.position}: ${cursor.peek()}');
-    }
-    return MessageFormatAst(roots: nodes);
+    // At depth 0, `_parseNodes` consumes the whole input: a stray `}` throws
+    // inside it, so nothing is left over when it returns.
+    return MessageFormatAst(roots: _parseNodes(_Cursor(input), depth: 0));
   }
 
   static List<MessageFormatNode> _parseNodes(_Cursor cursor,
@@ -51,11 +45,6 @@ class MessageFormatParser {
       }
       literal.write(ch);
       cursor.advance();
-    }
-
-    if (depth == 0 && !cursor.isAtEnd && cursor.peek() == '}') {
-      throw MessageFormatParseException(
-          'Unmatched closing brace at position ${cursor.position}');
     }
 
     // Final flush
@@ -111,14 +100,26 @@ class MessageFormatParser {
       _Cursor cursor, String name, String argType) {
     switch (argType) {
       case 'number':
+        return _parseScalarTyped(cursor, name, argType,
+            (style) => NumberNode(name: name, style: style));
       case 'date':
+        return _parseScalarTyped(cursor, name, argType,
+            (style) => DateNode(name: name, style: style));
       case 'time':
+        return _parseScalarTyped(cursor, name, argType,
+            (style) => TimeNode(name: name, style: style));
       case 'duration':
-        return _parseScalarTyped(cursor, name, argType);
+        return _parseScalarTyped(cursor, name, argType,
+            (style) => DurationNode(name: name, style: style));
       case 'plural':
+        return _parseSubMessage(cursor, name, argType,
+            (branches) => PluralNode(name: name, branches: branches));
       case 'select':
+        return _parseSubMessage(cursor, name, argType,
+            (branches) => SelectNode(name: name, branches: branches));
       case 'selectordinal':
-        return _parseSubMessage(cursor, name, argType);
+        return _parseSubMessage(cursor, name, argType,
+            (branches) => SelectOrdinalNode(name: name, branches: branches));
       default:
         throw MessageFormatParseException(
             'Unknown arg type "$argType" for placeholder "$name"');
@@ -126,7 +127,11 @@ class MessageFormatParser {
   }
 
   static MessageFormatNode _parseScalarTyped(
-      _Cursor cursor, String name, String argType) {
+    _Cursor cursor,
+    String name,
+    String argType,
+    MessageFormatNode Function(String? style) build,
+  ) {
     String? style;
     if (!cursor.isAtEnd && cursor.peek() == ',') {
       cursor.advance();
@@ -143,17 +148,7 @@ class MessageFormatParser {
       throw MessageFormatParseException('Unclosed "$argType" arg for "$name"');
     }
     cursor.expect('}');
-    switch (argType) {
-      case 'number':
-        return NumberNode(name: name, style: style);
-      case 'date':
-        return DateNode(name: name, style: style);
-      case 'time':
-        return TimeNode(name: name, style: style);
-      case 'duration':
-        return DurationNode(name: name, style: style);
-    }
-    throw StateError('unreachable');
+    return build(style);
   }
 
   static void _consumeQuotedLiteral(_Cursor cursor, StringBuffer literal) {
@@ -189,7 +184,12 @@ class MessageFormatParser {
   }
 
   static MessageFormatNode _parseSubMessage(
-      _Cursor cursor, String name, String argType) {
+    _Cursor cursor,
+    String name,
+    String argType,
+    MessageFormatNode Function(Map<String, List<MessageFormatNode>> branches)
+        build,
+  ) {
     if (cursor.isAtEnd || cursor.peek() != ',') {
       throw MessageFormatParseException(
           'Expected "," before "$argType" branches for "$name"');
@@ -221,23 +221,12 @@ class MessageFormatParser {
       throw MessageFormatParseException(
           '"$argType" for "$name" must include an "other" branch');
     }
-    switch (argType) {
-      case 'plural':
-        return PluralNode(name: name, branches: branches);
-      case 'select':
-        return SelectNode(name: name, branches: branches);
-      case 'selectordinal':
-        return SelectOrdinalNode(name: name, branches: branches);
-    }
-    throw StateError('unreachable');
+    return build(branches);
   }
 
+  /// Reads a branch key such as `one` or `=0`. The caller has already skipped
+  /// whitespace and checked that the input has not ended.
   static String _readBranchKey(_Cursor cursor) {
-    cursor.skipWhitespace();
-    if (cursor.isAtEnd) {
-      throw const MessageFormatParseException(
-          'Expected branch key, got end of input');
-    }
     final start = cursor.position;
     if (cursor.peek() == '=') {
       cursor.advance();

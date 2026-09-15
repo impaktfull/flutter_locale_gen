@@ -2,9 +2,7 @@ import 'package:locale_gen/src/model/message_format_ast.dart';
 import 'package:locale_gen/src/model/message_format_param.dart';
 import 'package:locale_gen/src/util/case/case_util.dart';
 
-class MessageFormatParamExtractor {
-  const MessageFormatParamExtractor._();
-
+abstract final class MessageFormatParamExtractor {
   static Map<String, MessageFormatParam> extract(MessageFormatAst ast) {
     final params = <String, MessageFormatParam>{};
     final dartNameToOriginal = <String, String>{};

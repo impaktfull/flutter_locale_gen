@@ -3,16 +3,18 @@ import 'dart:io';
 
 import 'package:locale_gen/locale_gen.dart';
 import 'package:locale_gen/src/util/case/case_util.dart';
+import 'package:path/path.dart';
 
 class LocaleGenFormatter {
-  const LocaleGenFormatter._();
+  // Public API: keeps the class uninstantiable without changing its modifiers.
+  const LocaleGenFormatter._(); // coverage:ignore-line
 
   static void format(LocaleGenParams params) {
-    final files = params.languages
-        .map((language) => File('${params.assetsDir}$language.json'));
     const jsonEncoder = JsonEncoder.withIndent('  ');
-    for (final file in files) {
-      print('Formatting ${file.path}');
+    for (final language in params.languages) {
+      final path = '${params.assetsDir}$language.json';
+      print('Formatting $path');
+      final file = File(join(Directory.current.path, path));
       final content = file.readAsStringSync();
       final json = jsonDecode(content) as Map<String, dynamic>;
       final newJson = {};

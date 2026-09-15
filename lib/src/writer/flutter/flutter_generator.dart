@@ -316,35 +316,16 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
     Map<int, String> indexToReplacement,
     Map<String, Map<String, dynamic>> allTranslations,
   ) {
-    try {
-      final camelKey = CaseUtil.getCamelcase(key);
-      final tmpSb = StringBuffer('  String $camelKey(num count, ');
-
-      var iterationIndex = 0;
-      indexToReplacement.forEach((index, match) {
-        final argument = getArgument(key, match, index);
-        tmpSb.write(argument);
-        if (iterationIndex++ != indexToReplacement.length - 1) {
-          tmpSb.write(', ');
-        }
-      });
-      tmpSb.write(
-          ') => _plural(LocalizationKeys.$camelKey, count: count, args: <dynamic>[');
-      iterationIndex = 0;
-      indexToReplacement.forEach((index, match) {
-        if (iterationIndex++ != 0) {
-          tmpSb.write(', ');
-        }
-        tmpSb.write('arg$index');
-      });
-      tmpSb
-        ..writeln(']);')
-        ..writeln();
-      sb.write(tmpSb.toString());
-    } on Exception catch (e) {
-      print(e);
-      buildDefaultFunction(sb, params, key, allTranslations);
-    }
+    final camelKey = CaseUtil.getCamelcase(key);
+    final parameters = indexToReplacement.entries
+        .map((entry) => getArgument(entry.value, entry.key))
+        .join(', ');
+    final arguments =
+        indexToReplacement.keys.map((index) => 'arg$index').join(', ');
+    sb
+      ..writeln(
+          '  String $camelKey(num count, $parameters) => _plural(LocalizationKeys.$camelKey, count: count, args: <dynamic>[$arguments]);')
+      ..writeln();
   }
 
   @override
@@ -355,34 +336,16 @@ class LocaleGenFlutterGenerator extends LocaleGenCoreGenerator {
     Map<int, String> indexToReplacement,
     Map<String, Map<String, dynamic>> allTranslations,
   ) {
-    try {
-      final camelKey = CaseUtil.getCamelcase(key);
-      final tmpSb = StringBuffer('  String $camelKey(');
-
-      var iterationIndex = 0;
-      indexToReplacement.forEach((index, match) {
-        final argument = getArgument(key, match, index);
-        tmpSb.write(argument);
-        if (iterationIndex++ != indexToReplacement.length - 1) {
-          tmpSb.write(', ');
-        }
-      });
-      tmpSb.write(') => _t(LocalizationKeys.$camelKey, args: <dynamic>[');
-      iterationIndex = 0;
-      indexToReplacement.forEach((index, match) {
-        if (iterationIndex++ != 0) {
-          tmpSb.write(', ');
-        }
-        tmpSb.write('arg$index');
-      });
-      tmpSb
-        ..writeln(']);')
-        ..writeln();
-      sb.write(tmpSb.toString());
-    } on Exception catch (e) {
-      print(e);
-      buildDefaultFunction(sb, params, key, allTranslations);
-    }
+    final camelKey = CaseUtil.getCamelcase(key);
+    final parameters = indexToReplacement.entries
+        .map((entry) => getArgument(entry.value, entry.key))
+        .join(', ');
+    final arguments =
+        indexToReplacement.keys.map((index) => 'arg$index').join(', ');
+    sb
+      ..writeln(
+          '  String $camelKey($parameters) => _t(LocalizationKeys.$camelKey, args: <dynamic>[$arguments]);')
+      ..writeln();
   }
 
   @override

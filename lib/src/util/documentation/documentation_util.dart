@@ -1,8 +1,6 @@
 import 'package:locale_gen/src/locale_gen_constants.dart';
 
-class DocumentationUtil {
-  const DocumentationUtil._();
-
+abstract final class DocumentationUtil {
   static void buildDocumentation(
       StringBuffer sb,
       String key,

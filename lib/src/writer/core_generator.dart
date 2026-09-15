@@ -142,10 +142,7 @@ abstract class LocaleGenCoreGenerator {
     MessageFormatAst ast,
     Map<String, MessageFormatParam> mfParams,
     Map<String, Map<String, dynamic>> allTranslations,
-  ) {
-    // Default: subclasses without MessageFormat support fall back.
-    buildDefaultFunction(sb, params, key, allTranslations);
-  }
+  );
 
   Map<int, String> _extractParameters(
       {required String key, required String value}) {
@@ -203,16 +200,15 @@ abstract class LocaleGenCoreGenerator {
     return Map.fromEntries(entries);
   }
 
+  /// The Dart parameter for sprintf argument [index] of [type]. The sprintf
+  /// regexes only match `s`, `d` and `f`, so no other type reaches this.
   @protected
-  String getArgument(String key, String type, int index) {
-    if (type == 's') {
-      return 'String arg$index';
-    } else if (type == 'd') {
-      return 'int arg$index';
-    } else if (type == 'f') {
-      return 'double arg$index';
-    }
-    throw Exception(
-        'Unsupported argument type for $key. Supported types are -> s,d,f. Create a github ticket for support -> https://github.com/vanlooverenkoen/locale_gen/issues');
+  String getArgument(String type, int index) {
+    final dartType = switch (type) {
+      's' => 'String',
+      'd' => 'int',
+      _ => 'double',
+    };
+    return '$dartType arg$index';
   }
 }

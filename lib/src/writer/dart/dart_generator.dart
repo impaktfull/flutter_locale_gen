@@ -137,29 +137,19 @@ class LocaleGenDartGenerator extends LocaleGenCoreGenerator {
     Map<String, Map<String, dynamic>> allTranslations,
   ) {
     final camelCaseKey = CaseUtil.getCamelcase(key);
-    sb.write('  LocalizedValue $camelCaseKey(');
-    var iterationIndex = 0;
-    indexToReplacement.forEach((index, match) {
-      final argument = getArgument(key, match, index);
-      sb.write(argument);
-      if (iterationIndex++ != indexToReplacement.length - 1) {
-        sb.write(', ');
-      }
-    });
-    sb.writeln(') => LocalizedValue(');
+    final parameters = indexToReplacement.entries
+        .map((entry) => getArgument(entry.value, entry.key))
+        .join(', ');
+    final arguments =
+        indexToReplacement.keys.map((index) => 'arg$index').join(', ');
+    sb.writeln(
+        '  LocalizedValue $camelCaseKey($parameters) => LocalizedValue(');
     for (final locale in params.languages) {
       final value = _requireLocaleValue(allTranslations, locale, key);
       final variableName = locale.replaceAll('-', '');
       final escapedValue = _getEscapedValue(value);
-      sb.write('    $variableName: _t("$escapedValue", args: <dynamic> [');
-      iterationIndex = 0;
-      indexToReplacement.forEach((index, match) {
-        if (iterationIndex++ != 0) {
-          sb.write(', ');
-        }
-        sb.write('arg$index');
-      });
-      sb.writeln(']),');
+      sb.writeln(
+          '    $variableName: _t("$escapedValue", args: <dynamic> [$arguments]),');
     }
     sb
       ..writeln('  );')

@@ -2,9 +2,7 @@ import 'package:locale_gen/src/locale_gen_constants.dart';
 
 enum TranslationStyle { none, sprintf, messageFormat, both }
 
-class TranslationStyleDetector {
-  const TranslationStyleDetector._();
-
+abstract final class TranslationStyleDetector {
   static TranslationStyle detect(String value) {
     final hasSprintf =
         LocaleGenConstants.positionalFormatRegex.hasMatch(value) ||

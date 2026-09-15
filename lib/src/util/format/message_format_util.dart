@@ -3,9 +3,7 @@ import 'package:locale_gen/src/model/message_format_param.dart';
 import 'package:locale_gen/src/util/parser/message_format_parser.dart';
 import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 
-class MessageFormatUtil {
-  const MessageFormatUtil._();
-
+abstract final class MessageFormatUtil {
   /// Raw Dart source for the `_formatDuration` helper emitted into generated
   /// localization files when any key uses `{x, duration[, style]}`.
   static const durationHelperTemplate = r'''

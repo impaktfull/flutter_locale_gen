@@ -3,9 +3,7 @@ import 'package:locale_gen/src/model/message_format_ast.dart';
 import 'package:locale_gen/src/util/parser/message_format_parser.dart';
 import 'package:locale_gen/src/util/parser/translation_style_detector.dart';
 
-class CrossLocaleValidator {
-  const CrossLocaleValidator._();
-
+abstract final class CrossLocaleValidator {
   /// Runs cross-locale validation across all MessageFormat keys in
   /// [defaultTranslations] and prints each warning via `print`.
   static void validateAndPrint({

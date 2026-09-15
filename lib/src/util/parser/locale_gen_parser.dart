@@ -1,8 +1,6 @@
 import 'package:intl/locale.dart';
 
-class LocaleGenParser {
-  const LocaleGenParser._();
-
+abstract final class LocaleGenParser {
   static String parseSupportedLocale(String language) {
     final locale = Locale.tryParse(language);
     if (locale == null) {

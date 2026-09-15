@@ -1,8 +1,6 @@
-class CaseUtil {
+abstract final class CaseUtil {
   static final RegExp _upperAlphaRegex = RegExp(r'[A-Z]');
   static final RegExp _symbolRegex = RegExp(r'[ ./_\-]');
-
-  const CaseUtil._();
 
   static String getCamelcase(String string) {
     final wordsGroup = _groupIntoWords(string);
