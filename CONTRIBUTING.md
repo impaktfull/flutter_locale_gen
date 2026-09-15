@@ -52,7 +52,21 @@ To release, review and merge the release PR. Nothing else is needed.
 
 ### Why the release workflow uses a PAT
 
-pub.dev only accepts an automated publish from a workflow **triggered by a tag push**, and a tag pushed with the default `GITHUB_TOKEN` does not trigger other workflows. release-please therefore runs with the `IMPAKTFULL_GITHUB_PAT` secret. If that token expires, releases are still created but nothing is published, so renew it and re-run the failed workflow.
+pub.dev only accepts an automated publish from a workflow **triggered by a tag push**, and a tag pushed with the default `GITHUB_TOKEN` does not trigger other workflows. release-please therefore runs with the `IMPAKTFULL_GITHUB_PAT` secret.
+
+The token needs access to this repository with these permissions (a classic token needs the `repo` scope instead):
+
+| Permission    | Access         | Used for |
+| ------------- | -------------- | -------- |
+| Contents      | Read and write | Pushing the release branch, creating the tag and the GitHub release |
+| Pull requests | Read and write | Opening and updating the release PR |
+| Issues        | Read and write | The `autorelease: pending` and `autorelease: tagged` labels on that PR |
+
+If the token expires or loses a permission, the **Release** workflow fails. Fix the token and re-run the failed workflow.
+
+### Keep `pubspec.yaml` and the manifest in sync
+
+release-please reads the current version from `.release-please-manifest.json` but rewrites the `version:` line in `pubspec.yaml`, keeping anything after the numbers as a build suffix. Both files must hold the same plain version: with `version: 13.0.0-alpha.2` in `pubspec.yaml`, the next release would be written as `13.0.0+-alpha.2`. Never edit either by hand; the release PR updates both.
 
 ### pub.dev settings
 
