@@ -38,7 +38,7 @@ dependencies:
   sprintf: ^7.0.0
 
 dev_dependencies:
-  locale_gen: ^12.6.0 # x-release-please-version
+  locale_gen: ^13.0.0 # x-release-please-version
 ```
 
 The generated code imports `sprintf` and `intl`, which is why they are regular dependencies of your app.
