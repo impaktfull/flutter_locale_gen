@@ -6,7 +6,14 @@
     ".": {
       "release-type": "dart",
       "package-name": "locale_gen",
-      "changelog-path": "CHANGELOG.md"
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        { "type": "generic", "path": "example_dart/pubspec.yaml" },
+        { "type": "generic", "path": "example_flutter/pubspec.yaml" },
+        { "type": "generic", "path": "README.md" },
+        { "type": "generic", "path": "doc/dart-writer.md" },
+        { "type": "generic", "path": "doc/flutter-writer.md" }
+      ]
     }
   }
 }
