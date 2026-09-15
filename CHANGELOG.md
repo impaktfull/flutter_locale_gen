@@ -1,6 +1,8 @@
-# 13.0.0-alpha.1 - 13.0.0-alpha.2
+# Changelog
 
-## Feature
+## 13.0.0-alpha.1 - 13.0.0-alpha.2
+
+### Feature
 
 - MessageFormat (ICU) support: JSON values like `{count, plural, one {# item} other {# items}}` and `Hi, {name}!` now generate type-safe Dart functions with named parameters.
 - ICU `select`, `selectordinal`, `number`, `date`, `time`, and `duration` arg types are supported, with locale-aware formatting via `package:intl`.
@@ -10,60 +12,60 @@
 - The existing sprintf (`%s`, `%d`, `%1$s`) and JSON-object plural formats keep working unchanged; detection happens per key.
 - When `Localization.locale` is null at runtime, MessageFormat substitution and number/date/time formatting fall back to the project's default locale (`LocalizationDelegate.defaultLocale.toLanguageTag()`) instead of crashing.
 
-## Known limitations
+### Known limitations
 
 - The dynamic `getTranslation(key, args:)` escape hatch on the `Localization` class is sprintf-only. MessageFormat keys must be invoked via their generated typed functions (e.g., `Localization.of(context).greeting(name: 'Alice')`). Calling `getTranslation` with an ICU key returns the raw template string without substitution.
 
-# 12.6.0
+## 12.6.0
 
-## Feature
+### Feature
 
 - Added support for a Dart writer.
   - Allowing you to use translations in non-Flutter projects
   - No plurals are supported for Dart writer yet
 
-## Fixed
+### Fixed
 
 - Project structure cleaned up
 
-# 12.5.0
+## 12.5.0
 
-## Updated
+### Updated
 
 - Added support for Flutter 3.32.x
 
-# 12.2.0 - 12.4.0
+## 12.2.0 - 12.4.0
 
-## Updated
+### Updated
 
 - Bumped `intl` dependency to ^0.20.0
 - analysis_options.yaml updated
 
-# 12.1.4
+## 12.1.4
 
-## Updated
+### Updated
 
 - Updated license to 2025
 
-# 12.1.3
+## 12.1.3
 
-## Updated
+### Updated
 
 - Updated intl to support Flutter 3.22.x and above
 
-# 12.1.1 - 12.1.2
+## 12.1.1 - 12.1.2
 
-## Fixed
+### Fixed
 
 - Documentation old references are removed
 
-# 12.1.0
+## 12.1.0
 
-## Feature
+### Feature
 
 - Formatting function added. (`dart run locale_gen:format`)
 
-## Updated
+### Updated
 
 - License to BSD-3-Clause license
 

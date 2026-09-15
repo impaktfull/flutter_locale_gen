@@ -368,7 +368,7 @@ class Localization {
 
   /// Translations:
   ///
-  /// en:  **'{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}'**
+  /// en:  **'{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}'**
   ///
   /// nl:  **'{place, selectordinal, other {#e}}'**
   ///
@@ -377,7 +377,7 @@ class Localization {
   /// fi-FI: **'{place, selectordinal, other {#.}}'**
   LocalizedValue mfRank({required num place}) => LocalizedValue(
     en: _mf(
-      "{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+      "{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}",
       args: {'place': place},
       locale: 'en',
     ),

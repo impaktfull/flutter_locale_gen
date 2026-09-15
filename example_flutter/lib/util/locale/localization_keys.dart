@@ -136,7 +136,7 @@ class LocalizationKeys {
 
   /// Translations:
   ///
-  /// en:  **'{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}'**
+  /// en:  **'{place, selectordinal, =1 {#st} =2 {#nd} =3 {#rd} other {#th}}'**
   ///
   /// nl:  **'{place, selectordinal, other {#e}}'**
   ///

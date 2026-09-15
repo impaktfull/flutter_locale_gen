@@ -102,6 +102,20 @@ void main() {
                 'name: test\n\nlocale_gen:\n  languages: [\'en\',\'fr\']\n  output_path: \'util/mylocale\''),
             throwsArgumentError);
       });
+      test('Test paths with backslashes use forward slashes', () {
+        const yaml = r'''
+name: test
+locale_gen:
+  languages: ['en']
+  output_path: 'lib\util\mylocale'
+  assets_path: 'assets\mylocale\'
+  locale_assets_path: 'assets\mylocale'
+''';
+        final params = LocaleGenParams.fromYamlString('locale_gen', yaml);
+        expect(params.outputDir, 'lib/util/mylocale/');
+        expect(params.assetsDir, 'assets/mylocale/');
+        expect(params.localeAssetsDir, 'assets/mylocale/');
+      });
       test('Test default doc languages', () {
         expect(
             LocaleGenParams.fromYamlString('locale_gen',

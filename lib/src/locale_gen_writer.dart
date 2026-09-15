@@ -37,8 +37,10 @@ class LocaleGenWriter {
 
   static Map<String, dynamic> getTranslations(
       LocaleGenParams params, String language) {
-    final translationFile = File(
-        join(Directory.current.path, params.localeAssetsDir, '$language.json'));
+    // `normalize`, because `localeAssetsDir` always uses `/`: without it the
+    // path in the error below mixes `\` and `/` on Windows.
+    final translationFile = File(normalize(join(
+        Directory.current.path, params.localeAssetsDir, '$language.json')));
     if (!translationFile.existsSync()) {
       throw Exception('${translationFile.path} does not exists');
     }

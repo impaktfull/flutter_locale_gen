@@ -5,9 +5,11 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:yaml/yaml.dart';
 
-final defaultOutputDir = join('lib', 'util', 'locale');
-final defaultAssetsDir = join('assets', 'locale');
-final defaultLocaleAssetsDir = join('assets', 'locale');
+// `posix`, not the platform `join`: these end up in asset keys and `package:`
+// imports, which only accept `/`. On Windows `join` produced `assets\locale`.
+final defaultOutputDir = posix.join('lib', 'util', 'locale');
+final defaultAssetsDir = posix.join('assets', 'locale');
+final defaultLocaleAssetsDir = posix.join('assets', 'locale');
 
 class LocaleGenParams {
   final String programName;
@@ -87,26 +89,17 @@ class LocaleGenParams {
       throw Exception('default language is not included in the languages list');
     }
 
-    var outputDir = config['output_path'] as String?;
-    outputDir ??= defaultOutputDir;
-    if (!outputDir.endsWith('/')) {
-      outputDir += '/';
-    }
+    final outputDir =
+        _normalizeDir(config['output_path'] as String? ?? defaultOutputDir);
     if (!outputDir.startsWith('lib/')) {
       throw ArgumentError('output_path should always start with lib');
     }
 
-    var assetsDir = config['assets_path'] as String?;
-    assetsDir ??= defaultAssetsDir;
-    if (!assetsDir.endsWith('/')) {
-      assetsDir += '/';
-    }
+    final assetsDir =
+        _normalizeDir(config['assets_path'] as String? ?? defaultAssetsDir);
 
-    var localeAssetsDir = config['locale_assets_path'] as String?;
-    localeAssetsDir ??= defaultLocaleAssetsDir;
-    if (!localeAssetsDir.endsWith('/')) {
-      localeAssetsDir += '/';
-    }
+    final localeAssetsDir = _normalizeDir(
+        config['locale_assets_path'] as String? ?? defaultLocaleAssetsDir);
 
     final outputType = config['output_type'] as String?;
     final messageFormatStrict =
@@ -127,5 +120,12 @@ class LocaleGenParams {
       throw Exception(
           '$different is defined in doc_languages but they are not found in the supported languages');
     }
+  }
+
+  /// Directories end up in asset keys and `package:` imports, which only
+  /// accept `/`, so a Windows-style `assets\locale` is rewritten as well.
+  static String _normalizeDir(String dir) {
+    final normalized = dir.replaceAll(r'\', '/');
+    return normalized.endsWith('/') ? normalized : '$normalized/';
   }
 }

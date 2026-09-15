@@ -1,241 +1,182 @@
-# flutter locale gen
+# locale_gen
 
-Dart tool that will convert your default locale json to dart code.
+Generate a type-safe, documented Dart API from JSON translation files, for Flutter apps and for plain Dart projects.
 
-[![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
-[![Coverage Status](https://coveralls.io/repos/github/Impaktfull/flutter_locale_gen/badge.svg)](https://coveralls.io/github/Impaktfull/flutter_locale_gen)
-[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+[![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dev/packages/locale_gen)
+[![Validate](https://github.com/impaktfull/flutter_locale_gen/actions/workflows/validate.yml/badge.svg)](https://github.com/impaktfull/flutter_locale_gen/actions/workflows/validate.yml)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](LICENSE)
 
-## Example
+<img src="https://raw.githubusercontent.com/impaktfull/flutter_locale_gen/main/assets/example.gif" alt="The example app switching between English, Dutch, Finnish, Chinese and translation keys" width="320"/>
 
-<img src="https://github.com/impaktfull/flutter_locale_gen/blob/main/assets/example.gif?raw=true" alt="Example" width="300"/>
+- **One JSON file per language.** No ARB files and no annotations. Your translators edit plain JSON.
+- **A generated Dart API.** Every key becomes a getter or a typed function, with every translation in its doc comment, so your IDE shows the text on hover.
+- **sprintf and ICU MessageFormat.** Use `"Hi %1$s"` or `"{count, plural, one {# item} other {# items}}"`. The format is detected per key, so both can live in one project.
+- **Two writers.** The `flutter` writer loads translations at runtime through a `LocalizationsDelegate`. The `dart` writer compiles every language into code, for CLIs, servers and shared packages.
+- **Made for real apps.** Runtime overrides (translations from your backend), filtering locales at runtime, a "show keys" mode for QA and tests, and warnings when a translation uses the wrong placeholder name.
 
-## Setup
+## Documentation
 
-### Add dependency to pubspec
+| Guide                                                    | What is in it                                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [Configuration](doc/configuration.md)                    | Every `locale_gen:` option in `pubspec.yaml`, the commands and how keys are named      |
+| [Flutter writer](doc/flutter-writer.md)                  | App setup, switching language, overrides, locale filtering, show keys, testing        |
+| [Dart writer](doc/dart-writer.md)                        | Using translations without Flutter, `LocalizedValue`, requirements                    |
+| [Translation formats](doc/translation-formats.md)        | Plain strings, sprintf arguments, ICU MessageFormat, validation and known limitations  |
+| [Legacy JSON-object plurals](doc/deprecation/json-object-plurals.md) | The pre-ICU plural format, which is still supported                        |
+| [Migration guides](#migration-guides)                    | Step-by-step upgrades across major versions                                           |
+| [Contributing](CONTRIBUTING.md)                          | Local development, commit conventions and how releases are published                 |
 
-[![pub package](https://img.shields.io/pub/v/locale_gen.svg)](https://pub.dartlang.org/packages/locale_gen)
+## Quick start (Flutter)
+
+### 1. Add the dependencies
 
 ```yaml
 dependencies:
-  sprintf: ^6.0.2
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  sprintf: ^7.0.0
 
 dev_dependencies:
-  locale_gen: <latest-version>
+  locale_gen: ^13.0.0
 ```
 
-### Add config to pubspec
+The generated code imports `sprintf` and `intl`, which is why they are regular dependencies of your app.
 
-Add your locale folder to the assets so all your translations are loaded at runtime:
+### 2. Write your translations
+
+One file per language, in `assets/locale/`:
+
+```json
+// assets/locale/en.json
+{
+  "greeting": "Hi, {name}!",
+  "cart_count": "{count, plural, one {# item} other {# items}}",
+  "welcome_back": "Welcome back %1$s"
+}
+```
+
+```json
+// assets/locale/nl.json
+{
+  "greeting": "Hallo, {name}!",
+  "cart_count": "{count, plural, one {# stuk} other {# stuks}}",
+  "welcome_back": "Welkom terug %1$s"
+}
+```
+
+### 3. Configure `pubspec.yaml`
 
 ```yaml
 flutter:
   assets:
     - assets/locale/
-```
 
-Add a `locale_gen:` block to your `pubspec.yaml`. All keys other than `languages` are optional — defaults are shown below.
-
-```yaml
 locale_gen:
-  languages: ["en", "nl"]                # Required: all supported languages.
-  default_language: "en"                 # Default: "en" if present in `languages`, otherwise the first entry.
-  output_type: "flutter"                 # Default: "flutter". Use "dart" for non-Flutter projects (returns a LocalizedValue per key).
-  output_path: "lib/util/locale/"        # Where generated Dart files are written. Must start with `lib/`.
-  assets_path: "assets/locale/"          # Where the JSON files live in your app's asset bundle (loaded at runtime).
-  locale_assets_path: "assets/locale/"   # Where the JSON files live on disk (read by the generator).
-  doc_languages: ["en"]                  # Languages to include in dartdoc comments above each getter. Default: all `languages`. Empty list disables doc comments.
-  message_format_strict: false           # When true, sprintf markers in a MessageFormat-aware project emit a warning. See "MessageFormat (ICU) support → Strict mode".
+  languages: ["en", "nl"]
 ```
 
-### Run package with Flutter
+All other options have defaults. See [Configuration](doc/configuration.md).
+
+### 4. Generate
 
 ```shell
-flutter packages pub run locale_gen
+dart run locale_gen
 ```
 
-### Run package with Dart
+This writes four files to `lib/util/locale/`. Commit them and run the command again whenever a JSON file changes.
 
-```shell
-dart pub run locale_gen
-```
+<img src="https://raw.githubusercontent.com/impaktfull/flutter_locale_gen/main/assets/docs/flutter_writer.png" alt="JSON translations on the left, the generated typed Dart functions on the right, and a widget using them below"/>
 
-### Format your locale file in Flutter
-
-```shell
-flutter packages pub run locale_gen:format
-```
-
-### Format your locale file in Dart
-
-```shell
-dart pub run locale_gen:format
-```
-
-### Custom asset bundle
-
-Since version _10.0.0_ you can specify the bundle to load the assets from in the `load` function. This can be used as an alternative to overriding translations, fetching them from the network, etc.
-
-## Arguments
-
-Translations can take typed sprintf-style arguments. Three primitive types are supported: `String`, `int`, and `double`. (Available since 0.1.0; `int`/`double` distinction since 8.0.0 — earlier versions used `num`.)
-
-### String — `%s` / `%1$s`
-
-```json
-{
-  "greeting": "Hi %1$s!"
-}
-```
-
-generates:
+### 5. Register the delegate and use your translations
 
 ```dart
-String greeting(String arg1);
+MaterialApp(
+  localizationsDelegates: [
+    LocalizationDelegate(),
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ],
+  supportedLocales: LocalizationDelegate.supportedLocales,
+  home: const HomeScreen(),
+);
 ```
-
-### int — `%d` / `%1$d`
-
-```json
-{
-  "items_count": "You have %1$d items"
-}
-```
-
-generates:
 
 ```dart
-String itemsCount(int arg1);
+final localization = Localization.of(context);
+
+Text(localization.greeting(name: 'Koen'));   // Hi, Koen!
+Text(localization.cartCount(count: 3));      // 3 items
+Text(localization.welcomeBack('Koen'));      // Welcome back Koen
 ```
 
-### double — `%f` / `%1$f`
+Switching language at runtime, overrides and testing are covered in the [Flutter writer guide](doc/flutter-writer.md).
 
-```json
-{
-  "balance": "Your balance is %1$.02f"
-}
-```
+## Flutter or Dart output?
 
-generates:
+Pick the writer with `output_type`. Both read the same JSON files and support the same translation formats, except for [legacy JSON-object plurals](doc/deprecation/json-object-plurals.md), which only the Flutter writer supports.
 
-```dart
-String balance(double arg1);
-```
+|                              | `output_type: flutter` (default)                                     | `output_type: dart`                                          |
+| ---------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Use it for                   | Flutter apps                                                         | CLIs, servers, shared packages, anything without Flutter     |
+| Translations are             | Loaded from your asset bundle at runtime                             | Compiled into the generated code                             |
+| One call returns             | A `String` in the active locale                                      | A `LocalizedValue` with a field per language (`.en`, `.nl`)  |
+| Generated files              | `localization.dart`, `localization_keys.dart`, `localization_delegate.dart`, `localization_overrides.dart` | `localization.dart`                   |
+| Runtime overrides, locale filter, show keys | Yes                                                   | No                                                           |
+| Missing key in a language    | Falls back to the key at runtime                                     | Generation fails, naming the key and language                |
+| Guide                        | [Flutter writer](doc/flutter-writer.md)                              | [Dart writer](doc/dart-writer.md)                            |
 
-The `.02f` modifier follows the [sprintf](https://pub.dev/packages/sprintf) package's format specifiers and controls precision. Other sprintf modifiers work too — open an issue if any cause a mismatch.
+<img src="https://raw.githubusercontent.com/impaktfull/flutter_locale_gen/main/assets/docs/dart_writer.png" alt="output_type dart in pubspec.yaml generates a LocalizedValue class, and a Dart program prints the English and Dutch translations"/>
 
-### Positional vs non-positional
+## Translation formats at a glance
 
-**Positional** uses `%<index>$<type>`, where the number between `%` and `$` is the argument index. This lets translators reorder arguments per language:
+| You write                                                  | You call                                   |
+| ---------------------------------------------------------- | ------------------------------------------ |
+| `"Settings"`                                               | `localization.settings`                    |
+| `"Hi %1$s, you have %2$d messages"`                        | `localization.inbox('Koen', 3)`            |
+| `"Hi, {name}!"`                                            | `localization.greeting(name: 'Koen')`      |
+| `"{count, plural, one {# item} other {# items}}"`          | `localization.cartCount(count: 3)`         |
+| `"{gender, select, male {he} female {she} other {they}}"`  | `localization.pronoun(gender: 'female')`   |
+| `"Placed on {placedAt, date, medium}"`                     | `localization.placedAt(placedAt: DateTime.now())` |
+| `"Total: {total, number, currency}"`                       | `localization.total(total: 12.5)`          |
+| `"Lap time: {lap, duration, mm:ss}"`                       | `localization.lapTime(lap: elapsed)`       |
 
-```json
-{
-  "intro_en": "I live in %2$s. Did you know that %1$s?",
-  "intro_nl": "%1$s, ik woon in %2$s. Wist je dat niet?"
-}
-```
+When a translation uses a different placeholder name than the default language, you get a warning at generation time instead of a broken string in production:
 
-**Non-positional** uses `%<type>` and arguments are taken in declaration order (supported since 6.0.0):
+<img src="https://raw.githubusercontent.com/impaktfull/flutter_locale_gen/main/assets/docs/cross_locale_warning.png" alt="A Dutch translation uses {naam} instead of {name} and dart run locale_gen prints a warning naming the key and locale"/>
 
-```json
-{
-  "intro": "%s, ik woon in %s. Wist je dat niet?"
-}
-```
+All details, including escaping, strict mode and known limitations: [Translation formats](doc/translation-formats.md).
 
-You **cannot** mix positional and non-positional markers in the same string.
+## Commands
 
-For named parameters, gendered text, locale-aware date/number/duration formatting, or inline plurals, see [MessageFormat (ICU) support](#messageformat-icu-support) below.
-
-## Plurals
-
-Plurals are best expressed using ICU MessageFormat — see [MessageFormat → Plural](#plural) below.
-
-> Extra support: locale_gen also supports a legacy JSON-object plural format for backwards compatibility. See [doc/deprecation/json-object-plurals.md](doc/deprecation/json-object-plurals.md) for details.
-
-## MessageFormat (ICU) support
-
-In addition to sprintf-style placeholders (`%s`, `%d`, `%1$s`) and JSON-object plurals, you can use ICU MessageFormat directly inside string values. Detection is automatic per key — projects can mix all three styles.
-
-### Plain placeholders
-
-```json
-{
-  "greeting": "Hi, {name}!"
-}
-```
-
-generates:
-
-```dart
-String greeting({required String name});
-```
-
-### Plural
-
-```json
-{
-  "cart_count": "{count, plural, one {# item} other {# items}}"
-}
-```
-
-generates:
-
-```dart
-String cartCount({required num count});
-```
-
-### Select and selectordinal
-
-```json
-{
-  "pronoun": "{gender, select, male {he} female {she} other {they}}",
-  "rank": "{place, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}"
-}
-```
-
-### Number, date, time, duration
-
-```json
-{
-  "order_placed": "Order on {placedAt, date, short} for {total, number, currency}",
-  "race": "{d, duration, mm:ss}"
-}
-```
-
-generates Dart parameters typed as `DateTime`, `num`, and `Duration` respectively, with locale-aware formatting via `package:intl`.
-
-### Strict mode
-
-Add to your `pubspec.yaml` to make the generator warn whenever a sprintf marker appears in a project that should be MessageFormat-only:
-
-```yaml
-locale_gen:
-  message_format_strict: true
-```
-
-### Cross-locale validation
-
-When more than one language defines the same key, the generator warns if the placeholder names or ICU node types differ between locales. Generation continues — the warning helps surface translator typos like `{name}` vs `{naam}`.
-
-### Default-locale fallback
-
-If `Localization.locale` is `null` at runtime, MessageFormat substitution and locale-aware number/date/time formatting fall back to the project's default locale (`LocalizationDelegate.defaultLocale`). You don't have to special-case the null path.
-
-### Limitations
-
-- The dynamic `getTranslation(key, args:)` method on `Localization` is sprintf-only; calling it with a MessageFormat key returns the raw template (`"Hi, {name}!"`) without substitution. For MessageFormat keys, use the generated typed function (e.g., `Localization.of(context).greeting(name: 'Alice')`).
-
-## Other packges based on locale_gen
-
-- impaktfull_translations
-- icapps_translations
+| Command                       | What it does                                                                    |
+| ----------------------------- | ------------------------------------------------------------------------------- |
+| `dart run locale_gen`         | Generates the Dart code from your JSON files                                    |
+| `dart run locale_gen:format`  | Sorts the keys of every JSON file alphabetically and rewrites keys to snake_case |
 
 ## Migration guides
 
-When upgrading across a major version, see the relevant guide:
+Upgrading across a major version? Follow every guide between your version and the one you are moving to.
 
-| From   | To      | Guide                                                |
-| ------ | ------- | ---------------------------------------------------- |
-| <7.0.0 | >=7.0.0 | [doc/migrations/7.0.0.md](doc/migrations/7.0.0.md)   |
-| <9.0.0 | >=9.0.0 | [doc/migrations/9.0.0.md](doc/migrations/9.0.0.md)   |
+| From      | To         | Guide                                             | In short                                                         |
+| --------- | ---------- | ------------------------------------------------- | ---------------------------------------------------------------- |
+| < 8.0.0   | >= 8.0.0   | [doc/migrations/8.0.0.md](doc/migrations/8.0.0.md)   | Add `sprintf`; `%d` is now `int`, use `%f` for `double`           |
+| < 11.0.0  | >= 11.0.0  | [doc/migrations/11.0.0.md](doc/migrations/11.0.0.md) | `Localization.of(context)` is back; reverts 7.0.0 and 9.0.0      |
+| < 13.0.0  | >= 13.0.0  | [doc/migrations/13.0.0.md](doc/migrations/13.0.0.md) | ICU MessageFormat detection can change a few getters into functions |
+
+Superseded guides, kept for projects pinned to those versions: [7.0.0](doc/migrations/7.0.0.md) (translations without a context) and [9.0.0](doc/migrations/9.0.0.md) (managing `Localization` instances). Both were reverted in 11.0.0.
+
+Every release and its changes are listed in the [CHANGELOG](CHANGELOG.md).
+
+## Examples
+
+- [`example_flutter`](example_flutter): the app from the recording above, with every translation format, runtime overrides, locale switching and show keys.
+- [`example_dart`](example_dart): a Dart program using `output_type: dart`.
+
+## Packages built on locale_gen
+
+- [impaktfull_translations](https://pub.dev/packages/impaktfull_translations)
+- [icapps_translations](https://pub.dev/packages/icapps_translations)
+
+These reuse `LocaleGenParams` and `LocaleGenWriter`, which are exported from `package:locale_gen/locale_gen.dart`.
