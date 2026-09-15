@@ -1,4 +1,5 @@
 import 'package:locale_gen/locale_gen.dart';
+import 'package:path/path.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -41,9 +42,11 @@ locale_gen:
         error = e.toString();
       }
       expect(error, isNotNull);
+      // `normalize`, because the path uses the platform separator: `\` on
+      // Windows.
       expect(
           error!.contains(
-              'locale_gen/test/assets/locale-does-not-exists/en.json does not exists'),
+              '${normalize('test/assets/locale-does-not-exists/en.json')} does not exists'),
           true);
     });
   });
