@@ -20,6 +20,8 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   locale_gen:
     path: ../
 

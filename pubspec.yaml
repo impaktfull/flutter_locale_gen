@@ -1,7 +1,20 @@
 name: locale_gen
-description: Dart tool that will convert your default locale json to dart code.
+description: Generate type-safe Dart code from JSON translation files, for Flutter apps and Dart projects, with sprintf and ICU MessageFormat support.
 version: 13.0.0-alpha.2
 homepage: https://github.com/impaktfull/flutter_locale_gen
+repository: https://github.com/impaktfull/flutter_locale_gen
+issue_tracker: https://github.com/impaktfull/flutter_locale_gen/issues
+topics:
+  - localization
+  - i18n
+  - translations
+  - codegen
+  - icu
+screenshots:
+  - description: The example app switching between English, Dutch, Finnish, Chinese and translation keys
+    path: assets/example.gif
+  - description: The example app in English, showing ICU MessageFormat, sprintf and plural translations
+    path: assets/example.png
 environment:
   sdk: ">=3.0.0 <4.0.0"
 dependencies:

@@ -10,3 +10,6 @@ example/android/gradlew.bat
 example/ios/Podfile.lock
 test/
 build/
+# Images for the README and doc/, which link to GitHub. The pub.dev
+# screenshots (assets/example.*) must stay in the package.
+assets/docs/

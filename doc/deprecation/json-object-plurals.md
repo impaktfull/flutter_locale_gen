@@ -1,6 +1,6 @@
 # Legacy JSON-object plural format
 
-> Status: still supported — but **not recommended** for new keys. Use [ICU MessageFormat plurals](../../README.md#plural) instead.
+> Status: still supported — but **not recommended** for new keys. Use [ICU MessageFormat plurals](../translation-formats.md#plural) instead.
 
 Since 8.0.0, locale_gen has supported plurals expressed as a JSON object keyed by CLDR plural categories.
 
