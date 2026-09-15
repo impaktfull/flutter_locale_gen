@@ -1,6 +1,6 @@
 name: locale_gen
 description: Generate type-safe Dart code from JSON translation files, for Flutter apps and Dart projects, with sprintf and ICU MessageFormat support.
-version: 13.0.0-alpha.2
+version: 12.6.0
 homepage: https://github.com/impaktfull/flutter_locale_gen
 repository: https://github.com/impaktfull/flutter_locale_gen
 issue_tracker: https://github.com/impaktfull/flutter_locale_gen/issues

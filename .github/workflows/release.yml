@@ -13,12 +13,17 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         with:
           # A PAT, not GITHUB_TOKEN. pub.dev only accepts a publish from a
           # workflow that was triggered by a tag push, and a tag pushed with
           # GITHUB_TOKEN triggers no workflows at all, so `publish.yml` would
           # never run. The PAT also makes `validate.yml` run on the release PR.
+          #
+          # It needs, on this repository: Contents, Pull requests and Issues
+          # (release-please labels its PRs) as "Read and write". Without Pull
+          # requests the run fails with "Resource not accessible by personal
+          # access token" after pushing the release branch.
           token: ${{ secrets.IMPAKTFULL_GITHUB_PAT }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
