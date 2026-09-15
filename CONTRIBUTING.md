@@ -121,9 +121,18 @@ The token needs access to this repository with these permissions (a classic toke
 
 If the token expires or loses a permission, the **Release** workflow fails. Fix the token and re-run the failed workflow.
 
-### Keep `pubspec.yaml` and the manifest in sync
+### Versions
 
-release-please reads the current version from `.release-please-manifest.json` but rewrites the `version:` line in `pubspec.yaml`, keeping anything after the numbers as a build suffix. Both files must hold the same plain version: with `version: 13.0.0-alpha.2` in `pubspec.yaml`, the next release would be written as `13.0.0+-alpha.2`. Never edit either by hand; the release PR updates both.
+A release PR bumps the version everywhere at once:
+
+- `version:` in `pubspec.yaml` and `.release-please-manifest.json`,
+- every line marked `x-release-please-version` in the `extra-files` of `release-please-config.json`: the `version:` of both example pubspecs and the `locale_gen: ^x.y.z` install snippets in the README, `doc/flutter-writer.md` and `doc/dart-writer.md`.
+
+Never edit one of them by hand. To show the package version somewhere new, end that line with `# x-release-please-version` and add the file to `extra-files` with `"type": "generic"`. Without `"generic"`, release-please also sets any top-level `version` in a YAML or JSON file.
+
+All of them must hold the same plain version. release-please reads the current version from the manifest, but keeps anything after the numbers in `pubspec.yaml` as a build suffix: with `version: 13.0.0-alpha.2` the next release would be written as `13.0.0+-alpha.2`.
+
+`test/release_versions_test.dart` fails when any of this drifts: a version edited by hand, a marker in a file missing from `extra-files`, or an extra file that is not `generic`.
 
 ### pub.dev settings
 
