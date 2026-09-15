@@ -1,5 +1,25 @@
 # Changelog
 
+## [13.0.0](https://github.com/impaktfull/flutter_locale_gen/compare/v12.6.0...v13.0.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* design spec for MessageFormat (ICU) support ([#96](https://github.com/impaktfull/flutter_locale_gen/issues/96))
+
+### Features
+
+* design spec for MessageFormat (ICU) support ([#96](https://github.com/impaktfull/flutter_locale_gen/issues/96)) ([6f00a84](https://github.com/impaktfull/flutter_locale_gen/commit/6f00a8482f03b67dcf817ef912fa8d4cada10f9b))
+* updated tools to tool ([a530261](https://github.com/impaktfull/flutter_locale_gen/commit/a53026171d23ca8fefbf0ab7ab73734a9c312317))
+* updated version ([32eb7a8](https://github.com/impaktfull/flutter_locale_gen/commit/32eb7a885f0671628839b18073967ca3440ced96))
+
+
+### Bug Fixes
+
+* format the JSON files in locale_assets_path ([#100](https://github.com/impaktfull/flutter_locale_gen/issues/100)) ([46898f4](https://github.com/impaktfull/flutter_locale_gen/commit/46898f4b525a42bd7198eb4f74c32f33031f3d4f))
+* render every format of a placeholder used more than once ([#101](https://github.com/impaktfull/flutter_locale_gen/issues/101)) ([3b73cb0](https://github.com/impaktfull/flutter_locale_gen/commit/3b73cb03e4ca0ab1ccf35d51ab98b01d9aa63646))
+* Windows asset paths ([#89](https://github.com/impaktfull/flutter_locale_gen/issues/89)), release with release-please, rewrite the docs ([#97](https://github.com/impaktfull/flutter_locale_gen/issues/97)) ([478c628](https://github.com/impaktfull/flutter_locale_gen/commit/478c6285dace95a1004c30d11ebc89251d583c15))
+
 ## 13.0.0-alpha.1 - 13.0.0-alpha.2
 
 ### Feature
